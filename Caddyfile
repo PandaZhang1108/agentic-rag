@@ -1,0 +1,21 @@
+your-domain.com {
+    reverse_proxy 127.0.0.1:8000 {
+        transport http {
+            read_timeout 300s
+        }
+    }
+
+
+    encode gzip
+
+    header {
+        Strict-Transport-Security "max-age=31536000"
+        X-Content-Type-Options    "nosniff"
+        X-Frame-Options           "DENY"
+    }
+
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+}

@@ -1,0 +1,142 @@
+services:
+  milvus-etcd:
+    image: quay.io/coreos/etcd:v3.5.25
+    environment:
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: "1000"
+      ETCD_QUOTA_BACKEND_BYTES: "4294967296"
+    command: etcd -advertise-client-urls=http://milvus-etcd:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    volumes:
+      - milvus_etcd_data:/etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus-minio:
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY_ID:?MINIO_ACCESS_KEY_ID 必须在 .env 里设置}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_ACCESS_KEY:?MINIO_SECRET_ACCESS_KEY 必须在 .env 里设置}
+    command: minio server /minio_data --console-address ":9001"
+    volumes:
+      - milvus_minio_data:/minio_data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus:
+    image: milvusdb/milvus:v2.6.23
+    command: ["milvus", "run", "standalone"]
+    security_opt: ["seccomp:unconfined"]
+    environment:
+      ETCD_ENDPOINTS: milvus-etcd:2379
+      MINIO_ADDRESS: milvus-minio:9000
+      MINIO_REGION: us-east-1
+      MINIO_ACCESS_KEY_ID: ${MINIO_ACCESS_KEY_ID:?MINIO_ACCESS_KEY_ID 必须在 .env 里设置}
+      MINIO_SECRET_ACCESS_KEY: ${MINIO_SECRET_ACCESS_KEY:?MINIO_SECRET_ACCESS_KEY 必须在 .env 里设置}
+    volumes:
+      - milvus_data:/var/lib/milvus
+    ports:
+      - "127.0.0.1:19530:19530"
+      - "127.0.0.1:9091:9091"
+    depends_on:
+      milvus-etcd:
+        condition: service_healthy
+      milvus-minio:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 30s
+      start_period: 90s
+      timeout: 20s
+      retries: 3
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD 必须在 .env 里设置}
+      POSTGRES_DB: ragdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ragdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    logging: &default-logging
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ingest:
+    build: .
+    profiles: ["tools"]
+    environment:
+      MILVUS_URI: http://milvus:19530
+      MILVUS_TOKEN: ${MILVUS_TOKEN:-}
+      MILVUS_COLLECTION: ${MILVUS_COLLECTION:-fastapi_docs_hybrid}
+      MILVUS_ANALYZER: ${MILVUS_ANALYZER:-chinese}
+      CHUNK_SIZE: ${CHUNK_SIZE:-500}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP:-80}
+      EMBEDDING_MODEL_PATH: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - hf_cache:/app/.cache
+    depends_on:
+      milvus:
+        condition: service_healthy
+    command: ["python", "ingest.py"]
+
+  agent:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      milvus:
+        condition: service_healthy
+    env_file: [.env]
+    environment:
+      MILVUS_URI: http://milvus:19530
+      MILVUS_TOKEN: ${MILVUS_TOKEN:-}
+      MILVUS_COLLECTION: ${MILVUS_COLLECTION:-fastapi_docs_hybrid}
+      MILVUS_SEARCH_MODE: ${MILVUS_SEARCH_MODE:-dense}
+      MILVUS_CANDIDATE_K: ${MILVUS_CANDIDATE_K:-10}
+      MILVUS_RRF_K: ${MILVUS_RRF_K:-60}
+      POSTGRES_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/ragdb
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:?DEEPSEEK_API_KEY 必须在 .env 里设置}
+      TAVILY_API_KEY: ${TAVILY_API_KEY:?TAVILY_API_KEY 必须在 .env 里设置}
+      API_KEY: ${API_KEY:?API_KEY 必须在 .env 里设置}
+      EMBEDDING_MODEL_PATH: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - mcp_workspace_data:/app/mcp_workspace
+      - hf_cache:/app/.cache
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://localhost:8000/healthz',timeout=3)\""]
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+    deploy:
+      resources:
+        limits:
+          memory: 2560M
+    logging: *default-logging
+
+volumes:
+  milvus_etcd_data:
+  milvus_minio_data:
+  milvus_data:
+  postgres_data:
+  mcp_workspace_data:
+  hf_cache:

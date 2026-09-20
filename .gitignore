@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+chroma_db/
+mcp_workspace/
+.DS_Store
+eval_results/
+*.log
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
