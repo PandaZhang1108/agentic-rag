@@ -3,6 +3,8 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.langfuse
+.docker-public/
 .git/
 .gitignore
 .github/

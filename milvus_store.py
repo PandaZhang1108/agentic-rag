@@ -1,3 +1,5 @@
+"""Milvus 建索引与检索；BM25 和 RRF 由 Milvus 执行。"""
+
 from __future__ import annotations
 
 from langchain_core.documents import Document
@@ -30,7 +32,7 @@ def require_index(client, collection: str) -> None:
 
 
 def hits_to_documents(result: list[list[dict]], k: int) -> list[Document]:
-
+    """Milvus 的结果包一层列表；按排名取出、去重，再交给现有 Agent。"""
     docs: list[Document] = []
     seen: set[str] = set()
     for hit in result[0] if result else []:
@@ -104,7 +106,7 @@ def search_milvus(client, query: str, k: int, settings, embed_query) -> list[Doc
 def create_index(
     client, collection: str, docs: list[Document], vectors: list[list[float]], analyzer: str
 ) -> None:
-
+    """每块的 ID、原文和原向量一起写入；稀疏向量由 Milvus 的 BM25 生成。"""
     if not docs or len(docs) != len(vectors) or not vectors[0]:
         raise ValueError("文档与向量不能为空，且必须一一对应")
     from pymilvus import DataType, Function, FunctionType

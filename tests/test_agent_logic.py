@@ -1,3 +1,20 @@
+"""
+================================================================================
+tests/test_agent_logic.py —— 纯逻辑测试，不需要模型/数据库/网络
+================================================================================
+这里测的正是我们修的几个 bug 的核心逻辑。
+
+【为什么这几个函数值得单独测】
+因为它们是纯函数：给定输入必然得到相同输出，没有副作用。
+纯函数是"投入产出比最高"的测试对象 —— 不用 mock 任何东西，
+毫秒级跑完，而且它们恰恰是最容易出错的地方（bug 1、P0-3、P0-4 全在这）。
+
+把 LLM 调用和逻辑判断【分开】，让逻辑部分变成纯函数，
+本身就是一种设计能力。原来 grade_documents 把"调模型打分"和
+"决定走哪条边"混在一个函数里，就没法这么测。
+================================================================================
+"""
+
 import pytest
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 
@@ -21,7 +38,7 @@ def test_latest_question_in_multi_turn():
 
 
 def test_latest_question_after_rewrite():
-
+    """重写循环里追加的新 HumanMessage，应该成为"最新问题"。"""
     messages = [
         HumanMessage(content="原始问题"),
         AIMessage(content="", additional_kwargs={}),
@@ -31,7 +48,13 @@ def test_latest_question_after_rewrite():
 
 
 def test_collect_context_gathers_parallel_tool_calls():
-
+    """
+    模型一次并行调两个工具时，消息序列长这样：
+        AIMessage(tool_calls=[A, B])
+        ToolMessage(A 的结果)
+        ToolMessage(B 的结果)
+    原来的 messages[-1].content 只能拿到 B，A 的结果直接丢了。
+    """
     messages = [
         HumanMessage(content="问题"),
         AIMessage(
@@ -50,7 +73,7 @@ def test_collect_context_gathers_parallel_tool_calls():
 
 
 def test_collect_context_stops_at_previous_round():
-
+    """上一轮的工具结果不该混进这一轮的 context。"""
     messages = [
         HumanMessage(content="第一轮"),
         AIMessage(content="", tool_calls=[{"name": "t", "args": {}, "id": "1"}]),
@@ -78,7 +101,11 @@ def test_route_irrelevant_first_time_rewrites():
 
 
 def test_route_gives_up_at_limit():
-
+    """
+    到达上限后必须走兜底节点，而不是继续循环。
+    原来没有这个判断，会一路循环到 recursion_limit 抛异常，
+    用户等 40 秒最后看到"处理出错了"。
+    """
     from config import get_settings
 
     limit = get_settings().max_rewrites
@@ -87,7 +114,11 @@ def test_route_gives_up_at_limit():
 
 
 def test_route_handles_missing_keys():
-
+    """
+    TypedDict 没有默认值，state 里可能压根没有这两个键。
+    代码里必须用 .get(key, 默认值)，直接 state["rewrite_count"] 会 KeyError。
+    这个测试就是钉住这一点。
+    """
     assert route_after_grade({}) == "generate_answer"
 
 
@@ -102,7 +133,6 @@ def test_route_handles_missing_keys():
     ],
 )
 def test_route_on_tool_calls(last_message, expected):
-
     assert route_on_tool_calls({"messages": [last_message]}) == expected
 
 

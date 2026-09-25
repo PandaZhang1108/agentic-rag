@@ -1,7 +1,7 @@
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
-asyncio_mode = "auto"
+asyncio_mode = "auto"        # 异步测试函数不用每个都加 @pytest.mark.asyncio
 addopts = "-q --strict-markers"
 markers = [
     "integration: 需要真实数据库/网络/API key 的测试（CI 里默认跳过）",
@@ -9,17 +9,12 @@ markers = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "B"]
-
-[tool.ruff.lint.per-file-ignores]
-"agent_graph.py" = ["E402"]
-"ingest.py" = ["E402"]
-"tests/*.py" = ["E402"]
+select = ["E", "F", "I", "UP", "B"]
 
 [tool.mypy]
-python_version = "3.11"
-ignore_missing_imports = true
+python_version = "3.10"
+ignore_missing_imports = true    # LangChain 生态的类型标注不完整，先放宽
 warn_unused_ignores = true

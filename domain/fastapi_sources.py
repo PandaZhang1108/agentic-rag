@@ -1,3 +1,8 @@
+"""FastAPI 官方中文文档清单。
+
+source_id 是评测时使用的稳定编号。即使改变切块大小，页面编号也不会变化。
+"""
+
 FASTAPI_SOURCES = {
     "first_steps": "https://fastapi.tiangolo.com/zh/tutorial/first-steps/",
     "path_params": "https://fastapi.tiangolo.com/zh/tutorial/path-params/",

@@ -1,3 +1,9 @@
+"""Milvus 检索入口。
+
+建索引由 ``ingest.py`` 负责；聊天服务这里只检查索引并执行检索。
+``MILVUS_SEARCH_MODE`` 可选 dense、bm25、hybrid，三种策略共用同一份 Milvus 数据。
+"""
+
 from __future__ import annotations
 
 import asyncio
@@ -19,7 +25,7 @@ _embed_sem = asyncio.Semaphore(1)
 
 
 def get_embedding_model() -> HuggingFaceEmbeddings:
-
+    """首次需要向量时加载模型，之后复用同一个实例。"""
     global _embedding_model
     if _embedding_model is None:
         logger.info("loading_embedding_model", extra={"model": settings.embedding_model_path})
@@ -28,7 +34,7 @@ def get_embedding_model() -> HuggingFaceEmbeddings:
 
 
 def open_milvus():
-
+    """连接 Milvus 并确认集合中已有数据；同一进程只检查一次。"""
     global _milvus_client
     if _milvus_client is None:
         try:
@@ -41,7 +47,7 @@ def open_milvus():
 
 
 async def asearch(query: str, k: int | None = None) -> list[Document]:
-
+    """在线程池中执行 Milvus 检索，避免阻塞 FastAPI 的事件循环。"""
     result_k = k or settings.retrieve_k
     client = open_milvus()
 

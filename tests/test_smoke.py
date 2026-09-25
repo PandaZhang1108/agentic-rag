@@ -1,8 +1,27 @@
+"""
+================================================================================
+tests/test_smoke.py —— 依赖升级后第一个要跑的测试
+================================================================================
+这个文件就是我说的"绝对正确的材料"的现实版本。
+
+它不测业务逻辑，只做一件事：把这个项目用到的每一个框架 API 各碰一次。
+每次升级依赖后先跑它，几秒钟就能知道"有没有东西被改了、被改的是哪个"。
+
+这比守着一份永远会过时的教程有用得多 ——
+教程告诉你"去年是这么写的"，smoke test 告诉你"今天这么写还行不行"。
+
+跑法：
+    pytest tests/test_smoke.py -v
+
+【不需要】数据库、API key、网络。纯粹检查 import 和函数签名。
+================================================================================
+"""
+
 import inspect
 
 
 def test_langgraph_core_api_exists():
-
+    """StateGraph / START / END / MessagesState —— 这几个是图的骨架，最不该变的。"""
     from langgraph.graph import END, START, MessagesState, StateGraph
 
     assert callable(StateGraph)
@@ -12,14 +31,23 @@ def test_langgraph_core_api_exists():
 
 
 def test_toolnode_import_path():
+    """
+    ToolNode 的位置。
 
+    背景：LangGraph 1.0 把 langgraph.prebuilt 标记为废弃，
+    功能迁到 langchain.agents，但 1.x 保持向后兼容。
+    这个测试会在"兼容层被真正移除"的那天失败 —— 那正是你需要知道的时刻。
+    """
     from langgraph.prebuilt import ToolNode
 
     assert callable(ToolNode)
 
 
 def test_checkpointer_accepts_pool():
-
+    """
+    AsyncPostgresSaver 必须支持传入连接池对象（而不是只支持 from_conn_string）。
+    这是 P1-5 修复方案的前提，所以要盯住。
+    """
     from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 
     sig = inspect.signature(AsyncPostgresSaver.__init__)
@@ -28,7 +56,7 @@ def test_checkpointer_accepts_pool():
 
 
 def test_trim_messages_signature():
-
+    """P1-12 依赖 trim_messages 的这几个参数，它们变了就要改 agent_graph._trim。"""
     from langchain_core.messages import trim_messages
 
     sig = inspect.signature(trim_messages)
@@ -37,7 +65,7 @@ def test_trim_messages_signature():
 
 
 def test_trim_messages_actually_trims():
-
+    """光检查签名不够，实际跑一次 —— 参数名没变但行为变了的情况也发生过。"""
     from langchain_core.messages import AIMessage, HumanMessage, trim_messages
 
     msgs = []
@@ -59,7 +87,7 @@ def test_trim_messages_actually_trims():
 
 
 def test_tool_decorator_supports_async():
-
+    """agent_graph 里 @tool 挂在 async 函数上，这个能力不能丢。"""
     import asyncio
 
     from langchain_core.tools import tool
@@ -74,14 +102,20 @@ def test_tool_decorator_supports_async():
 
 
 def test_structured_output_available():
-
+    """grade_documents 依赖 with_structured_output。"""
     from langchain_core.language_models.chat_models import BaseChatModel
 
     assert hasattr(BaseChatModel, "with_structured_output")
 
 
 def test_our_graph_compiles_without_db():
+    """
+    最有价值的一个：真的把图搭起来（不接数据库、不调模型）。
+    节点名字写错、边连错、State 定义不对，全都会在这里暴露。
 
+    注意 compile() 不传 checkpointer 也能编译 —— 这正好让我们能在
+    没有 Postgres 的 CI 环境里验证图结构。
+    """
     from agent_graph import build_workflow
 
     graph = build_workflow(mcp_tools=[]).compile()

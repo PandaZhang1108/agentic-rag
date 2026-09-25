@@ -27,7 +27,7 @@
     flex-direction: column;
   }
 
-
+  /* 顶部状态栏：显示当前 thread_id，让你直观看到"多轮对话"是不是真的在复用同一个会话 */
   header {
     padding: 14px 20px;
     border-bottom: 1px solid var(--border);
@@ -62,7 +62,7 @@
   }
   header button:hover { border-color: var(--accent-dim); color: var(--accent); }
 
-
+  /* 对话区 */
   #log {
     flex: 1;
     overflow-y: auto;
@@ -110,7 +110,7 @@
     font-size: 12px;
   }
 
-
+  /* 输入区 */
   #inputRow {
     border-top: 1px solid var(--border);
     padding: 14px 18%;
@@ -167,10 +167,33 @@
 </div>
 
 <script>
+// ------------------------------------------------------------------
+// 配置：后端地址
+// ------------------------------------------------------------------
 const API_URL = "http://localhost:8000/chat";
 
-const API_KEY = localStorage.getItem("apiKey") || "";
+// ------------------------------------------------------------------
+// 【修复 P0-1】后端加了 X-API-Key 鉴权，但这个页面之前没发这个头，
+// 结果是每一条消息都 401 —— 前端和后端已经对不上了。
+//
+// 这个调试台是纯静态页面，没有构建步骤，所以 key 只能放在这里，
+// 也就意味着【任何打开页面的人都能从源码里看到它】。
+// 这在"本机调试工具"这个定位下是可以接受的，但必须写清楚：
+//   - 生产环境绝不能这么干
+//   - 部署到公网时，正确做法是前端不持有 key，
+//     由一个后端(BFF)代为转发并在服务端注入 key
+//
+// 本地使用：把下面的值改成你 .env 里的 API_KEY，
+// 或者打开页面后在浏览器控制台执行：localStorage.setItem('apiKey','你的key')
+// ------------------------------------------------------------------
+const API_KEY = localStorage.getItem("apiKey") || "dev-local-key";
 
+// ------------------------------------------------------------------
+// 状态：当前会话的 thread_id
+// 这是实现"多轮对话"的关键——第一次发消息时不带 thread_id（后端会新建一个），
+// 后端返回的 thread_id 会被存在这个变量里，之后每一次发消息都带上它，
+// 后端才能在 Postgres 里找到、接上同一场对话的历史记忆。
+// ------------------------------------------------------------------
 let currentThreadId = null;
 
 const logEl = document.getElementById("log");
@@ -213,12 +236,13 @@ async function sendMessage() {
   sendBtn.disabled = true;
   appendMessage("user", text);
 
+  // 创建一个空的助手气泡，后面收到的 token 会一段段填进这个气泡里
   const bubble = appendMessage("assistant", "");
   bubble.classList.add("streaming");
 
   const body = { message: text };
   if (currentThreadId) {
-    body.thread_id = currentThreadId;
+    body.thread_id = currentThreadId;   // 带上已有的 thread_id，实现多轮对话
   }
 
   try {
@@ -226,12 +250,13 @@ async function sendMessage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
+        "X-API-Key": API_KEY,          // 【修复 P0-1】
       },
       body: JSON.stringify(body),
     });
 
     if (!response.ok) {
+      // 把常见状态码翻译成人话，省得每次都要去翻后端日志
       const hints = {
         401: "鉴权失败：X-API-Key 和后端 .env 里的 API_KEY 不一致。",
         422: "请求内容不合法：message 不能为空，thread_id 必须是 UUID 格式。",
@@ -245,6 +270,14 @@ async function sendMessage() {
       return;
     }
 
+    // ------------------------------------------------------------
+    // 手动按行解析 SSE 流。
+    // 后端每条消息格式是：data: {...}\n\n
+    // fetch 拿到的 body 是一个可以逐块读取的流（ReadableStream），
+    // 我们用 getReader() 拿到读取器，反复 read()，
+    // 每次可能拿到一小段文本（不一定刚好是一整条消息，可能被截断），
+    // 所以要自己维护一个 buffer，按 \n\n 切出完整的一条条消息。
+    // ------------------------------------------------------------
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = "";
@@ -256,6 +289,7 @@ async function sendMessage() {
 
       buffer += decoder.decode(value, { stream: true });
 
+      // 按 SSE 的分隔符 \n\n 切出所有"已经完整收到"的消息块
       let sepIndex;
       while ((sepIndex = buffer.indexOf("\n\n")) !== -1) {
         const rawEvent = buffer.slice(0, sepIndex);
@@ -273,7 +307,7 @@ async function sendMessage() {
         try {
           msg = JSON.parse(payload);
         } catch (e) {
-          continue;
+          continue; // 解析失败就跳过这一条，不让整个流程崩掉
         }
 
         if (msg.type === "thread_id") {
@@ -283,6 +317,9 @@ async function sendMessage() {
           bubble.textContent = fullText;
           logEl.scrollTop = logEl.scrollHeight;
         } else if (msg.type === "error") {
+          // 【修复 P0-1 的第二半】后端新增了 error 事件，
+          // 之前这里没有对应分支，出错时气泡会一直空着转光标，
+          // 用户完全不知道发生了什么。
           fullText += (fullText ? "\n\n" : "") + "⚠ " + msg.value;
           bubble.textContent = fullText;
           bubble.classList.remove("streaming");

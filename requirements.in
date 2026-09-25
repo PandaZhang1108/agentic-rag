@@ -1,3 +1,41 @@
+# ==============================================================================
+# requirements.in —— 【源】依赖清单（人手维护）
+# ==============================================================================
+# 请注意这个文件的后缀是 .in 不是 .txt。工作流是：
+#
+#     requirements.in   ← 你手写的、带版本区间的"意图"
+#            ↓  uv pip compile requirements.in --python-version 3.11 \
+#                   --universal --torch-backend cpu -o requirements.txt
+#     requirements.txt  ← 自动生成的、把【所有传递依赖】都钉死的 lockfile
+#            ↓  pip install -r requirements.txt
+#          实际安装
+#
+# 为什么必须这么做（这是你问"绝对正确的材料"的真正答案）：
+#
+#   2026 年 3 月社区踩过一个坑：langgraph 被钉死了，
+#   但它的传递依赖 langgraph-prebuilt 没有钉，某个补丁版本引入了
+#   破坏性变更，于是"一行代码没改，昨天能跑今天报 ImportError"。
+#
+#   直接手写 requirements.txt 只能钉住你【直接依赖】的那十几个包，
+#   它们背后还有一两百个传递依赖是浮动的。lockfile 才能全部钉死。
+#
+# 生成命令（推荐 uv，比 pip-tools 快很多）：
+#     pip install uv
+#     uv pip compile requirements.in --python-version 3.11 \
+#         --universal --torch-backend cpu -o requirements.txt
+#
+# --universal：同时记录 macOS、Linux 等平台有差别的依赖。
+# --torch-backend cpu：这个项目不用 NVIDIA GPU，不要把几 GB 的 CUDA 包装进镜像。
+# 只写 --python-version 3.11 不够：它只限制 Python 版本，不会改变当前操作系统。
+#
+# 升级依赖时：
+#     uv pip compile requirements.in --python-version 3.11 \
+#         --universal --torch-backend cpu --upgrade -o requirements.txt
+#     pytest tests/test_smoke.py      ← 先跑 smoke test 确认 API 没变
+#     git diff requirements.txt       ← 看清楚到底升了什么
+# ==============================================================================
+
+# ---- Web 层 ----
 fastapi>=0.115,<1.0
 uvicorn[standard]>=0.32,<1.0
 pydantic>=2.10,<3.0
@@ -5,6 +43,10 @@ pydantic-settings>=2.7,<3.0
 python-dotenv>=1.0,<2.0
 slowapi>=0.1.9,<0.2
 
+# ---- LangGraph / LangChain ----
+# 【重要】这几个包必须版本一致地升级，不能只升其中一个。
+# 2026-08 的现状：LangGraph 1.x / LangChain 1.x 是当前主线，
+# 官方承诺 2.0 之前不再有破坏性变更（但补丁版本出过意外，所以要 lockfile）。
 langgraph>=1.0,<2.0
 langgraph-prebuilt>=1.0,<2.0
 langgraph-checkpoint>=3.0,<4.0
@@ -12,19 +54,29 @@ langgraph-checkpoint-postgres>=3.0,<4.0
 langchain>=1.0,<2.0
 langchain-core>=1.0,<2.0
 
+# ---- 集成包 ----
+# 这些包的版本节奏和主线不一致，用宽区间 + lockfile 钉死是最实际的做法。
 langchain-community
 langchain-text-splitters
 pymilvus>=2.6,<2.7
-pandas>=2,<3
+pandas>=2,<3  # PyMilvus 运行时会导入；与本地验证使用的主版本保持一致
 langchain-huggingface
 langchain-tavily
 langchain-deepseek
 langchain-mcp-adapters
+langfuse>=4.15,<5.0
 
+# ---- 数据库 ----
 psycopg[binary]>=3.2,<4.0
 psycopg-pool>=3.2,<4.0
 
+# ---- 模型 ----
 sentence-transformers>=3.3
 tiktoken
 
+# ---- 建索引 ----
+# WebBaseLoader 抓到 HTML 后，会在真正运行时才导入 bs4 来提取正文。
+# 这是可选依赖，LangChain 不会替项目自动安装，所以必须由我们明确声明。
 beautifulsoup4>=4.12,<5.0
+
+# ---- 开发/测试（生产镜像里不需要，见 requirements-dev.in）----

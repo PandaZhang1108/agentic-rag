@@ -1,3 +1,24 @@
+"""
+================================================================================
+core/evals.py —— 模块 8（评测）
+================================================================================
+这是我认为对你找工作最值钱的一个文件。
+
+【为什么】
+"我做了个 RAG"在 2026 年是简历里最泛滥的一句话。
+"我用 recall@5 对比了四组 chunk_size，从 0.42 提到 0.71，代价是成本涨 40%"
+——这句话极少见，而且它一句话同时证明了三件事：
+你会量化、你懂取舍、你真的跑过数据。
+
+这个文件是骨架，`domain/evalset.jsonl` 是插件。
+换业务只换那个 jsonl 文件。
+
+用法：
+    python -m core.evals run --dataset domain/evalset.jsonl --tag baseline
+    python -m core.evals compare baseline tuned
+================================================================================
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -7,16 +28,32 @@ import json
 import math
 import statistics
 import time
+from collections.abc import Awaitable, Callable
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Awaitable, Callable
+from typing import Any
 
 RESULTS_DIR = Path("eval_results")
 
 
 @dataclass
 class EvalCase:
+    """
+    一条评测样本。
+
+    【每个字段为什么存在】
+      id             出问题时能定位到具体哪条
+      question       输入
+      relevant_ids   期望命中的文档 id —— 算 recall/MRR 用
+      reference      参考答案 —— 算端到端正确率用
+      expected_tools 期望调用的工具 —— 算工具选择准确率用（步骤级评测）
+      difficulty     【这一栏最有用】标注"这条为什么难"。
+                     跑完之后按 difficulty 分组看分数，你就知道
+                     系统的失败模式集中在哪类问题上 ——
+                     这比一个笼统的总分有用十倍。
+    """
+
     id: str
     question: str
     relevant_ids: list[str] = field(default_factory=list)
@@ -42,8 +79,16 @@ class EvalCase:
                 raise ValueError("历史消息需要 user/assistant role 和非空 content")
 
     @staticmethod
-    def load(path: str | Path) -> list["EvalCase"]:
+    def load(path: str | Path) -> list[EvalCase]:
+        """
+        读 jsonl（一行一个 JSON 对象）。
 
+        【为什么用 jsonl 不用 json 数组】
+        1. 可以一行行流式读，几万条也不占内存
+        2. git diff 友好 —— 加一条样本只多一行，review 时一眼看清
+        3. 追加只要 append 一行，不用解析整个文件
+        评测集是会长期演进的资产，格式要选对。
+        """
         cases = []
         with open(path, encoding="utf-8") as f:
             for line_no, line in enumerate(f, 1):
@@ -63,7 +108,7 @@ class EvalCase:
 
 
 def recall_at_k(retrieved: list[str], relevant: list[str], k: int) -> float:
-
+    """前 k 条里，命中了该找到的多少比例。"""
     if not relevant:
         return 0.0
     hits = len(set(retrieved[:k]) & set(relevant))
@@ -71,7 +116,6 @@ def recall_at_k(retrieved: list[str], relevant: list[str], k: int) -> float:
 
 
 def mrr_at_k(retrieved: list[str], relevant: list[str], k: int) -> float:
-
     relevant_set = set(relevant)
     for idx, doc_id in enumerate(retrieved[:k], start=1):
         if doc_id in relevant_set:
@@ -80,7 +124,12 @@ def mrr_at_k(retrieved: list[str], relevant: list[str], k: int) -> float:
 
 
 def tool_selection_accuracy(called: list[str], expected: list[str]) -> float:
+    """
+    步骤级指标：模型选对工具了吗。
 
+    用 Jaccard 相似度（交集/并集）而不是简单的相等判断，
+    因为模型可能多调了一个无害的工具，那不该算全错。
+    """
     if not expected and not called:
         return 1.0
     if not expected or not called:
@@ -112,6 +161,8 @@ class CaseResult:
 
 @dataclass
 class AnswerGrade:
+    """老师的评分：0 到 1 的分数，加上理由和老师的身份。"""
+
     score: float
     reason: str
     evaluator: str
@@ -134,7 +185,7 @@ AnswerEvaluator = Callable[[EvalCase, str], Awaitable[AnswerGrade | None]]
 
 
 def answer_fingerprint(case: EvalCase, answer: str) -> str:
-
+    """给试题、标准和完整回答盖一个指纹章，防止误用旧评分。"""
     case_data = asdict(case)
     if not case.history:
         case_data.pop("history")
@@ -143,7 +194,7 @@ def answer_fingerprint(case: EvalCase, answer: str) -> str:
 
 
 def load_manual_evaluator(path: str | Path) -> AnswerEvaluator:
-
+    """读取人工评分 JSON；未标注的题返回未评测，而不是默认给满分。"""
     records = json.loads(Path(path).read_text(encoding="utf-8"))
     if not isinstance(records, list):
         raise ValueError("人工评分文件必须是 JSON 数组")
@@ -191,7 +242,6 @@ async def run_eval(
     answer_evaluator: AnswerEvaluator | None = None,
     case_agent: CaseAgentFn | None = None,
 ) -> list[CaseResult]:
-
     if k < 1 or concurrency < 1:
         raise ValueError("k 和 concurrency 必须大于 0")
     sem = asyncio.Semaphore(concurrency)
@@ -252,7 +302,14 @@ def summarize(results: list[CaseResult], k: int = 5) -> dict[str, Any]:
     latencies = sorted(r.latency_ms for r in ok)
 
     def pct(p: float) -> float:
+        """
+        百分位。p95 = 95% 的请求比这个快。
 
+        【为什么看 p95 不看平均值】
+        平均延迟会被少数快请求拉低，掩盖尾部体验。
+        用户感知到的"这系统好慢"，来自那 5% 的慢请求。
+        企业采购时问的也是 p95，不是平均。
+        """
         if not latencies:
             return 0.0
         idx = min(int(len(latencies) * p), len(latencies) - 1)
@@ -302,7 +359,14 @@ def save_run(
     dataset_path: str | Path | None = None,
     split: str = "all",
 ) -> Path:
+    """
+    每次跑完存一份带时间戳和配置的结果。
 
+    【config 一定要存】
+    半个月后你看到 recall 从 0.42 涨到 0.71，但想不起来当时改了什么，
+    这次实验就白做了。把 chunk_size / k / 模型名一起存进去，
+    结果才是可复现、可追溯的。这是实验记录的基本纪律。
+    """
     if not tag or tag in {".", ".."} or Path(tag).name != tag or "\\" in tag:
         raise ValueError("实验名字只能是文件名，不能包含目录")
     RESULTS_DIR.mkdir(exist_ok=True)
@@ -333,7 +397,14 @@ def save_run(
 
 
 def compare(tag_a: str, tag_b: str) -> str:
+    """
+    对比两次运行，输出 markdown 表格 —— 直接贴进 README。
 
+    【回归检测：这个函数最重要的部分在最后】
+    总分涨了不代表没有变差的用例。"整体 recall 涨了 0.1，
+    但有 3 条原来能答对的现在答错了" —— 这种信息只有逐条对比才看得到，
+    而它往往比总分更重要（尤其是客户最在意的那几条）。
+    """
     a = json.loads((RESULTS_DIR / f"{tag_a}.json").read_text(encoding="utf-8"))
     b = json.loads((RESULTS_DIR / f"{tag_b}.json").read_text(encoding="utf-8"))
 

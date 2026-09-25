@@ -3,7 +3,6 @@ import json
 import os
 from unittest.mock import AsyncMock
 
-import httpx
 import pytest
 
 os.environ["POSTGRES_URL"] = "postgresql://x@localhost/x"
@@ -17,6 +16,8 @@ from config import get_settings
 
 get_settings.cache_clear()
 
+import httpx  # noqa: E402
+
 
 class FakeGraph:
     async def astream(self, inputs, config=None, stream_mode=None):
@@ -29,6 +30,8 @@ class FakeGraph:
 
 
 class ErrorAfterTokenGraph:
+    """先产出一个正常片段，再模拟图在流式处理中故障。"""
+
     async def astream(self, inputs, config=None, stream_mode=None):
         class Chunk:
             content = "正在查询"
@@ -38,6 +41,8 @@ class ErrorAfterTokenGraph:
 
 
 class ModelTimeoutGraph:
+    """用真正的 wait_for 制造超时，但不调用真实大模型。"""
+
     async def astream(self, inputs, config=None, stream_mode=None):
 
         await asyncio.wait_for(asyncio.sleep(1), timeout=0.01)
@@ -47,6 +52,8 @@ class ModelTimeoutGraph:
 
 
 class CountingGraph:
+    """记录实际产出了几个片段，用来证明断连后没有继续计算。"""
+
     def __init__(self):
         self.produced = 0
 
@@ -62,7 +69,6 @@ class CountingGraph:
 
 @pytest.fixture
 async def client():
-
     from main import app
 
     app.state.graph = FakeGraph()
@@ -122,7 +128,7 @@ async def test_sse_stream_shape(client):
 
 
 async def test_sse_sends_error_event_when_graph_fails_mid_stream(client):
-
+    """HTTP 流已经开始后，只能在流内发送 error，再用 DONE 正常收尾。"""
     from main import app
 
     app.state.graph = ErrorAfterTokenGraph()
@@ -139,7 +145,7 @@ async def test_sse_sends_error_event_when_graph_fails_mid_stream(client):
 
 
 async def test_model_timeout_becomes_controlled_sse_error(client):
-
+    """模型等待超时后，浏览器应收到可理解的错误和明确的结束标记。"""
     from main import app
 
     app.state.graph = ModelTimeoutGraph()
@@ -156,7 +162,7 @@ async def test_model_timeout_becomes_controlled_sse_error(client):
 
 
 async def test_disconnected_client_stops_reading_graph_stream(client, monkeypatch):
-
+    """浏览器断开后，不再读取LangGraph后续片段，也不发送当前token。"""
     import main
 
     graph = CountingGraph()
@@ -178,7 +184,7 @@ async def test_disconnected_client_stops_reading_graph_stream(client, monkeypatc
 
 
 async def test_thread_id_is_echoed_back(client):
-
+    """前端靠这个 thread_id 实现多轮对话，传什么必须回什么。"""
     tid = "12345678-1234-1234-1234-123456789abc"
     resp = await client.post(
         "/chat",
@@ -189,14 +195,14 @@ async def test_thread_id_is_echoed_back(client):
 
 
 async def test_healthz_needs_no_auth(client):
-
+    """liveness 探针必须免鉴权，否则负载均衡器会以为服务挂了。"""
     resp = await client.get("/healthz")
     assert resp.status_code == 200
     assert resp.json()["status"] == "ok"
 
 
 async def test_readyz_returns_200_when_database_is_available(client, monkeypatch):
-
+    """数据库检查成功时，服务才对外声明已经准备好。"""
     import main
 
     main.app.state.pool = object()
@@ -211,7 +217,7 @@ async def test_readyz_returns_200_when_database_is_available(client, monkeypatch
 
 
 async def test_readyz_returns_503_when_database_is_unavailable(client, monkeypatch):
-
+    """数据库检查失败时，告诉流量入口暂时不要把请求送进来。"""
     import main
 
     main.app.state.pool = object()

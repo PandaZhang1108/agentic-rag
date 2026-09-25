@@ -1,3 +1,5 @@
+"""多轮评测入口的离线回归：不调用模型、数据库或外部工具。"""
+
 import asyncio
 import hashlib
 import json

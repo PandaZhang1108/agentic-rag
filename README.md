@@ -9,7 +9,8 @@
 - **纠错检索**：检索结果不相关时重写问题并重试，达到上限后停止，避免无限循环。
 - **多轮会话**：使用 PostgreSQL Checkpointer 按 `thread_id` 保存会话状态。
 - **流式接口**：FastAPI + SSE，包含 API Key 鉴权、限流、输入校验和断连处理。
-- **可复现评测**：固定题集记录 Recall、MRR、Precision、延迟、工具选择和答案评分。
+- **可复现评测**：固定题集记录 Recall、MRR、Precision、延迟和逐题结果。
+- **可观测性**：自托管 Langfuse 记录模型与工具 Trace，并支持固定输入的生成阶段 Replay。
 - **工程保护**：模型与检索超时、重试、上下文裁剪、结构化日志、健康检查和容器资源限制。
 
 ## 架构
@@ -37,7 +38,7 @@ flowchart TD
 
 ## 技术栈
 
-Python 3.11、FastAPI、LangGraph、LangChain、Milvus、PostgreSQL、DeepSeek、Tavily、MCP、Docker Compose。
+Python 3.10+、FastAPI、LangGraph、LangChain、Milvus、PostgreSQL、DeepSeek、Tavily、MCP、Docker Compose。
 
 ## 快速开始
 
@@ -47,7 +48,7 @@ Python 3.11、FastAPI、LangGraph、LangChain、Milvus、PostgreSQL、DeepSeek�
 cp .env.example .env
 ```
 
-填写 `POSTGRES_PASSWORD`、MinIO 凭证、`DEEPSEEK_API_KEY`、`TAVILY_API_KEY` 和 `API_KEY`。
+填写 `POSTGRES_PASSWORD`、`DEEPSEEK_API_KEY`、`TAVILY_API_KEY` 和 `API_KEY`。
 
 2. 构建知识库索引：
 
@@ -106,7 +107,11 @@ python -m core.evals run \
 
 该结果只说明这批 FastAPI 文档题上 BM25 表现更好，不代表它在其他语料中始终优于 Dense 或 Hybrid。首次加载 Embedding 模型会影响尾延迟，因此正式比较时需要区分冷启动和预热请求。
 
-完整 Agent 评测还应检查答案正确性、完整性、Faithfulness、引用准确性、合理拒答、工具选择、Token、延迟和费用。出现 Bad Case 时，先定位正确资料第一次丢失的步骤，再固定输入做局部 Replay，并使用独立验收集回归验证。
+Recall 和 MRR 只说明检索表现，不代表最终答案正确。实验方法、适用范围和指标边界见 [`docs/evaluation.md`](docs/evaluation.md)。
+
+## 可观测性与 Replay
+
+可选的自托管 Langfuse 集成记录模型调用、工具调用、Token、延迟和估算费用。`scripts/replay_generation.py` 可固定中间输入，仅重放生成阶段，用于区分检索问题与生成问题。配置方法见 [`docs/observability.md`](docs/observability.md)。
 
 ## 测试
 

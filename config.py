@@ -47,6 +47,12 @@ class Settings(BaseSettings):
 
     langsmith_tracing: bool = False
     langsmith_project: str = "agentic-rag"
+
+    langfuse_enabled: bool = False
+    langfuse_public_key: str = ""
+    langfuse_secret_key: str = ""
+    langfuse_base_url: str = "http://localhost:3000"
+    langfuse_tracing_environment: str = "development"
     cors_origins: str = "*"
     rate_limit: str = "20/minute"
     auth_fail_rate_limit: str = "10/minute"
@@ -62,7 +68,7 @@ class Settings(BaseSettings):
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
     def require_agent_runtime(self) -> None:
-
+        """聊天服务启动前验票；只建索引时不调用这个函数。"""
         required = {
             "POSTGRES_URL": self.postgres_url,
             "DEEPSEEK_API_KEY": self.deepseek_api_key,
@@ -70,6 +76,13 @@ class Settings(BaseSettings):
             "API_KEY": self.api_key,
         }
         missing = [name for name, value in required.items() if not value.strip()]
+        if self.langfuse_enabled:
+            langfuse_required = {
+                "LANGFUSE_PUBLIC_KEY": self.langfuse_public_key,
+                "LANGFUSE_SECRET_KEY": self.langfuse_secret_key,
+                "LANGFUSE_BASE_URL": self.langfuse_base_url,
+            }
+            missing.extend(name for name, value in langfuse_required.items() if not value.strip())
         if missing:
             names = ", ".join(missing)
             raise ValueError(f"Agent 服务缺少必填配置：{names}")
@@ -77,5 +90,4 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-
     return Settings()

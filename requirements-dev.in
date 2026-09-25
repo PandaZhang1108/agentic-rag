@@ -1,7 +1,21 @@
--c requirements.txt
+# ==============================================================================
+# requirements-dev.in —— 只在开发/CI 里需要的依赖
+# ==============================================================================
+# 为什么要和生产依赖分开：
+#   pytest / ruff / mypy 装进生产镜像，只会让镜像变大、攻击面变宽，
+#   没有任何好处。"生产镜像里只有跑起来必需的东西"是基本原则。
+#
+# 生成：
+#     uv pip compile requirements-dev.in --python-version 3.11 \
+#         --universal --torch-backend cpu -o requirements-dev.txt
+# 本地安装：
+#     pip install -r requirements.txt -r requirements-dev.txt
+# ==============================================================================
+
+-c requirements.txt          # 约束：dev 依赖不能把生产依赖的版本顶掉
 
 pytest>=8.0
 pytest-asyncio>=0.24
-httpx>=0.28
-ruff>=0.8
+httpx>=0.28                  # FastAPI 接口测试用的异步 HTTP 客户端
+ruff>=0.8                    # 格式化 + lint，一个工具顶 black+isort+flake8
 mypy>=1.13

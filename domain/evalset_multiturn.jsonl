@@ -1,2 +1,2 @@
-// 学习中共同编写的模拟对话；开发集，不是独立验收集或真实用户数据。
+// 模拟多轮开发集；不是独立验收集或真实用户数据。
 {"id": "learning-docs-followup", "question": "那另一个文档页面呢？", "history": [{"role": "user", "content": "FastAPI 的 Swagger UI 页面在哪？"}, {"role": "assistant", "content": "默认在 /docs。"}], "relevant_ids": ["first_steps"], "reference": "另一个是 ReDoc，默认在 /redoc。", "rubric": "结合前文理解为 FastAPI 的另一个 API 文档页面；回答 ReDoc 和默认路径 /redoc。只回答其中一项为不完整；将 /openapi.json 当作文档页面为事实错误；再次询问框架名称为未有效利用前文。", "difficulty": "multi_turn", "split": "dev"}
