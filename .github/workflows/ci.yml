@@ -13,6 +13,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - run: python -m pip install uv==0.12.9
+      - run: uv pip install --system --torch-backend cpu -r requirements.txt -r requirements-dev.txt
       - run: python -m ruff check .
       - run: python -m pytest -q
