@@ -6,7 +6,7 @@ import asyncio
 import re
 from uuid import uuid4
 
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 
 from config import get_settings
 from core.evals import EvalCase
@@ -15,6 +15,7 @@ from observability import flush_langfuse, traced_config
 from retriever import asearch
 
 _SOURCE_ID_PATTERN = re.compile(r"\[source_id:([^\]]+)\]")
+_RETRIEVAL_TOOL_NAMES = {"retrieve_fastapi_docs", "web_search"}
 _graph = None
 
 
@@ -30,9 +31,12 @@ def _get_graph():
 async def retrieval_fn(question: str) -> dict:
     """只测当前配置的检索，不调用回答模型或联网工具。"""
     docs = await asearch(question)
+    retrieved_ids = [str(doc.metadata.get("source_id", "unknown")) for doc in docs]
     return {
-        "retrieved_ids": [str(doc.metadata.get("source_id", "unknown")) for doc in docs],
+        "retrieved_ids": retrieved_ids,
+        "retrieval_batches": [retrieved_ids],
         "retrieved_doc_ids": [str(doc.metadata.get("doc_id", "unknown")) for doc in docs],
+        "retrieved_contexts": [doc.page_content for doc in docs],
         "tools_called": ["retrieve_fastapi_docs"],
         "answer": "",
     }
@@ -67,14 +71,17 @@ async def agent_case_fn(case: EvalCase) -> dict:
             config=config,
         )
     finally:
+        # 评测命令是短进程，显式 flush，避免进程退出前队列尚未上报完。
         await asyncio.to_thread(flush_langfuse)
         usage = ledger.summary()
         clear_ledger()
-
+    # 历史答案不是本轮答案，也不能冒充本轮检索结果。
     messages = [message for message in state["messages"] if message.id not in input_ids]
 
     tools_called: list[str] = []
     retrieved_ids: list[str] = []
+    retrieval_batches: list[list[str]] = []
+    retrieved_contexts: list[str] = []
     answer = ""
 
     for message in messages:
@@ -88,11 +95,18 @@ async def agent_case_fn(case: EvalCase) -> dict:
                 answer = str(message.content)
 
         content = getattr(message, "content", "")
-        if isinstance(content, str):
-            retrieved_ids.extend(_SOURCE_ID_PATTERN.findall(content))
+        if (isinstance(message, ToolMessage)
+                and getattr(message, "name", None) in _RETRIEVAL_TOOL_NAMES
+                and isinstance(content, str)):
+            batch = _SOURCE_ID_PATTERN.findall(content)
+            retrieval_batches.append(batch)
+            retrieved_ids.extend(batch)
+            retrieved_contexts.append(content)
 
     return {
         "retrieved_ids": retrieved_ids,
+        "retrieval_batches": retrieval_batches,
+        "retrieved_contexts": retrieved_contexts,
         "tools_called": tools_called,
         "answer": answer,
         "input_tokens": usage["input_tokens"],
@@ -114,4 +128,8 @@ def current_config() -> dict:
         "candidate_k": settings.milvus_candidate_k,
         "rrf_k": settings.milvus_rrf_k,
         "analyzer": settings.milvus_analyzer,
+        "reranker_enabled": settings.reranker_enabled,
+        "reranker_model": settings.reranker_model_path,
+        "reranker_candidate_k": settings.reranker_candidate_k,
+        "reranker_device": settings.reranker_device,
     }

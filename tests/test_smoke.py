@@ -26,7 +26,7 @@ def test_langgraph_core_api_exists():
 
     assert callable(StateGraph)
     assert START is not None and END is not None
-
+    # MessagesState 必须是 TypedDict（有 __annotations__ 且含 messages 键）
     assert "messages" in MessagesState.__annotations__
 
 

@@ -34,6 +34,12 @@ class Settings(BaseSettings):
     milvus_rrf_k: int = 60
     milvus_analyzer: Literal["standard", "english", "chinese"] = "chinese"
 
+    reranker_enabled: bool = True
+    reranker_model_path: str = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+    reranker_candidate_k: int = 8
+    reranker_device: Literal["cpu", "cuda", "mps"] = "cpu"
+    reranker_timeout_seconds: float = 10.0
+
     max_rewrites: int = 3
 
     max_history_messages: int = 20

@@ -37,7 +37,7 @@ from config import get_settings
 from core.llm import clear_ledger, start_ledger
 from logging_config import new_request_id, request_id_var, setup_logging
 from observability import flush_langfuse, traced_config
-from retriever import get_embedding_model, open_milvus
+from retriever import get_embedding_model, get_reranker_model, open_milvus
 from schemas import ChatRequest
 
 settings = get_settings()
@@ -58,6 +58,9 @@ async def lifespan(app: FastAPI):
         if settings.milvus_search_mode != "bm25":
             await asyncio.to_thread(get_embedding_model)
             logger.info("embedding_model_ready")
+        if settings.reranker_enabled:
+            await asyncio.to_thread(get_reranker_model)
+            logger.info("reranker_model_ready")
         logger.info("vectorstore_ready")
     except RuntimeError as exc:
         logger.error("vectorstore_missing detail=%s", exc)
@@ -206,6 +209,9 @@ async def chat(
         ledger = start_ledger()
         yield _sse({"type": "thread_id", "value": thread_id})
 
+        pending_entry_tokens: list[str] = []
+        entered_downstream_node = False
+
         try:
             async for chunk, metadata in request.app.state.graph.astream(
                 inputs, config=config, stream_mode="messages"
@@ -215,12 +221,21 @@ async def chat(
                     break
 
                 node = metadata.get("langgraph_node")
-                if chunk.content and node in (
-                    "generate_answer",
-                    "give_up",
-                    "generate_query_or_respond",
-                ):
+                if node == "generate_query_or_respond":
+                    if chunk.content:
+                        pending_entry_tokens.append(str(chunk.content))
+                    continue
+
+                if node:
+                    entered_downstream_node = True
+                    pending_entry_tokens.clear()
+
+                if chunk.content and node in ("generate_answer", "give_up"):
                     yield _sse({"type": "token", "value": chunk.content})
+
+            if not entered_downstream_node:
+                for token in pending_entry_tokens:
+                    yield _sse({"type": "token", "value": token})
 
         except asyncio.CancelledError:
             logger.info("stream_cancelled thread_id=%s", thread_id)

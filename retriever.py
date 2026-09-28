@@ -8,9 +8,11 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from typing import Any
 
 from langchain_core.documents import Document
 from langchain_huggingface import HuggingFaceEmbeddings
+from sentence_transformers import CrossEncoder
 
 from config import get_settings
 from milvus_store import new_client, require_index, search_milvus
@@ -20,8 +22,11 @@ settings = get_settings()
 
 _milvus_client = None
 _embedding_model: HuggingFaceEmbeddings | None = None
-
+_reranker_model: CrossEncoder | None = None
+# 本地 embedding 模型没有承诺多线程安全，因此先限制为一次处理一个查询。
 _embed_sem = asyncio.Semaphore(1)
+# Reranker 同样复用一个模型实例，并一次只处理一个查询，避免 CPU 争抢和内存尖峰。
+_rerank_sem = asyncio.Semaphore(1)
 
 
 def get_embedding_model() -> HuggingFaceEmbeddings:
@@ -31,6 +36,48 @@ def get_embedding_model() -> HuggingFaceEmbeddings:
         logger.info("loading_embedding_model", extra={"model": settings.embedding_model_path})
         _embedding_model = HuggingFaceEmbeddings(model_name=settings.embedding_model_path)
     return _embedding_model
+
+
+def get_reranker_model() -> CrossEncoder:
+    """首次重排时加载模型，之后复用同一个实例。"""
+    global _reranker_model
+    if _reranker_model is None:
+        logger.info(
+            "loading_reranker_model",
+            extra={
+                "model": settings.reranker_model_path,
+                "device": settings.reranker_device,
+            },
+        )
+        _reranker_model = CrossEncoder(
+            settings.reranker_model_path,
+            device=settings.reranker_device,
+        )
+    return _reranker_model
+
+
+def rerank_documents(query: str, docs: list[Document], final_k: int) -> list[Document]:
+    """让 Cross-Encoder 给问题与每块文档共同打分，再取分数最高的 final_k 块。"""
+    if not docs:
+        return []
+    scores: Any = get_reranker_model().predict(
+        [(query, doc.page_content) for doc in docs],
+        show_progress_bar=False,
+    )
+    ranked_indexes = sorted(
+        range(len(docs)),
+        key=lambda index: float(scores[index]),
+        reverse=True,
+    )
+    ranked_docs = []
+    for index in ranked_indexes[:final_k]:
+        doc = docs[index]
+        ranked_docs.append(Document(
+            id=doc.id,
+            page_content=doc.page_content,
+            metadata={**doc.metadata, "reranker_score": float(scores[index])},
+        ))
+    return ranked_docs
 
 
 def open_milvus():
@@ -49,6 +96,8 @@ def open_milvus():
 async def asearch(query: str, k: int | None = None) -> list[Document]:
     """在线程池中执行 Milvus 检索，避免阻塞 FastAPI 的事件循环。"""
     result_k = k or settings.retrieve_k
+    reranker_enabled = settings.reranker_enabled
+    search_k = max(result_k, settings.reranker_candidate_k) if reranker_enabled else result_k
     client = open_milvus()
 
     async with _embed_sem:
@@ -56,11 +105,27 @@ async def asearch(query: str, k: int | None = None) -> list[Document]:
             search_milvus,
             client,
             query,
-            result_k,
+            search_k,
             settings,
+            # BM25 模式不会调用这个函数；dense/hybrid 才会计算查询向量。
             lambda text: get_embedding_model().embed_query(text),
         )
-        return await asyncio.wait_for(
+        docs = await asyncio.wait_for(
             operation,
             timeout=settings.retrieval_timeout_seconds,
         )
+
+    if not reranker_enabled:
+        return docs[:result_k]
+
+    try:
+        async with _rerank_sem:
+            operation = asyncio.to_thread(rerank_documents, query, docs, result_k)
+            return await asyncio.wait_for(
+                operation,
+                timeout=settings.reranker_timeout_seconds,
+            )
+    except Exception:
+        # 第二次排序坏了也不能让整个问答瘫痪：记录错误，再退回 Milvus 原始排序。
+        logger.exception("reranker_failed_falling_back_to_milvus")
+        return docs[:result_k]

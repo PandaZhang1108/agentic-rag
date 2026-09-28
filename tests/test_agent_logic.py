@@ -27,13 +27,16 @@ from agent_graph import (
 )
 
 
+# ==============================================================================
+# bug 1：多轮对话下取到的必须是"最新"的问题
+# ==============================================================================
 def test_latest_question_in_multi_turn():
     messages = [
         HumanMessage(content="第一轮问题"),
         AIMessage(content="第一轮回答"),
         HumanMessage(content="第二轮问题"),
     ]
-
+    # 如果这里退化成 messages[0].content，就会拿到"第一轮问题"——这就是原来的 bug
     assert _get_latest_question(messages) == "第二轮问题"
 
 
@@ -47,6 +50,9 @@ def test_latest_question_after_rewrite():
     assert _get_latest_question(messages) == "重写后的问题"
 
 
+# ==============================================================================
+# P0-3：必须收集本轮【所有】工具结果，不能只取最后一条
+# ==============================================================================
 def test_collect_context_gathers_parallel_tool_calls():
     """
     模型一次并行调两个工具时，消息序列长这样：
@@ -57,13 +63,10 @@ def test_collect_context_gathers_parallel_tool_calls():
     """
     messages = [
         HumanMessage(content="问题"),
-        AIMessage(
-            content="",
-            tool_calls=[
-                {"name": "retrieve_fastapi_docs", "args": {"query": "x"}, "id": "1"},
-                {"name": "web_search", "args": {"query": "x"}, "id": "2"},
-            ],
-        ),
+        AIMessage(content="", tool_calls=[
+            {"name": "retrieve_fastapi_docs", "args": {"query": "x"}, "id": "1"},
+            {"name": "web_search", "args": {"query": "x"}, "id": "2"},
+        ]),
         ToolMessage(content="资料A", tool_call_id="1", name="retrieve_fastapi_docs"),
         ToolMessage(content="资料B", tool_call_id="2", name="web_search"),
     ]
@@ -78,7 +81,7 @@ def test_collect_context_stops_at_previous_round():
         HumanMessage(content="第一轮"),
         AIMessage(content="", tool_calls=[{"name": "t", "args": {}, "id": "1"}]),
         ToolMessage(content="上一轮的旧资料", tool_call_id="1", name="t"),
-        AIMessage(content="第一轮回答"),
+        AIMessage(content="第一轮回答"),           # ← 这条是分界线
         HumanMessage(content="第二轮"),
         AIMessage(content="", tool_calls=[{"name": "t", "args": {}, "id": "2"}]),
         ToolMessage(content="这一轮的新资料", tool_call_id="2", name="t"),
@@ -92,6 +95,36 @@ def test_collect_context_empty_when_no_tools():
     assert _collect_tool_context([HumanMessage(content="hi")]) == ""
 
 
+def test_generate_prompt_requires_cross_passage_synthesis():
+    prompt = agent_graph.GENERATE_SYSTEM_PROMPT
+    assert "combining facts from multiple retrieved passages" in prompt
+    assert "MUST combine them into a concrete answer" in prompt
+    assert "ready-made end-to-end example is not missing information" in prompt
+    assert "do not describe an application-wide solution" in prompt
+    assert "provide one integrated implementation" in prompt
+    assert "described but not wired in" in prompt
+    assert "after considering all passages together" in prompt
+    assert "publication or observation date" in prompt
+    assert "do not present that claim as the current status" in prompt
+    assert "Never write `value: T = None`" in prompt
+    assert "`value: T | None = None`" in prompt
+    assert "Required parameters must appear before parameters with defaults" in prompt
+    assert "`item_id: int, item: Item, q: str | None = None`" in prompt
+
+
+def test_router_prompt_separates_tool_calls_from_visible_answer():
+    prompt = agent_graph.ROUTER_SYSTEM_PROMPT
+    assert "Today is {current_date}" in prompt
+    assert "MUST call exactly one grounding tool" in prompt
+    assert "call retrieve_fastapi_docs" in prompt
+    assert "call web_search" in prompt
+    assert "including CSS" in prompt
+    assert "Leave assistant content empty" in prompt
+
+
+# ==============================================================================
+# P0-4：重写次数必须有上限
+# ==============================================================================
 def test_route_relevant_goes_to_answer():
     assert route_after_grade({"grade": "yes", "rewrite_count": 0}) == "generate_answer"
 
@@ -122,6 +155,9 @@ def test_route_handles_missing_keys():
     assert route_after_grade({}) == "generate_answer"
 
 
+# ==============================================================================
+# 工具调用路由
+# ==============================================================================
 @pytest.mark.parametrize(
     "last_message,expected",
     [
@@ -133,23 +169,25 @@ def test_route_handles_missing_keys():
     ],
 )
 def test_route_on_tool_calls(last_message, expected):
+    """
+    语法讲解 —— @pytest.mark.parametrize：
+        用一组数据跑同一个测试函数，每组算一个独立用例。
+        比写两个几乎一样的函数好：加用例只要加一行数据，
+        而且失败时 pytest 会告诉你是哪一组数据挂了。
+    """
     assert route_on_tool_calls({"messages": [last_message]}) == expected
-
 
 def test_route_rewrites_before_limit():
     from config import get_settings
 
     limit = get_settings().max_rewrites
 
-    actual = route_after_grade(
-        {
-            "grade": "no",
-            "rewrite_count": limit - 1,
-        }
-    )
+    actual = route_after_grade({
+        "grade": "no",
+        "rewrite_count": limit - 1,
+    })
 
     assert actual == "rewrite_question"
-
 
 async def test_simple_greeting_skips_model(monkeypatch):
     async def fail_if_model_is_called(*args, **kwargs):
@@ -163,7 +201,11 @@ async def test_simple_greeting_skips_model(monkeypatch):
 
     node = agent_graph.make_generate_query_or_respond([])
 
-    result = await node({"messages": [HumanMessage(content="你好")]})
+    result = await node({
+        "messages": [
+            HumanMessage(content="你好")
+        ]
+    })
 
     assert result["messages"][0].content == "你好！有什么可以帮你？"
     assert result["rewrite_count"] == 0

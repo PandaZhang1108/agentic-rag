@@ -1,0 +1,1879 @@
+{
+  "tag": "agent-reranker-regression-scored-20260929",
+  "timestamp": "2026-09-28T22:52:08.117942+00:00",
+  "config": {
+    "chunk_size": 500,
+    "chunk_overlap": 80,
+    "retrieve_k": 5,
+    "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "vector_backend": "milvus",
+    "collection": "fastapi_docs_hybrid",
+    "search_mode": "dense",
+    "candidate_k": 10,
+    "rrf_k": 60,
+    "analyzer": "chinese",
+    "reranker_enabled": true,
+    "reranker_model": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+    "reranker_candidate_k": 8,
+    "reranker_device": "cpu"
+  },
+  "dataset": {
+    "file_sha256": "5e340a2703635ae39ca401cd93c4d1a39ba698c7d12b5a3310f71a09fb618418",
+    "selected_sha256": "cb9eff336b66b8535f52dce841ecd22a7b422b9368e654acf5a9f8a63595a8df",
+    "split": "all",
+    "samples": [
+      {
+        "id": "q001",
+        "question": "FastAPI 默认把交互式 API 文档放在哪两个地址？",
+        "relevant_ids": [
+          "first_steps"
+        ],
+        "reference": "Swagger UI 默认位于 /docs，ReDoc 默认位于 /redoc；OpenAPI 模式位于 /openapi.json。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q002",
+        "question": "路径参数声明为 int 后，FastAPI 会做什么？",
+        "relevant_ids": [
+          "path_params"
+        ],
+        "reference": "FastAPI 会把路径中的字符串转换为整数并进行校验；无法转换时返回清楚的校验错误。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q003",
+        "question": "怎样使用 OAuth2PasswordBearer 从请求头读取 Bearer Token？",
+        "relevant_ids": [
+          "security_first_steps"
+        ],
+        "reference": "创建 OAuth2PasswordBearer(tokenUrl=...) 依赖，并在路径操作中通过 Depends 注入；它会从 Authorization: Bearer 请求头提取令牌。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q004",
+        "question": "FastAPI 如何区分必填查询参数和可选查询参数？",
+        "relevant_ids": [
+          "query_params"
+        ],
+        "reference": "没有默认值的查询参数是必填项；设置默认值（常见是 None）的参数是可选项。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q005",
+        "question": "为什么请求体通常声明成 Pydantic 模型？",
+        "relevant_ids": [
+          "request_body"
+        ],
+        "reference": "Pydantic 模型让 FastAPI 自动读取 JSON、转换类型、校验数据并生成 OpenAPI 文档。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q006",
+        "question": "一个路径操作可以同时接收路径参数、查询参数和请求体吗？",
+        "relevant_ids": [
+          "request_body"
+        ],
+        "reference": "可以。FastAPI 会根据参数名称、路径声明和 Pydantic 类型自动识别各参数来源。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q007",
+        "question": "response_model 为什么能避免响应中泄露多余字段？",
+        "relevant_ids": [
+          "response_model"
+        ],
+        "reference": "FastAPI 会按照响应模型校验和过滤输出，只保留模型声明的字段。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q008",
+        "question": "什么时候应该抛出 HTTPException？",
+        "relevant_ids": [
+          "handling_errors"
+        ],
+        "reference": "当请求无法正常完成时抛出 HTTPException，并提供合适的 HTTP 状态码和 detail；抛出后当前路径操作会立即终止。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q009",
+        "question": "FastAPI 的依赖注入解决什么问题？",
+        "relevant_ids": [
+          "dependencies"
+        ],
+        "reference": "它让路径操作声明所需的共享逻辑或资源，由 FastAPI 调用并注入结果，可用于数据库连接、鉴权和公共参数等。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q010",
+        "question": "怎样让一个依赖项应用到整个 FastAPI 应用？",
+        "relevant_ids": [
+          "global_dependencies"
+        ],
+        "reference": "创建 FastAPI 应用时通过 dependencies=[Depends(...)] 声明全局依赖。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q011",
+        "question": "FastAPI 中间件在一次请求中什么时候执行？",
+        "relevant_ids": [
+          "middleware"
+        ],
+        "reference": "中间件先接收请求，在路径操作执行前处理；随后取得响应，并可在返回客户端前再次处理。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q012",
+        "question": "怎样用 TestClient 和 pytest 测试一个 FastAPI 接口？",
+        "relevant_ids": [
+          "testing"
+        ],
+        "reference": "用应用创建 TestClient，在 test_ 开头的普通测试函数中像 HTTP 客户端一样发送请求，再用 assert 检查状态码和响应。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q013",
+        "question": "为什么适合用 lifespan 加载应用共享资源？",
+        "relevant_ids": [
+          "lifespan"
+        ],
+        "reference": "lifespan 可以在应用接收请求前初始化共享资源，并在应用关闭时统一释放资源。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q014",
+        "question": "异步测试 FastAPI 应用时为什么常用 HTTPX AsyncClient？",
+        "relevant_ids": [
+          "async_tests"
+        ],
+        "reference": "当测试本身需要 await 时，可以配合 pytest 的异步支持、AsyncClient 和 ASGITransport 直接异步请求应用。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q015",
+        "question": "FastAPI 如何返回服务器发送事件 SSE？",
+        "relevant_ids": [
+          "sse"
+        ],
+        "reference": "使用 EventSourceResponse 包装一个产生 ServerSentEvent 或 SSE 字典的迭代器或异步生成器。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "normal",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q016",
+        "question": "接口参数没传时会发生什么？",
+        "relevant_ids": [
+          "query_params"
+        ],
+        "reference": "结果取决于参数是否有默认值：必填参数缺失会产生校验错误，有默认值的可选参数会使用默认值。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "ambiguous",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q017",
+        "question": "我想给所有接口统一加一项检查，应该放在哪里？",
+        "relevant_ids": [
+          "global_dependencies"
+        ],
+        "reference": "如果检查本身是依赖逻辑，可以配置全局依赖；如果需要包围整个请求和响应过程，则应考虑中间件。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "ambiguous",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q018",
+        "question": "接口返回了不该给用户看的字段，应该怎么限制？",
+        "relevant_ids": [
+          "response_model"
+        ],
+        "reference": "声明响应模型，让 FastAPI 按模型过滤输出字段；敏感字段不要放进对外响应模型。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "ambiguous",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q019",
+        "question": "服务启动时需要先准备一个很大的模型，代码应该放在哪里？",
+        "relevant_ids": [
+          "lifespan"
+        ],
+        "reference": "把加载放在应用 lifespan 的启动部分，并在关闭部分释放需要清理的资源。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "ambiguous",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q020",
+        "question": "测试函数什么时候写 def，什么时候写 async def？",
+        "relevant_ids": [
+          "testing",
+          "async_tests"
+        ],
+        "reference": "使用同步 TestClient 时通常写普通 def；测试中需要直接 await 异步代码时使用 async def 和异步测试支持。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "ambiguous",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q021",
+        "question": "如何给所有接口加 Bearer Token 检查，并用测试确认未登录请求被拒绝？",
+        "relevant_ids": [
+          "security_first_steps",
+          "global_dependencies",
+          "testing"
+        ],
+        "reference": "用安全依赖提取 Bearer Token，把依赖配置到需要保护的范围，并用 TestClient 发送缺少或带有认证头的请求检查响应。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "multi_hop",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q022",
+        "question": "应用启动时加载共享模型后，怎样在异步测试里请求这个应用？",
+        "relevant_ids": [
+          "lifespan",
+          "async_tests"
+        ],
+        "reference": "用 lifespan 管理共享模型的加载和释放；异步测试通过 HTTPX AsyncClient 与 ASGITransport 请求应用，并确保测试运行时触发生命周期。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "multi_hop",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q023",
+        "question": "怎样接收 Pydantic 请求体，并把自定义业务错误返回为指定状态码？",
+        "relevant_ids": [
+          "request_body",
+          "handling_errors"
+        ],
+        "reference": "用 Pydantic 模型声明并校验请求体；业务条件不满足时抛出带指定 status_code 和 detail 的 HTTPException。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "multi_hop",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q024",
+        "question": "如何让 SSE 接口先检查访问令牌，再持续发送事件？",
+        "relevant_ids": [
+          "security_first_steps",
+          "sse"
+        ],
+        "reference": "先通过安全依赖从请求中提取并校验令牌；校验通过后返回 EventSourceResponse，由异步生成器持续产生事件。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "multi_hop",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q025",
+        "question": "怎样复用公共查询逻辑，同时确保响应不会泄露内部字段？",
+        "relevant_ids": [
+          "dependencies",
+          "response_model"
+        ],
+        "reference": "把公共查询逻辑声明为依赖并注入路径操作，同时使用响应模型过滤最终输出字段。",
+        "expected_tools": [
+          "retrieve_fastapi_docs"
+        ],
+        "difficulty": "multi_hop",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q026",
+        "question": "React 组件中的 useEffect 为什么执行两次？",
+        "relevant_ids": [],
+        "reference": "该问题不在 FastAPI 资料范围内，应使用联网搜索或明确说明本地资料无法回答。",
+        "expected_tools": [
+          "web_search"
+        ],
+        "difficulty": "out_of_scope",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q027",
+        "question": "PostgreSQL 的 B-tree 和 BRIN 索引应该怎么选？",
+        "relevant_ids": [],
+        "reference": "该问题不在 FastAPI 资料范围内，应使用联网搜索或明确说明本地资料无法回答。",
+        "expected_tools": [
+          "web_search"
+        ],
+        "difficulty": "out_of_scope",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q028",
+        "question": "怎样在 Kubernetes 中配置 PodDisruptionBudget？",
+        "relevant_ids": [],
+        "reference": "该问题不在 FastAPI 资料范围内，应使用联网搜索或明确说明本地资料无法回答。",
+        "expected_tools": [
+          "web_search"
+        ],
+        "difficulty": "out_of_scope",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q029",
+        "question": "Django ORM 如何创建和运行数据库迁移？",
+        "relevant_ids": [],
+        "reference": "该问题不在 FastAPI 资料范围内，应使用联网搜索或明确说明本地资料无法回答。",
+        "expected_tools": [
+          "web_search"
+        ],
+        "difficulty": "out_of_scope",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      },
+      {
+        "id": "q030",
+        "question": "CSS 中怎样让一个元素水平和垂直居中？",
+        "relevant_ids": [],
+        "reference": "该问题不在 FastAPI 资料范围内，应使用联网搜索或明确说明本地资料无法回答。",
+        "expected_tools": [
+          "web_search"
+        ],
+        "difficulty": "out_of_scope",
+        "rubric": null,
+        "split": "dev",
+        "history": []
+      }
+    ]
+  },
+  "summary": {
+    "total": 30,
+    "succeeded": 30,
+    "failed": 0,
+    "recall@5": 0.9467,
+    "mrr@5": 0.928,
+    "retrieval_metric_coverage": 0.8333,
+    "tool_accuracy": 0.9667,
+    "latency_p50_ms": 4875.8,
+    "latency_p95_ms": 23121.0,
+    "avg_input_tokens": 1964,
+    "avg_output_tokens": 630,
+    "input_token_coverage": 0.0333,
+    "output_token_coverage": 0.0333,
+    "answer_score_mean": 0.9667,
+    "answer_score_by_dimension": {
+      "correctness": 0.95,
+      "completeness": 0.9667,
+      "faithfulness": 0.95,
+      "relevance": 1
+    },
+    "answer_dimension_coverage": {
+      "correctness": 1.0,
+      "completeness": 1.0,
+      "faithfulness": 1.0,
+      "relevance": 1.0
+    },
+    "answer_scored": 30,
+    "answer_not_evaluated": 0,
+    "answer_evaluation_failed": 0,
+    "answer_score_coverage": 1.0,
+    "recall_by_difficulty": {
+      "ambiguous": 1.0,
+      "multi_hop": 0.9333,
+      "normal": 0.9333
+    }
+  },
+  "cases": [
+    {
+      "id": "q001",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "path_params",
+        "security_first_steps",
+        "security_first_steps",
+        "response_model",
+        "first_steps"
+      ],
+      "retrieval_batches": [
+        [
+          "path_params",
+          "security_first_steps",
+          "security_first_steps",
+          "response_model",
+          "first_steps"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:path_params]\n文档¶\n访问 http://127.0.0.1:8000/docs，查看自动生成的交互式 API 文档：\n\n\n提示\n还是使用 Python 类型声明，FastAPI 提供了（集成 Swagger UI 的）自动交互式文档。\n注意，路径参数的类型是整数。\n\n基于标准的好处，备选文档¶\nFastAPI 使用 OpenAPI 生成概图，所以能兼容很多工具。\n因此，FastAPI 还内置了 ReDoc 生成的备选 API 文档，可在此查看 http://127.0.0.1:8000/redoc：\n\n---\n\n[source_id:security_first_steps]\n这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。\n我们很快也会创建对应的实际路径操作。\n\n注意\n如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。\n这是因为它使用了与 OpenAPI 规范中相同的名称。这样当你需要深入了解这些安全方案时，可以直接复制粘贴去查找更多信息。\n\noauth2_scheme 变量是 OAuth2PasswordBearer 的一个实例，同时它也是“可调用”的。\n可以像这样调用：\noauth2_scheme(some, parameters)\n\n---\n\n[source_id:security_first_steps]\n这是因为 OAuth2 使用“表单数据”来发送 username 和 password。\n\n用下面的命令运行示例：\n\n$ uv run fastapi dev\n\n<span style=\"color: green;\">INFO</span>:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)\n\n\n查看¶\n打开交互式文档：http://127.0.0.1:8000/docs。\n你会看到类似这样的界面：\n\n\nAuthorize 按钮！\n页面右上角已经有一个崭新的“Authorize”按钮。\n你的路径操作右上角还有一个可点击的小锁图标。\n\n点击它，会弹出一个授权表单，可输入 username 和 password（以及其它可选字段）：\n\n\n注意\n目前无论在表单中输入什么都不会生效，我们稍后就会实现它。\n\n---\n\n[source_id:response_model]\n并且两个模型都会用于交互式 API 文档：\n\n其他返回类型注解¶\n有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。\n直接返回 Response¶\n最常见的情况是直接返回 Response，详见进阶文档。\nPython 3.10+\n\n\nfrom fastapi import FastAPI, Response\nfrom fastapi.responses import JSONResponse, RedirectResponse\n\napp = FastAPI()\n\n\n@app.get(\"/portal\")\nasync def get_portal(teleport: bool = False) -> Response:\n    if teleport:\n        return RedirectResponse(url=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\")\n    return JSONResponse(content={\"message\": \"Here's your interdimensional portal.\"})\n\n---\n\n[source_id:first_steps]\n...\n\nOpenAPI 的用途¶\n驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。\n并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。\n你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程序。\n在 pyproject.toml 中配置应用 entrypoint¶\n你可以在 pyproject.toml 文件中配置应用的位置，例如：\n[tool.fastapi]\nentrypoint = \"main:app\"\n\n该 entrypoint 会告诉 fastapi 命令按如下方式导入应用：\nfrom main import app\n\n如果你的代码结构如下：\n.\n├── backend\n│   ├── main.py\n│   ├── __init__.py\n\n那么你可以将 entrypoint 设置为：\n[tool.fastapi]\nentrypoint = \"backend.main:app\""
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 0.2,
+      "tool_acc": 1.0,
+      "latency_ms": 23120.983593999994,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "FastAPI 默认提供两个交互式 API 文档地址：\n\n- **Swagger UI**：`http://127.0.0.1:8000/docs`\n- **ReDoc**：`http://127.0.0.1:8000/redoc`\n\n其中 `/docs` 是集成了 Swagger UI 的自动交互式文档，`/redoc` 是 FastAPI 内置的 ReDoc 备选文档。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确给出 /docs 和 /redoc，并由本地检索资料直接支持。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q002",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "query_params",
+        "query_params",
+        "request_body",
+        "query_params",
+        "query_params"
+      ],
+      "retrieval_batches": [
+        [
+          "query_params",
+          "query_params",
+          "request_body",
+          "query_params",
+          "query_params"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:query_params]\n...查询参数为：\n\nskip：值为 0\nlimit：值为 10\n\n这些值都是 URL 的组成部分，因此，它们的类型“本应”是字符串。\n但声明 Python 类型（上例中为 int）之后，这些值就会转换为声明的类型，并进行类型校验。\n所有应用于路径参数的流程也适用于查询参数：\n\n（显而易见的）编辑器支持\n数据\"解析\"\n数据校验\n自动文档\n\n默认值¶\n查询参数不是路径的固定内容，它是可选的，还支持默认值。\n上例用 skip=0 和 limit=10 设定默认值。\n访问 URL：\nhttp://127.0.0.1:8000/items/\n\n与访问以下地址相同：\nhttp://127.0.0.1:8000/items/?skip=0&limit=10\n\n---\n\n[source_id:query_params]\n提示\n注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。\n\n查询参数类型转换¶\n参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: str, q: str | None = None, short: bool = False):\n    item = {\"item_id\": item_id}\n    if q:\n        item.update({\"q\": q})\n    if not short:\n        item.update(\n            {\"description\": \"This is an amazing item that has a long description\"}\n        )\n    return item\n\n\n\n\n本例中，访问：\nhttp://127.0.0.1:8000/items/foo?short=1\n\n或\nhttp://127.0.0.1:8000/items/foo?short=True\n\n或\nhttp://127.0.0.1:8000/items/foo?short=true\n\n或\nhttp://127.0.0.1:8000/items/foo?short=on\n\n或\nhttp://127.0.0.1:8000/items/foo?short=yes\n\n---\n\n[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。\n\n---\n\n[source_id:query_params]\n查询参数¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n声明的参数不是路径参数时，路径操作函数会把该参数自动解释为“查询”参数。\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\nfake_items_db = [{\"item_name\": \"Foo\"}, {\"item_name\": \"Bar\"}, {\"item_name\": \"Baz\"}]\n\n\n@app.get(\"/items/\")\nasync def read_item(skip: int = 0, limit: int = 10):\n    return fake_items_db[skip : skip + limit]\n\n\n\n\n查询字符串是键值对的集合，这些键值对位于 URL 的 ? 之后，以 & 分隔。\n例如，以下 URL 中：\nhttp://127.0.0.1:8000/items/?skip=0&limit=10\n\n...查询参数为：\n\nskip：值为 0\nlimit：值为 10\n\n---\n\n[source_id:query_params]\n必选查询参数¶\n为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。\n如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。\n如果要把查询参数设置为必选，就不要声明默认值：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(item_id: str, needy: str):\n    item = {\"item_id\": item_id, \"needy\": needy}\n    return item\n\n\n\n\n这里的查询参数 needy 是类型为 str 的必选查询参数。\n在浏览器中打开如下 URL：\nhttp://127.0.0.1:8000/items/foo-item"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 0.0,
+      "mrr": 0.0,
+      "tool_acc": 1.0,
+      "latency_ms": 21119.247218999986,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "路径参数声明为 `int` 后，FastAPI 会：\n\n1. **类型转换**：把从 URL 中收到的字符串值转换为声明的类型（`int`）。\n2. **数据校验**：对转换后的值进行类型校验，不符合 `int` 时会报错。\n3. **编辑器支持**：提供编辑器（IDE）支持。\n4. **自动文档**：在自动生成的 API 文档中体现该参数。\n\n这些流程同样适用于查询参数。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确覆盖类型转换、校验和错误响应。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q003",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "security_first_steps",
+        "security_first_steps",
+        "security_first_steps",
+        "security_first_steps",
+        "security_first_steps"
+      ],
+      "retrieval_batches": [
+        [
+          "security_first_steps",
+          "security_first_steps",
+          "security_first_steps",
+          "security_first_steps",
+          "security_first_steps"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:security_first_steps]\n前端会把令牌临时存储在某处。\n用户在前端中点击跳转到前端应用的其他部分。\n前端需要从 API 获取更多数据。\n但该端点需要身份验证。\n因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。\n如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar。\n\n\n\nFastAPI 的 OAuth2PasswordBearer¶\nFastAPI 在不同抽象层级提供了多种安全工具。\n本示例将使用 OAuth2 的 Password 流程并配合 Bearer 令牌，通过 OAuth2PasswordBearer 类来实现。\n\n---\n\n[source_id:security_first_steps]\n注意\n“Bearer” 令牌并非唯一选项。\n但它非常适合我们的用例。\n对于大多数用例，它也可能是最佳选择，除非你是 OAuth2 专家，并明确知道为何其他方案更适合你的需求。\n在那种情况下，FastAPI 同样提供了相应的构建工具。\n\n创建 OAuth2PasswordBearer 类实例时，需要传入 tokenUrl 参数。该参数包含客户端（运行在用户浏览器中的前端）用来发送 username 和 password 以获取令牌的 URL。\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\n@app.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\n---\n\n[source_id:security_first_steps]\n假设你的后端 API 位于某个域名下。\n而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。\n你希望前端能通过username 和 password 与后端进行身份验证。\n我们可以用 OAuth2 在 FastAPI 中实现它。\n但为了节省你的时间，不必为获取少量信息而通读冗长的规范。\n我们直接使用 FastAPI 提供的安全工具。\n效果预览¶\n先直接运行代码看看效果，之后再回过头理解其背后的原理。\n创建 main.py¶\n把下面的示例代码复制到 main.py：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\n@app.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n\n---\n\n[source_id:security_first_steps]\n它做了什么¶\n它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。\n如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。\n你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定会拿到一个 str 类型的令牌。\n你已经可以在交互式文档中试试了：\n\n我们还没有验证令牌是否有效，但这已经是一个良好的开端。\n小结¶\n只需增加三四行代码，你就已经拥有了一种初步的安全机制。\n\n---\n\n[source_id:security_first_steps]\n这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。\n我们很快也会创建对应的实际路径操作。\n\n注意\n如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。\n这是因为它使用了与 OpenAPI 规范中相同的名称。这样当你需要深入了解这些安全方案时，可以直接复制粘贴去查找更多信息。\n\noauth2_scheme 变量是 OAuth2PasswordBearer 的一个实例，同时它也是“可调用”的。\n可以像这样调用：\noauth2_scheme(some, parameters)"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 23268.132218999996,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "使用 `OAuth2PasswordBearer` 时，它会在请求的 `Authorization` 请求头中查找 `Bearer` 令牌，并把令牌作为 `str` 返回。你只需把它作为依赖注入到路径操作函数中即可。\n\n```python\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\n@app.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n```\n\n要点：\n\n- 创建 `OAuth2PasswordBearer` 实例时必须传入 `tokenUrl` 参数，它声明客户端用来发送 `username` 和 `password` 以获取令牌的 URL（这里为 `\"token\"`）。该参数不会创建实际的 `/token` 路径操作，只是用于 OpenAPI 和交互式文档。\n- `oauth2_scheme` 是可调用的，也可以像 `oauth2_scheme(some, parameters)` 这样调用。\n- 它检查 `Authorization` 请求头，值应为 `Bearer` 加上令牌，例如令牌是 `foobar` 时请求头为 `Bearer foobar`。\n- 如果没有 `Authorization` 请求头，或其值不包含 Bearer 令牌，它会直接返回 `401`（UNAUTHORIZED）错误。因此只要你的函数被执行，就能确定拿到一个 `str` 类型的令牌。\n- 注意：这一步只是提取令牌，并没有验证令牌是否有效。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "完整说明 OAuth2PasswordBearer、Depends 和 Bearer 请求头。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q004",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "query_params",
+        "query_params",
+        "query_params",
+        "query_params",
+        "request_body"
+      ],
+      "retrieval_batches": [
+        [
+          "query_params",
+          "query_params",
+          "query_params",
+          "query_params",
+          "request_body"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:query_params]\n必选查询参数¶\n为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。\n如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。\n如果要把查询参数设置为必选，就不要声明默认值：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(item_id: str, needy: str):\n    item = {\"item_id\": item_id, \"needy\": needy}\n    return item\n\n\n\n\n这里的查询参数 needy 是类型为 str 的必选查询参数。\n在浏览器中打开如下 URL：\nhttp://127.0.0.1:8000/items/foo-item\n\n---\n\n[source_id:query_params]\n...因为路径中没有必选参数 needy，返回的响应中会显示如下错误信息：\n{\n  \"detail\": [\n    {\n      \"type\": \"missing\",\n      \"loc\": [\n        \"query\",\n        \"needy\"\n      ],\n      \"msg\": \"Field required\",\n      \"input\": null\n    }\n  ]\n}\n\nneedy 是必选参数，因此要在 URL 中设置值：\nhttp://127.0.0.1:8000/items/foo-item?needy=sooooneedy\n\n...这样就正常了：\n{\n    \"item_id\": \"foo-item\",\n    \"needy\": \"sooooneedy\"\n}\n\n当然，把一些参数定义为必选，为另一些参数设置默认值，再把其它参数定义为可选，这些操作都是可以的：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(\n    item_id: str, needy: str, skip: int = 0, limit: int | None = None\n):\n    item = {\"item_id\": item_id, \"needy\": needy, \"skip\": skip, \"limit\": limit}\n    return item\n\n---\n\n[source_id:query_params]\n...查询参数为：\n\nskip：值为 0\nlimit：值为 10\n\n这些值都是 URL 的组成部分，因此，它们的类型“本应”是字符串。\n但声明 Python 类型（上例中为 int）之后，这些值就会转换为声明的类型，并进行类型校验。\n所有应用于路径参数的流程也适用于查询参数：\n\n（显而易见的）编辑器支持\n数据\"解析\"\n数据校验\n自动文档\n\n默认值¶\n查询参数不是路径的固定内容，它是可选的，还支持默认值。\n上例用 skip=0 和 limit=10 设定默认值。\n访问 URL：\nhttp://127.0.0.1:8000/items/\n\n与访问以下地址相同：\nhttp://127.0.0.1:8000/items/?skip=0&limit=10\n\n---\n\n[source_id:query_params]\n本例中有 3 个查询参数：\n\nneedy，必选的 str 类型参数\nskip，默认值为 0 的 int 类型参数\nlimit，可选的 int 类型参数\n\n\n提示\n还可以像在路径参数中那样使用 Enum。\n\n---\n\n[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 22284.601051999998,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "FastAPI 通过**是否声明默认值**来区分：\n\n- **必填查询参数**：不声明默认值。例如 `needy: str`，请求中缺少它就会返回 `Field required` 错误。\n- **可选查询参数**：声明默认值。例如 `skip: int = 0`，或想设为可选但不指定值时用 `limit: int | None = None`。\n\n注意：`str | None` 这类类型注解**不是** FastAPI 判断是否必填的依据，是否必填由是否有默认值 `= None` 决定；类型注解只是让编辑器提供更好的支持并检测错误。\n\n示例：\n\n```python\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(\n    item_id: str, needy: str, skip: int = 0, limit: int | None = None\n):\n    item = {\"item_id\": item_id, \"needy\": needy, \"skip\": skip, \"limit\": limit}\n    return item\n```\n\n这里 `needy` 是必填查询参数，`skip` 和 `limit` 是可选查询参数。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确区分有无默认值对应的可选与必填参数。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q005",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "request_body",
+        "request_body",
+        "response_model",
+        "response_model",
+        "response_model"
+      ],
+      "retrieval_batches": [
+        [
+          "request_body",
+          "request_body",
+          "response_model",
+          "response_model",
+          "response_model"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。\n\n---\n\n[source_id:request_body]\n注意\n发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。\n规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。\n由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。\n\n导入 Pydantic 的 BaseModel¶\n首先，你需要从 pydantic 中导入 BaseModel：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float | None = None\n\n\napp = FastAPI()\n\n\n@app.post(\"/items/\")\nasync def create_item(item: Item):\n    return item\n\n\n\n\n创建数据模型¶\n然后，把数据模型声明为继承 BaseModel 的类。\n使用 Python 标准类型声明所有属性：\nPython 3.10+\n\n---\n\n[source_id:response_model]\nresponse_model 参数¶\n在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。\n例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。\n如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例如 dict）与声明的类型（例如一个 Pydantic 模型）不同。\n在这些情况下，你可以使用路径操作装饰器参数 response_model，而不是返回类型。\n你可以在任意路径操作中使用 response_model 参数：\n\n---\n\n[source_id:response_model]\nresponse_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。\nFastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。\n\n提示\n如果你的编辑器、mypy 等进行严格类型检查，你可以将函数返回类型声明为 Any。\n这样你告诉编辑器你是有意返回任意类型。但 FastAPI 仍会使用 response_model 做数据文档、校验、过滤等工作。\n\n---\n\n[source_id:response_model]\n响应模型 - 返回类型¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n你可以通过为路径操作函数的返回类型添加注解来声明用于响应的类型。\n和为输入数据在函数参数里做类型注解的方式相同，你可以使用 Pydantic 模型、list、dict、以及整数、布尔值等标量类型。\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float | None = None\n    tags: list[str] = []\n\n\n@app.post(\"/items/\")\nasync def create_item(item: Item) -> Item:\n    return item"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 2907.172876000004,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "请求体通常声明成 Pydantic 模型，是因为 FastAPI 会据此把该参数识别为请求体，并用这个模型完成文档、校验等工作。\n\n具体来说：\n\n- **参数识别规则**：如果函数参数的类型声明为 Pydantic 模型，它就会被当作请求体（而单一类型如 int、float、str、bool 会被当作查询参数，路径中声明过的则是路径参数）。\n- **声明方式**：从 `pydantic` 导入 `BaseModel`，让数据模型继承它，并用 Python 标准类型声明所有属性。例如：\n\n```python\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float | None = None\n\napp = FastAPI()\n\n@app.post(\"/items/\")\nasync def create_item(item: Item):\n    return item\n```\n\n- **可选字段**：是否必填由是否有默认值 `= None` 决定，而不是由 `str | None` 这类类型注解决定；类型注解的作用是让编辑器提供更好的支持并检测错误。\n- **发送方式**：发送请求体应使用 POST（最常见）、PUT、DELETE 或 PATCH。规范中没有定义用 GET 发送请求体的行为，FastAPI 虽仍支持，但仅用于非常复杂/极端的用例，且 Swagger UI 不会显示其请求体文档，中间代理也可能不支持。\n\n另外，即便不使用 Pydantic 模型也能使用 Body 参数（见“请求体 - 多参数：请求体中的单值”）。",
+      "answer_status": "scored",
+      "answer_score": 0.75,
+      "answer_dimensions": {
+        "correctness": 0.5,
+        "completeness": 0.5,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "说明了请求体识别、校验和文档，但没有明确覆盖 JSON 读取与类型转换。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q006",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "request_body",
+        "dependencies",
+        "query_params",
+        "query_params",
+        "security_first_steps"
+      ],
+      "retrieval_batches": [
+        [
+          "request_body",
+          "dependencies",
+          "query_params",
+          "query_params",
+          "security_first_steps"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。\n\n---\n\n[source_id:dependencies]\n簡单用法¶\n观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。\n事实上，所有（或大多数）Web 框架的工作方式都是这样的。\n你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。\n通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些应在路径操作函数之前执行的内容，FastAPI 会负责执行它并“注入”结果。\n“依赖注入”的其他常见术语包括：\n\n---\n\n[source_id:query_params]\n查询参数¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n声明的参数不是路径参数时，路径操作函数会把该参数自动解释为“查询”参数。\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\nfake_items_db = [{\"item_name\": \"Foo\"}, {\"item_name\": \"Bar\"}, {\"item_name\": \"Baz\"}]\n\n\n@app.get(\"/items/\")\nasync def read_item(skip: int = 0, limit: int = 10):\n    return fake_items_db[skip : skip + limit]\n\n\n\n\n查询字符串是键值对的集合，这些键值对位于 URL 的 ? 之后，以 & 分隔。\n例如，以下 URL 中：\nhttp://127.0.0.1:8000/items/?skip=0&limit=10\n\n...查询参数为：\n\nskip：值为 0\nlimit：值为 10\n\n---\n\n[source_id:query_params]\n...因为路径中没有必选参数 needy，返回的响应中会显示如下错误信息：\n{\n  \"detail\": [\n    {\n      \"type\": \"missing\",\n      \"loc\": [\n        \"query\",\n        \"needy\"\n      ],\n      \"msg\": \"Field required\",\n      \"input\": null\n    }\n  ]\n}\n\nneedy 是必选参数，因此要在 URL 中设置值：\nhttp://127.0.0.1:8000/items/foo-item?needy=sooooneedy\n\n...这样就正常了：\n{\n    \"item_id\": \"foo-item\",\n    \"needy\": \"sooooneedy\"\n}\n\n当然，把一些参数定义为必选，为另一些参数设置默认值，再把其它参数定义为可选，这些操作都是可以的：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(\n    item_id: str, needy: str, skip: int = 0, limit: int | None = None\n):\n    item = {\"item_id\": item_id, \"needy\": needy, \"skip\": skip, \"limit\": limit}\n    return item\n\n---\n\n[source_id:security_first_steps]\n这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。\n我们很快也会创建对应的实际路径操作。\n\n注意\n如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。\n这是因为它使用了与 OpenAPI 规范中相同的名称。这样当你需要深入了解这些安全方案时，可以直接复制粘贴去查找更多信息。\n\noauth2_scheme 变量是 OAuth2PasswordBearer 的一个实例，同时它也是“可调用”的。\n可以像这样调用：\noauth2_scheme(some, parameters)"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 2845.672750999995,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "可以。FastAPI 会根据参数声明方式自动区分这三类参数：\n\n- **路径参数**：参数名同时出现在路径中（如 `/{item_id}`）。\n- **查询参数**：参数声明为单一类型（`int`、`float`、`str`、`bool` 等）。\n- **请求体**：参数类型声明为 Pydantic 模型。\n\n因此一个路径操作函数可以同时接收三者，例如：\n\n```python\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    price: float\n\n\n@app.put(\"/items/{item_id}\")\nasync def update_item(\n    item_id: str,          # 路径参数（出现在路径中）\n    q: str | None = None,  # 查询参数（单一类型）\n    item: Item = None,     # 请求体（Pydantic 模型）\n):\n    return {\"item_id\": item_id, \"q\": q, \"item\": item}\n```\n\n补充说明：\n\n- 是否必填由**是否有默认值 `= None`** 决定，而不是由 `str | None` 这类类型注解决定；类型注解主要用于编辑器支持和错误检测。\n- 即使不使用 Pydantic 模型，也可以用 `Body` 参数接收请求体（见“请求体 - 多参数：请求体中的单值”）。",
+      "answer_status": "scored",
+      "answer_score": 0.875,
+      "answer_dimensions": {
+        "correctness": 0.5,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "三类参数识别规则正确，但示例把 Item 参数写成 Item = None，类型标注不严谨。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q007",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model"
+      ],
+      "retrieval_batches": [
+        [
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:response_model]\n我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。\n在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。\n不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。\n在这些场景里，我们可以使用类和继承，既利用函数的类型注解获取更好的编辑器和工具支持，又能获得 FastAPI 的数据过滤。\nPython 3.10+\n\n---\n\n[source_id:response_model]\n因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。\nresponse_model 还是返回类型¶\n在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。\n这就是为什么在这个例子里我们必须在 response_model 参数中声明它。\n...但继续往下读，看看如何更好地处理这种情况。\n返回类型与数据过滤¶\n延续上一个例子。我们希望用一种类型来注解函数，但希望从函数返回的内容实际上可以包含更多数据。\n\n---\n\n[source_id:response_model]\nresponse_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。\nFastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。\n\n提示\n如果你的编辑器、mypy 等进行严格类型检查，你可以将函数返回类型声明为 Any。\n这样你告诉编辑器你是有意返回任意类型。但 FastAPI 仍会使用 response_model 做数据文档、校验、过滤等工作。\n\n---\n\n[source_id:response_model]\nresponse_model 的优先级¶\n如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。\n这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验、文档等。\n你也可以使用 response_model=None 来禁用该路径操作的响应模型生成；当你为一些不是有效 Pydantic 字段的东西添加类型注解时，可能需要这样做，下面的章节会有示例。\n返回与输入相同的数据¶\n这里我们声明一个 UserIn 模型，它包含一个明文密码：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel, EmailStr\n\napp = FastAPI()\n\n---\n\n[source_id:response_model]\nresponse_model_exclude_defaults=True\nresponse_model_exclude_none=True\n\n详见 Pydantic 文档中对 exclude_defaults 和 exclude_none 的说明。\n\n默认字段有实际值的数据¶\n但是，如果你的数据在具有默认值的模型字段中有实际的值，例如 ID 为 bar 的项：\n{\n    \"name\": \"Bar\",\n    \"description\": \"The bartenders\",\n    \"price\": 62,\n    \"tax\": 20.2\n}\n\n这些值将包含在响应中。\n具有与默认值相同值的数据¶\n如果数据具有与默认值相同的值，例如 ID 为 baz 的项：\n{\n    \"name\": \"Baz\",\n    \"description\": None,\n    \"price\": 50.2,\n    \"tax\": 10.5,\n    \"tags\": []\n}"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3442.0317100000093,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "`response_model` 能避免泄露多余字段，是因为 FastAPI 会用它来**过滤输出数据**：函数可以返回包含更多字段的数据，但 FastAPI 只保留 `response_model` 中声明的字段，未声明的字段会被过滤掉（由 Pydantic 完成）。\n\n具体机制：\n\n- `response_model` 接收的类型与 Pydantic 模型字段声明的类型相同，可以是 Pydantic 模型，也可以是 `List[Item]` 这类模型列表。\n- FastAPI 使用 `response_model` 完成数据文档、校验，并**将输出数据转换并过滤为其类型声明**。\n- 因此即使函数实际返回了更多数据，响应中也只会包含响应模型里声明的字段。\n\n另外，如果同时声明了函数返回类型和 `response_model`，**`response_model` 具有优先级**，由 FastAPI 使用它来做校验、文档和过滤。这样你可以为函数写正确的类型注解（供编辑器、mypy 使用），同时仍让 FastAPI 按 `response_model` 过滤输出。\n\n如果只是想过滤/移除一部分数据，还可以用类和继承，既获得编辑器和工具的类型支持，又获得 FastAPI 的数据过滤。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确说明 response_model 的校验和字段过滤。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q008",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "handling_errors",
+        "handling_errors",
+        "global_dependencies",
+        "handling_errors",
+        "handling_errors"
+      ],
+      "retrieval_batches": [
+        [
+          "handling_errors",
+          "handling_errors",
+          "global_dependencies",
+          "handling_errors",
+          "handling_errors"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:handling_errors]\n在代码中触发 HTTPException¶\nHTTPException 是额外包含了和 API 有关数据的常规 Python 异常。\n因为是 Python 异常，所以不能 return，只能 raise。\n这也意味着，如果你在路径操作函数里调用的某个工具函数内部触发了 HTTPException，那么路径操作函数中后续的代码将不会继续执行，请求会立刻终止，并把 HTTPException 的 HTTP 错误发送给客户端。\n在介绍依赖项与安全的章节中，你可以更直观地看到用 raise 异常代替 return 值的优势。\n本例中，客户端用不存在的 ID 请求 item 时，触发状态码为 404 的异常：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n---\n\n[source_id:handling_errors]\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: str):\n    if item_id not in items:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\n    return {\"item\": items[item_id]}\n\n\n\n\n响应结果¶\n请求为 http://example.com/items/foo（item_id 为 \"foo\"）时，客户端会接收到 HTTP 状态码 200 及如下 JSON 响应结果：\n{\n  \"item\": \"The Foo Wrestlers\"\n}\n\n但如果客户端请求 http://example.com/items/bar（不存在的 item_id \"bar\"），则会接收到 HTTP 状态码 404（“未找到”错误）及如下 JSON 响应结果：\n{\n  \"detail\": \"Item not found\"\n}\n\n\n提示\n触发 HTTPException 时，可以用参数 detail 传递任何能转换为 JSON 的值，不仅限于 str。\n还支持传递 dict、list 等数据结构。\nFastAPI 能自动处理这些数据，并将之转换为 JSON。\n\n---\n\n[source_id:global_dependencies]\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n\nasync def verify_key(x_key: Annotated[str, Header()]):\n    if x_key != \"fake-super-secret-key\":\n        raise HTTPException(status_code=400, detail=\"X-Key header invalid\")\n    return x_key\n\n\napp = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])\n\n\n@app.get(\"/items/\")\nasync def read_items():\n    return [{\"item\": \"Portal Gun\"}, {\"item\": \"Plumbus\"}]\n\n\n@app.get(\"/users/\")\nasync def read_users():\n    return [{\"username\": \"Rick\"}, {\"username\": \"Morty\"}]\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi import Depends, FastAPI, Header, HTTPException\n\n\nasync def verify_token(x_token: str = Header()):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n\nasync def verify_key(x_key: str = Header()):\n    if x_key != \"fake-super-secret-key\":\n        raise HTTPException(status_code=400, detail=\"X-Key header invalid\")\n    return x_key\n\n\napp = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])\n\n---\n\n[source_id:handling_errors]\n遇到这些情况时，通常要返回 400 范围内（400 至 499）的 HTTP 状态码。\n这与 200 HTTP 状态码（200 至 299）类似。那些“200”状态码表示请求在某种程度上“成功”。\n而 400 范围内的状态码表示客户端发生了错误。\n大家都知道「404 Not Found」错误，还有调侃这个错误的笑话吧？\n使用 HTTPException¶\n向客户端返回 HTTP 错误响应，可以使用 HTTPException。\n导入 HTTPException¶\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: str):\n    if item_id not in items:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\n    return {\"item\": items[item_id]}\n\n---\n\n[source_id:handling_errors]\n添加自定义响应头¶\n有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。\n一般情况下你可能不会在代码中直接使用它。\n但在某些高级场景中需要时，你可以添加自定义响应头：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n\n@app.get(\"/items-header/{item_id}\")\nasync def read_item_header(item_id: str):\n    if item_id not in items:\n        raise HTTPException(\n            status_code=404,\n            detail=\"Item not found\",\n            headers={\"X-Error\": \"There goes my error\"},\n        )\n    return {\"item\": items[item_id]}"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3696.395710000019,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "当客户端请求出错、需要向客户端返回 HTTP 错误响应时，应该抛出 `HTTPException`。具体来说：\n\n- **客户端错误（400–499 状态码）**：当请求本身有问题时，通常返回 400 范围内的状态码。例如客户端请求了不存在的资源，就抛出 404：\n\n```python\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: str):\n    if item_id not in items:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\n    return {\"item\": items[item_id]}\n```\n\n- **校验失败**：例如请求头不合法时，抛出 400：\n\n```python\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n```\n\n需要注意的几点：\n\n1. `HTTPException` 是 Python 异常，**只能 `raise`，不能 `return`**。\n2. 一旦在路径操作函数（或其调用的工具函数）中触发，后续代码不会继续执行，请求会立刻终止，并把该 HTTP 错误发送给客户端。\n3. `detail` 参数可以传任何能转换为 JSON 的值，不仅限于 `str`，还支持 `dict`、`list` 等。\n4. 某些高级场景（如安全需要）可以为错误添加自定义响应头：\n\n```python\nraise HTTPException(\n    status_code=404,\n    detail=\"Item not found\",\n    headers={\"X-Error\": \"There goes my error\"},\n)\n```",
+      "answer_status": "scored",
+      "answer_score": 0.75,
+      "answer_dimensions": {
+        "correctness": 0.5,
+        "completeness": 0.5,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "raise、状态码和 detail 均正确，但把适用范围缩窄成客户端 4xx 错误。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q009",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "dependencies",
+        "dependencies",
+        "dependencies",
+        "dependencies",
+        "dependencies"
+      ],
+      "retrieval_batches": [
+        [
+          "dependencies",
+          "dependencies",
+          "dependencies",
+          "dependencies",
+          "dependencies"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:dependencies]\nFastAPI 提供了简单直观但功能强大的依赖注入系统。\n它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。\n什么是「依赖注入」¶\n在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。\n然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（“注入”依赖）。\n当你需要以下内容时，这非常有用：\n\n---\n\n[source_id:dependencies]\n各类关系型数据库\nNoSQL 数据库\n外部包\n外部 API\n认证与授权系统\nAPI 使用监控系统\n响应数据注入系统\n等等...\n\n简单而强大¶\n虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。\n你可以定义依赖其他依赖项的依赖项。\n最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。\n例如，假设你有 4 个 API 路径操作（端点）：\n\n/items/public/\n/items/private/\n/users/{user_id}/activate\n/items/pro/\n\n---\n\n[source_id:dependencies]\n资源（resources）\n提供方（providers）\n服务（services）\n可注入（injectables）\n组件（components）\n\nFastAPI 插件¶\n可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。\n依赖项可以用非常简单直观的方式创建，你只需导入所需的 Python 包，用字面意义上的几行代码就能把它们与你的 API 函数集成起来。\n在接下来的章节中，你会看到关于关系型数据库、NoSQL 数据库、安全等方面的示例。\nFastAPI 兼容性¶\n依赖注入系统的简洁让 FastAPI 能与以下内容兼容：\n\n---\n\n[source_id:dependencies]\n共享业务逻辑（同一段代码逻辑反复复用）\n共享数据库连接\n实施安全、认证、角色权限等要求\n以及更多其他内容...\n\n同时尽量减少代码重复。\n第一步¶\n先来看一个非常简单的例子。它现在简单到几乎没什么用。\n但这样我们就可以专注于依赖注入系统是如何工作的。\n创建依赖项，或“dependable”¶\n首先关注依赖项。\n它只是一个函数，且可以接收与路径操作函数相同的所有参数：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n---\n\n[source_id:dependencies]\n这些依赖会照常工作，而最棒的是，类型信息会被保留，这意味着你的编辑器依然能提供自动补全、行内报错等。同样适用于 mypy 等其他工具。\n当你在大型代码库中，在很多路径操作里反复使用相同的依赖时，这会特别有用。\n要不要使用 async？¶\n由于依赖项也会由 FastAPI 调用（与路径操作函数相同），因此定义函数时同样的规则也适用。\n你可以使用 async def 或普通的 def。\n你可以在普通的 def 路径操作函数中声明 async def 的依赖项；也可以在异步的 async def 路径操作函数中声明普通的 def 依赖项，等等。\n都没关系，FastAPI 知道该怎么处理。"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3186.4033760000157,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "FastAPI 的依赖注入主要解决**代码复用与组件集成**问题：让路径操作函数只声明自己运行所需的东西（“依赖”），由 FastAPI 负责执行必要逻辑并注入这些依赖。\n\n具体来说，它用于：\n\n- **共享业务逻辑**：同一段代码逻辑反复复用，减少代码重复。\n- **共享数据库连接**：如关系型数据库、NoSQL 数据库。\n- **实施安全、认证、角色权限等要求**：如认证与授权系统。\n- **集成外部组件**：外部包、外部 API、API 使用监控系统、响应数据注入系统等。\n\n它的特点是简单而强大：依赖项本身只是一个函数，可以接收与路径操作函数相同的参数；依赖项还可以依赖其他依赖项，最终构建出依赖项的层级树，FastAPI 会处理所有这些依赖（及其子依赖），并在每一步注入相应结果。此外，类型信息会被保留，编辑器仍能提供自动补全、行内报错等支持，对 mypy 等工具同样适用。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "说明了共享逻辑、资源、鉴权以及 FastAPI 执行和注入结果。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q010",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "global_dependencies",
+        "dependencies",
+        "dependencies",
+        "dependencies",
+        "dependencies"
+      ],
+      "retrieval_batches": [
+        [
+          "global_dependencies",
+          "dependencies",
+          "dependencies",
+          "dependencies",
+          "dependencies"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:global_dependencies]\n全局依赖项¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n有时，我们要为整个应用添加依赖项。\n通过与将 dependencies 添加到路径操作装饰器 类似的方式，可以把依赖项添加至整个 FastAPI 应用。\n这样一来，就可以为所有路径操作应用该依赖项：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI, Header, HTTPException\n\n\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n---\n\n[source_id:dependencies]\n@app.get(\"/users/\")\nasync def read_users(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n@app.get(\"/users/\")\nasync def read_users(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n\n\n\n在“dependant”中声明依赖项¶\n与在路径操作函数的参数中使用 Body、Query 等相同，给参数使用 Depends 来声明一个新的依赖项：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n---\n\n[source_id:dependencies]\n共享业务逻辑（同一段代码逻辑反复复用）\n共享数据库连接\n实施安全、认证、角色权限等要求\n以及更多其他内容...\n\n同时尽量减少代码重复。\n第一步¶\n先来看一个非常简单的例子。它现在简单到几乎没什么用。\n但这样我们就可以专注于依赖注入系统是如何工作的。\n创建依赖项，或“dependable”¶\n首先关注依赖项。\n它只是一个函数，且可以接收与路径操作函数相同的所有参数：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n---\n\n[source_id:dependencies]\n各类关系型数据库\nNoSQL 数据库\n外部包\n外部 API\n认证与授权系统\nAPI 使用监控系统\n响应数据注入系统\n等等...\n\n简单而强大¶\n虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。\n你可以定义依赖其他依赖项的依赖项。\n最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。\n例如，假设你有 4 个 API 路径操作（端点）：\n\n/items/public/\n/items/private/\n/users/{user_id}/activate\n/items/pro/\n\n---\n\n[source_id:dependencies]\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n\n@app.get(\"/users/\")\nasync def read_users(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n@app.get(\"/users/\")\nasync def read_users(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n\n\n\n大功告成。\n2 行。\n它的形式和结构与所有路径操作函数相同。\n你可以把它当作没有“装饰器”（没有 @app.get(\"/some-path\")）的路径操作函数。\n而且它可以返回任何你想要的内容。\n本例中的依赖项预期接收："
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3209.4285010000194,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "在 FastAPI 中，可以把依赖项添加到整个应用，使其对所有路径操作生效。做法与给路径操作装饰器添加 `dependencies` 类似，只是改为在 `FastAPI` 应用实例上添加。\n\n```python\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI, Header, HTTPException\n\n\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n\napp = FastAPI(dependencies=[Depends(verify_token)])\n```\n\n这样，`verify_token` 这个依赖项就会被应用到该应用的所有路径操作上。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "给出了应用级全局依赖的正确示例。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q011",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "middleware",
+        "middleware",
+        "async_tests",
+        "lifespan",
+        "lifespan"
+      ],
+      "retrieval_batches": [
+        [
+          "middleware",
+          "middleware",
+          "async_tests",
+          "lifespan",
+          "lifespan"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:middleware]\n这会产生如下执行顺序：\n\n\n请求：MiddlewareB → MiddlewareA → 路由\n\n\n响应：路由 → MiddlewareA → MiddlewareB\n\n\n这种栈式行为确保中间件按可预测且可控的顺序执行。\n其他中间件¶\n你可以稍后在高级用户指南：高级中间件中阅读更多关于其他中间件的内容。\n你将在下一节中了解如何使用中间件处理 CORS。\n\n---\n\n[source_id:middleware]\n创建中间件¶\n要创建中间件，你可以在函数的顶部使用装饰器 @app.middleware(\"http\")。\n中间件函数会接收：\n\nrequest。\n一个函数 call_next，它会把 request 作为参数接收。\n这个函数会把 request 传递给相应的路径操作。\n然后它返回由相应路径操作生成的 response。\n\n\n在返回之前，你可以进一步修改 response。\n\nPython 3.10+\n\n\nimport time\n\nfrom fastapi import FastAPI, Request\n\napp = FastAPI()\n\n\n@app.middleware(\"http\")\nasync def add_process_time_header(request: Request, call_next):\n    start_time = time.perf_counter()\n    response = await call_next(request)\n    process_time = time.perf_counter() - start_time\n    response.headers[\"X-Process-Time\"] = str(process_time)\n    return response\n\n---\n\n[source_id:async_tests]\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n提示\n请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。\n\n\n警告\n如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 florimondmanca/asgi-lifespan 中的 LifespanManager 。\n\n其他异步函数调用¶\n由于测试函数现在是异步的，因此除了在测试中向 FastAPI 应用程序发送请求之外，您现在还可以调用（和使用 await 等待）其他 async 异步函数，就和您在代码中的其他任何地方调用它们的方法一样。\n\n---\n\n[source_id:lifespan]\n你可以定义在应用启动前执行的逻辑（代码）。这意味着在应用开始接收请求之前，这些代码只会被执行一次。\n同样地，你可以定义在应用关闭时应执行的逻辑。在这种情况下，这段代码将在处理可能的多次请求后执行一次。\n因为这段代码在应用开始接收请求之前执行，也会在处理可能的若干请求之后执行，它覆盖了整个应用程序的生命周期（“生命周期”这个词很重要😉）。\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n替代事件（弃用）¶\n\n警告\n配置启动和关闭的推荐方法是使用 FastAPI 应用的 lifespan 参数，如前所示。如果你提供了一个 lifespan 参数，启动（startup）和关闭（shutdown）事件处理器将不再生效。要么使用 lifespan，要么配置所有事件，两者不能共用。\n你可以跳过这一部分。"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3020.5175849999932,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "FastAPI 中间件在一次请求中的执行时机如下：\n\n**请求阶段**：中间件在请求到达路由（路径操作）之前执行。多个中间件按栈式顺序执行，例如：\n\n```\n请求：MiddlewareB → MiddlewareA → 路由\n```\n\n**响应阶段**：路由处理完成后，中间件再按相反顺序执行，可以修改响应：\n\n```\n响应：路由 → MiddlewareA → MiddlewareB\n```\n\n**具体机制**：用 `@app.middleware(\"http\")` 装饰器创建中间件，函数接收 `request` 和一个 `call_next` 函数。`call_next` 会把 request 传给相应的路径操作，并返回该路径操作生成的 response。在返回 response 之前，你可以进一步修改它。\n\n例如添加处理时间头：\n\n```python\nimport time\nfrom fastapi import FastAPI, Request\n\napp = FastAPI()\n\n@app.middleware(\"http\")\nasync def add_process_time_header(request: Request, call_next):\n    start_time = time.perf_counter()\n    response = await call_next(request)\n    process_time = time.perf_counter() - start_time\n    response.headers[\"X-Process-Time\"] = str(process_time)\n    return response\n```\n\n这种栈式行为确保中间件按可预测且可控的顺序执行。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确说明请求前和响应返回前的中间件执行时机。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q012",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "testing",
+        "async_tests",
+        "testing",
+        "async_tests",
+        "testing"
+      ],
+      "retrieval_batches": [
+        [
+          "testing",
+          "async_tests",
+          "testing",
+          "async_tests",
+          "testing"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:testing]\n注意\n要使用 TestClient，先要安装 httpx。\n将它添加到你的项目中：\n$ uv add httpx\n\n\n导入 TestClient。\n通过传入你的FastAPI应用创建一个 TestClient 。\n创建名字以 test_ 开头的函数（这是标准的 pytest 约定）。\n像使用 httpx 那样使用 TestClient 对象。\n为你需要检查的地方用标准的Python表达式写个简单的 assert 语句（重申，标准的pytest）。\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom fastapi.testclient import TestClient\n\napp = FastAPI()\n\n\n@app.get(\"/\")\nasync def read_main():\n    return {\"msg\": \"Hello World\"}\n\n\nclient = TestClient(app)\n\n\ndef test_read_main():\n    response = client.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"msg\": \"Hello World\"}\n\n\n\n\n\n提示\n注意测试函数是普通的 def，不是 async def。\n还有client的调用也是普通的调用，不是用 await。\n这让你可以直接使用 pytest 而不会遇到麻烦。\n\n---\n\n[source_id:async_tests]\nHTTPX¶\n即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。\nTestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由于测试以异步方式运行，我们无法在测试函数中继续使用 TestClient。\nTestClient 是基于 HTTPX 的。幸运的是，我们可以直接使用它来测试 API。\n示例¶\n举个简单的例子，让我们来看一个与更大的应用和测试中描述的类似文件结构：\n.\n├── app\n│   ├── __init__.py\n│   ├── main.py\n│   └── test_main.py\n\n---\n\n[source_id:testing]\n测试¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n感谢 Starlette，测试FastAPI 应用轻松又愉快。\n它基于 HTTPX，而HTTPX又是基于Requests设计的，所以很相似且易懂。\n有了它，你可以直接与FastAPI一起使用 pytest。\n使用 TestClient¶\n\n注意\n要使用 TestClient，先要安装 httpx。\n将它添加到你的项目中：\n$ uv add httpx\n\n---\n\n[source_id:async_tests]\n您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。\n在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的数据库的库。\n让我们看看如何才能实现这一点。\npytest.mark.anyio¶\n如果我们想在测试中调用异步函数，那么我们的测试函数必须是异步的。 AnyIO 为此提供了一个简洁的插件，它允许我们指定一些测试函数要异步调用。\n\n---\n\n[source_id:testing]\n扩展后的测试文件¶\n然后你可以使用扩展后的测试更新test_main.py：\nPython 3.10+\n\n\nfrom fastapi.testclient import TestClient\n\nfrom .main import app\n\nclient = TestClient(app)\n\n\ndef test_read_item():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 200\n    assert response.json() == {\n        \"id\": \"foo\",\n        \"title\": \"Foo\",\n        \"description\": \"There goes my hero\",\n    }\n\n\ndef test_read_item_bad_token():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"hailhydra\"})\n    assert response.status_code == 400\n    assert response.json() == {\"detail\": \"Invalid X-Token header\"}\n\n\ndef test_read_nonexistent_item():\n    response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 404\n    assert response.json() == {\"detail\": \"Item not found\"}"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3255.2809999999963,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "用 `TestClient` 和 `pytest` 测试 FastAPI 接口的步骤如下：\n\n1. 安装 `httpx`（`TestClient` 依赖它）：\n\n```bash\nuv add httpx\n```\n\n2. 导入 `TestClient`，传入你的 FastAPI 应用实例创建客户端。\n3. 写以 `test_` 开头的普通 `def` 函数（pytest 约定），在函数里像用 `httpx` 一样调用客户端，并用 `assert` 断言结果。\n\n示例：\n\n```python\nfrom fastapi import FastAPI\nfrom fastapi.testclient import TestClient\n\napp = FastAPI()\n\n\n@app.get(\"/\")\nasync def read_main():\n    return {\"msg\": \"Hello World\"}\n\n\nclient = TestClient(app)\n\n\ndef test_read_main():\n    response = client.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"msg\": \"Hello World\"}\n```\n\n测试带请求头、错误状态码的接口时，同样直接传 `headers` 并断言：\n\n```python\ndef test_read_item():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 200\n    assert response.json() == {\n        \"id\": \"foo\",\n        \"title\": \"Foo\",\n        \"description\": \"There goes my hero\",\n    }\n\n\ndef test_read_item_bad_token():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"hailhydra\"})\n    assert response.status_code == 400\n    assert response.json() == {\"detail\": \"Invalid X-Token header\"}\n\n\ndef test_read_nonexistent_item():\n    response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 404\n    assert response.json() == {\"detail\": \"Item not found\"}\n```\n\n注意：测试函数是普通的 `def`，不是 `async def`；客户端调用也是普通调用，不用 `await`。这样可以直接用 pytest 而不出问题。\n\n如果确实需要在测试中调用异步函数（例如异步查询数据库），则测试函数必须是异步的，此时不能再用 `TestClient`，而应直接用 HTTPX，并借助 AnyIO 的 `pytest.mark.anyio` 插件来异步运行测试。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "完整覆盖 TestClient、普通测试函数、请求和断言。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q013",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan"
+      ],
+      "retrieval_batches": [
+        [
+          "lifespan",
+          "lifespan",
+          "lifespan",
+          "lifespan",
+          "lifespan"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:lifespan]\nstartup 和 shutdown 一起使用¶\n启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。\n在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。\n因此，推荐使用上面所述的 lifespan。\n技术细节¶\n只是为好奇者提供的技术细节。🤓\n在底层，这部分是 ASGI 技术规范中的 Lifespan 协议的一部分，定义了称为 startup 和 shutdown 的事件。\n\n注意\n你可以在 Starlette 的 Lifespan 文档 中阅读更多关于 lifespan 处理器的内容。\n包括如何处理生命周期状态，以便在代码的其他部分使用。\n\n---\n\n[source_id:lifespan]\n这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。\n用例¶\n让我们从一个示例用例开始，看看如何用它来解决问题。\n假设你有几个机器学习的模型，你想要用它们来处理请求。🤖\n相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。\n假设加载模型可能需要相当长的时间，因为它必须从磁盘读取大量数据。因此你不希望每个请求都加载它。\n\n---\n\n[source_id:lifespan]\n你可以像上面一样创建一个上下文管理器或者异步上下文管理器，它的作用是在进入 with 块时，执行 yield 之前的代码，并且在离开 with 块时，执行 yield 后面的代码。\n但在我们上面的例子里，我们并不是直接使用，而是传递给 FastAPI 来供其使用。\nFastAPI 的 lifespan 参数接受一个异步上下文管理器，所以我们可以把我们新定义的异步上下文管理器 lifespan 传给它。\nPython 3.10+\n\n\nfrom contextlib import asynccontextmanager\n\nfrom fastapi import FastAPI\n\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\n\nml_models = {}\n\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # Load the ML model\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # Clean up the ML models and release the resources\n    ml_models.clear()\n\n\napp = FastAPI(lifespan=lifespan)\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n替代事件（弃用）¶\n\n警告\n配置启动和关闭的推荐方法是使用 FastAPI 应用的 lifespan 参数，如前所示。如果你提供了一个 lifespan 参数，启动（startup）和关闭（shutdown）事件处理器将不再生效。要么使用 lifespan，要么配置所有事件，两者不能共用。\n你可以跳过这一部分。\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n在 Python 中，上下文管理器是一个你可以在 with 语句中使用的东西，例如，open() 可以作为上下文管理器使用。\nwith open(\"file.txt\") as file:\n    file.read()\n\nPython 的最近几个版本也有了一个异步上下文管理器，你可以通过 async with 来使用：\nasync with lifespan(app):\n    await do_stuff()"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3850.1260419999994,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "适合用 lifespan 加载应用共享资源，是因为它把“启动时获取资源、关闭时释放资源”的逻辑放在同一个上下文管理器里，避免在不同函数中用全局变量来共享这些逻辑或值。\n\n具体来说：\n\n- **资源在请求之间共享**：例如数据库连接池，或加载一个共享的机器学习模型。相同模型在请求之间共享，不需要每个请求或每个用户各自加载一份。\n- **加载可能很耗时**：比如模型需要从磁盘读取大量数据，不适合每个请求都加载一次。用 lifespan 可以在应用启动时只加载一次。\n- **启动和关闭逻辑成对出现**：你可能希望“启动某个东西然后结束它”“获取一个资源然后释放它”。lifespan 让你在 `yield` 之前执行启动逻辑，在 `yield` 之后执行清理逻辑。\n- **避免全局变量**：如果把这些逻辑分散在不同函数中，就需要用全局变量存值，比较困难；lifespan 提供了更集中的方式。\n\n示例：\n\n```python\nfrom contextlib import asynccontextmanager\nfrom fastapi import FastAPI\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\nml_models = {}\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # 启动时加载 ML 模型\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # 关闭时清理模型并释放资源\n    ml_models.clear()\n\napp = FastAPI(lifespan=lifespan)\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n```\n\n注意：如果提供了 `lifespan` 参数，`startup` 和 `shutdown` 事件处理器将不再生效，两者不能共用。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确说明 lifespan 中的加载、共享与清理。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q014",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "async_tests",
+        "async_tests",
+        "async_tests",
+        "async_tests",
+        "testing"
+      ],
+      "retrieval_batches": [
+        [
+          "async_tests",
+          "async_tests",
+          "async_tests",
+          "async_tests",
+          "testing"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:async_tests]\nHTTPX¶\n即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。\nTestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由于测试以异步方式运行，我们无法在测试函数中继续使用 TestClient。\nTestClient 是基于 HTTPX 的。幸运的是，我们可以直接使用它来测试 API。\n示例¶\n举个简单的例子，让我们来看一个与更大的应用和测试中描述的类似文件结构：\n.\n├── app\n│   ├── __init__.py\n│   ├── main.py\n│   └── test_main.py\n\n---\n\n[source_id:async_tests]\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n\n\n\n\n\n提示\n请注意，测试函数现在用的是 async def，而不是像以前使用 TestClient 时那样只是 def 。\n\n我们现在可以使用应用程序创建一个 AsyncClient ，并使用 await 向其发送异步请求。\nPython 3.10+\n\n\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n\n\n\n\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n---\n\n[source_id:async_tests]\n您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。\n在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的数据库的库。\n让我们看看如何才能实现这一点。\npytest.mark.anyio¶\n如果我们想在测试中调用异步函数，那么我们的测试函数必须是异步的。 AnyIO 为此提供了一个简洁的插件，它允许我们指定一些测试函数要异步调用。\n\n---\n\n[source_id:async_tests]\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n提示\n请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。\n\n\n警告\n如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 florimondmanca/asgi-lifespan 中的 LifespanManager 。\n\n其他异步函数调用¶\n由于测试函数现在是异步的，因此除了在测试中向 FastAPI 应用程序发送请求之外，您现在还可以调用（和使用 await 等待）其他 async 异步函数，就和您在代码中的其他任何地方调用它们的方法一样。\n\n---\n\n[source_id:testing]\n注意\n要使用 TestClient，先要安装 httpx。\n将它添加到你的项目中：\n$ uv add httpx\n\n\n导入 TestClient。\n通过传入你的FastAPI应用创建一个 TestClient 。\n创建名字以 test_ 开头的函数（这是标准的 pytest 约定）。\n像使用 httpx 那样使用 TestClient 对象。\n为你需要检查的地方用标准的Python表达式写个简单的 assert 语句（重申，标准的pytest）。\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom fastapi.testclient import TestClient\n\napp = FastAPI()\n\n\n@app.get(\"/\")\nasync def read_main():\n    return {\"msg\": \"Hello World\"}\n\n\nclient = TestClient(app)\n\n\ndef test_read_main():\n    response = client.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"msg\": \"Hello World\"}\n\n\n\n\n\n提示\n注意测试函数是普通的 def，不是 async def。\n还有client的调用也是普通的调用，不是用 await。\n这让你可以直接使用 pytest 而不会遇到麻烦。"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 4229.356875999997,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "异步测试 FastAPI 应用时常用 HTTPX `AsyncClient`，原因如下：\n\n1. **`TestClient` 的“魔法”在异步测试中失效**\n   `TestClient` 内部通过一些“魔法”操作，让你可以在普通的 `def` 测试函数中调用异步的 FastAPI 应用。但当测试函数本身是 `async def`、以异步方式运行时，这种“魔法”就不再生效，无法继续在测试函数中使用 `TestClient`。\n\n2. **`TestClient` 本身就是基于 HTTPX 的**\n   既然 `TestClient` 基于 HTTPX，就可以直接使用 HTTPX 来测试 API。\n\n3. **`AsyncClient` 支持异步请求**\n   用应用创建 `AsyncClient` 后，可以用 `await` 向其发送异步请求，测试函数也写成 `async def`。这相当于以前用 `TestClient` 时的 `response = client.get('/')`，只是变成了异步方式。\n\n4. **便于在测试中调用其他异步函数**\n   测试函数变成异步后，除了向 FastAPI 应用发请求，还可以调用并 `await` 其他异步函数，比如异步查询数据库，从而验证后端是否成功写入了正确的数据。\n\n示例：\n\n```python\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n```\n\n注意：如果应用依赖生命周期事件，`AsyncClient` 不会触发这些事件；要确保它们被触发，可使用 `florimondmanca/asgi-lifespan` 中的 `LifespanManager`。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确说明 AsyncClient、ASGITransport 和 await。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q015",
+      "difficulty": "normal",
+      "retrieved_ids": [
+        "sse",
+        "sse",
+        "sse",
+        "handling_errors",
+        "first_steps"
+      ],
+      "retrieval_batches": [
+        [
+          "sse",
+          "sse",
+          "sse",
+          "handling_errors",
+          "first_steps"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:sse]\ndata: {\"name\": \"Plumbus\", \"price\": 32.99}\n\nSSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。\n\n提示\n如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。\n\n使用 FastAPI 流式传输 SSE¶\n要在 FastAPI 中流式传输 SSE，在你的路径操作函数中使用 yield，并设置 response_class=EventSourceResponse。\n从 fastapi.sse 导入 EventSourceResponse：\nPython 3.10+\n\n\nfrom collections.abc import AsyncIterable, Iterable\n\nfrom fastapi import FastAPI\nfrom fastapi.sse import EventSourceResponse\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None\n\n\nitems = [\n    Item(name=\"Plumbus\", description=\"A multi-purpose household device.\"),\n    Item(name=\"Portal Gun\", description=\"A portal opening device.\"),\n    Item(name=\"Meeseeks Box\", description=\"A box that summons a Meeseeks.\"),\n]\n\n---\n\n[source_id:sse]\n服务器发送事件（SSE）¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n你可以使用服务器发送事件（SSE）向客户端流式发送数据。\n这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原生通过 EventSource API 支持。\n\n注意\n新增于 FastAPI 0.135.0。\n\n什么是服务器发送事件？¶\nSSE 是一种通过 HTTP 从服务器向客户端流式传输数据的标准。\n每个事件是一个带有 data、event、id 和 retry 等“字段”的小文本块，以空行分隔。\n看起来像这样：\ndata: {\"name\": \"Portal Gun\", \"price\": 999.99}\n\n---\n\n[source_id:sse]\n技术细节¶\nFastAPI 开箱即用地实现了一些 SSE 的最佳实践。\n\n当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。\n设置 Cache-Control: no-cache 响应头，防止缓存流。\n设置特殊响应头 X-Accel-Buffering: no，以防止某些代理（如 Nginx）缓冲。\n\n你无需做任何事，它开箱即用。🤓\n\n---\n\n[source_id:handling_errors]\n遇到这些情况时，通常要返回 400 范围内（400 至 499）的 HTTP 状态码。\n这与 200 HTTP 状态码（200 至 299）类似。那些“200”状态码表示请求在某种程度上“成功”。\n而 400 范围内的状态码表示客户端发生了错误。\n大家都知道「404 Not Found」错误，还有调侃这个错误的笑话吧？\n使用 HTTPException¶\n向客户端返回 HTTP 错误响应，可以使用 HTTPException。\n导入 HTTPException¶\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: str):\n    if item_id not in items:\n        raise HTTPException(status_code=404, detail=\"Item not found\")\n    return {\"item\": items[item_id]}\n\n---\n\n[source_id:first_steps]\nPOST\nGET\nPUT\nDELETE\n\n...以及更少见的几种：\n\nOPTIONS\nHEAD\nPATCH\nTRACE\n\n在 HTTP 协议中，你可以使用以上的其中一种（或多种）「方法」与每个路径进行通信。\n\n在开发 API 时，你通常使用特定的 HTTP 方法去执行特定的行为。\n通常使用：\n\nPOST：创建数据。\nGET：读取数据。\nPUT：更新数据。\nDELETE：删除数据。\n\n因此，在 OpenAPI 中，每一个 HTTP 方法都被称为「操作」。\n我们也打算称呼它们为「操作」。\n定义一个路径操作装饰器¶\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello World\"}\n\n\n\n\n@app.get(\"/\") 告诉 FastAPI 在它下方的函数负责处理如下访问请求：\n\n请求路径为 /\n使用 get 操作"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 3310.6735830000107,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "在 FastAPI 中返回 SSE，需要在路径操作函数中使用 `yield`，并设置 `response_class=EventSourceResponse`（从 `fastapi.sse` 导入）。该功能新增于 FastAPI 0.135.0。\n\n```python\nfrom collections.abc import AsyncIterable, Iterable\n\nfrom fastapi import FastAPI\nfrom fastapi.sse import EventSourceResponse\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None\n\n\nitems = [\n    Item(name=\"Plumbus\", description=\"A multi-purpose household device.\"),\n    Item(name=\"Portal Gun\", description=\"A portal opening device.\"),\n    Item(name=\"Meeseeks Box\", description=\"A box that summons a Meeseeks.\"),\n]\n\n\n@app.get(\"/items\", response_class=EventSourceResponse)\nasync def stream_items() -> AsyncIterable[Item]:\n    for item in items:\n        yield item\n```\n\n要点：\n\n- SSE 使用 `text/event-stream` 格式，浏览器原生通过 `EventSource` API 支持；每个事件是带有 `data`、`event`、`id`、`retry` 等字段的小文本块，以空行分隔，例如 `data: {\"name\": \"Plumbus\", \"price\": 32.99}`。\n- FastAPI 开箱即用地实现了 SSE 最佳实践：15 秒无消息时发送保活 ping 注释、设置 `Cache-Control: no-cache` 响应头、设置 `X-Accel-Buffering: no` 以防止 Nginx 等代理缓冲，无需额外配置。\n- 若要流式传输二进制数据（如视频或音频），应参考高级指南中的流式传输数据方案，而非 SSE。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确展示 EventSourceResponse 与持续产生 SSE 事件。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q016",
+      "difficulty": "ambiguous",
+      "retrieved_ids": [
+        "query_params",
+        "query_params",
+        "handling_errors",
+        "security_first_steps",
+        "request_body",
+        "query_params",
+        "response_model",
+        "request_body",
+        "response_model",
+        "query_params"
+      ],
+      "retrieval_batches": [
+        [
+          "query_params",
+          "query_params",
+          "handling_errors",
+          "security_first_steps",
+          "request_body"
+        ],
+        [
+          "query_params",
+          "response_model",
+          "request_body",
+          "response_model",
+          "query_params"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:query_params]\n...因为路径中没有必选参数 needy，返回的响应中会显示如下错误信息：\n{\n  \"detail\": [\n    {\n      \"type\": \"missing\",\n      \"loc\": [\n        \"query\",\n        \"needy\"\n      ],\n      \"msg\": \"Field required\",\n      \"input\": null\n    }\n  ]\n}\n\nneedy 是必选参数，因此要在 URL 中设置值：\nhttp://127.0.0.1:8000/items/foo-item?needy=sooooneedy\n\n...这样就正常了：\n{\n    \"item_id\": \"foo-item\",\n    \"needy\": \"sooooneedy\"\n}\n\n当然，把一些参数定义为必选，为另一些参数设置默认值，再把其它参数定义为可选，这些操作都是可以的：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(\n    item_id: str, needy: str, skip: int = 0, limit: int | None = None\n):\n    item = {\"item_id\": item_id, \"needy\": needy, \"skip\": skip, \"limit\": limit}\n    return item\n\n---\n\n[source_id:query_params]\n必选查询参数¶\n为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。\n如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。\n如果要把查询参数设置为必选，就不要声明默认值：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(item_id: str, needy: str):\n    item = {\"item_id\": item_id, \"needy\": needy}\n    return item\n\n\n\n\n这里的查询参数 needy 是类型为 str 的必选查询参数。\n在浏览器中打开如下 URL：\nhttp://127.0.0.1:8000/items/foo-item\n\n---\n\n[source_id:handling_errors]\n将得到如下文本内容：\nValidation errors:\nField: ('path', 'item_id'), Error: Input should be a valid integer, unable to parse string as an integer\n\n覆盖 HTTPException 错误处理器¶\n同理，也可以覆盖 HTTPException 的处理器。\n例如，只为这些错误返回纯文本响应，而不是 JSON：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\nfrom fastapi.exceptions import RequestValidationError\nfrom fastapi.responses import PlainTextResponse\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n\napp = FastAPI()\n\n\n@app.exception_handler(StarletteHTTPException)\nasync def http_exception_handler(request, exc):\n    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)\n\n\n@app.exception_handler(RequestValidationError)\nasync def validation_exception_handler(request, exc: RequestValidationError):\n    message = \"Validation errors:\"\n    for error in exc.errors():\n        message += f\"\\nField: {error['loc']}, Error: {error['msg']}\"\n    return PlainTextResponse(message, status_code=400)\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: int):\n    if item_id == 3:\n        raise HTTPException(status_code=418, detail=\"Nope! I don't like 3.\")\n    return {\"item_id\": item_id}\n\n---\n\n[source_id:security_first_steps]\n它做了什么¶\n它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。\n如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。\n你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定会拿到一个 str 类型的令牌。\n你已经可以在交互式文档中试试了：\n\n我们还没有验证令牌是否有效，但这已经是一个良好的开端。\n小结¶\n只需增加三四行代码，你就已经拥有了一种初步的安全机制。\n\n---\n\n[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。",
+        "[source_id:query_params]\n必选查询参数¶\n为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。\n如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。\n如果要把查询参数设置为必选，就不要声明默认值：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(item_id: str, needy: str):\n    item = {\"item_id\": item_id, \"needy\": needy}\n    return item\n\n\n\n\n这里的查询参数 needy 是类型为 str 的必选查询参数。\n在浏览器中打开如下 URL：\nhttp://127.0.0.1:8000/items/foo-item\n\n---\n\n[source_id:response_model]\n@app.get(\"/items/{item_id}\", response_model=Item, response_model_exclude_unset=True)\nasync def read_item(item_id: str):\n    return items[item_id]\n\n\n\n\n\ndescription: Union[str, None] = None（或在 Python 3.10 中的 str | None = None）默认值为 None。\ntax: float = 10.5 默认值为 10.5。\ntags: List[str] = [] 默认值为一个空列表：[]。\n\n但如果它们并没有被实际存储，你可能希望在结果中省略这些默认值。\n例如，当你在 NoSQL 数据库中保存了具有许多可选属性的模型，但又不想发送充满默认值的冗长 JSON 响应。\n使用 response_model_exclude_unset 参数¶\n你可以设置路径操作装饰器参数 response_model_exclude_unset=True：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float = 10.5\n    tags: list[str] = []\n\n---\n\n[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。\n\n---\n\n[source_id:response_model]\nresponse_model_exclude_defaults=True\nresponse_model_exclude_none=True\n\n详见 Pydantic 文档中对 exclude_defaults 和 exclude_none 的说明。\n\n默认字段有实际值的数据¶\n但是，如果你的数据在具有默认值的模型字段中有实际的值，例如 ID 为 bar 的项：\n{\n    \"name\": \"Bar\",\n    \"description\": \"The bartenders\",\n    \"price\": 62,\n    \"tax\": 20.2\n}\n\n这些值将包含在响应中。\n具有与默认值相同值的数据¶\n如果数据具有与默认值相同的值，例如 ID 为 baz 的项：\n{\n    \"name\": \"Baz\",\n    \"description\": None,\n    \"price\": 50.2,\n    \"tax\": 10.5,\n    \"tags\": []\n}\n\n---\n\n[source_id:query_params]\n...因为路径中没有必选参数 needy，返回的响应中会显示如下错误信息：\n{\n  \"detail\": [\n    {\n      \"type\": \"missing\",\n      \"loc\": [\n        \"query\",\n        \"needy\"\n      ],\n      \"msg\": \"Field required\",\n      \"input\": null\n    }\n  ]\n}\n\nneedy 是必选参数，因此要在 URL 中设置值：\nhttp://127.0.0.1:8000/items/foo-item?needy=sooooneedy\n\n...这样就正常了：\n{\n    \"item_id\": \"foo-item\",\n    \"needy\": \"sooooneedy\"\n}\n\n当然，把一些参数定义为必选，为另一些参数设置默认值，再把其它参数定义为可选，这些操作都是可以的：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(\n    item_id: str, needy: str, skip: int = 0, limit: int | None = None\n):\n    item = {\"item_id\": item_id, \"needy\": needy, \"skip\": skip, \"limit\": limit}\n    return item"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 4703.588169,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "接口参数没传时，结果取决于该参数是**必选**还是**可选**：\n\n## 必选参数没传\n\n如果参数没有声明默认值，它就是必选参数。没传时 FastAPI 会返回校验错误（HTTP 422），响应体类似：\n\n```json\n{\n  \"detail\": [\n    {\n      \"type\": \"missing\",\n      \"loc\": [\"query\", \"needy\"],\n      \"msg\": \"Field required\",\n      \"input\": null\n    }\n  ]\n}\n```\n\n例如 `needy: str` 没有默认值，访问 `http://127.0.0.1:8000/items/foo-item` 就会报上面的错；必须带上值才行：\n\n```\nhttp://127.0.0.1:8000/items/foo-item?needy=sooooneedy\n```\n\n## 可选参数没传\n\n如果参数声明了默认值，它就不是必选的，没传时会使用默认值：\n\n```python\n@app.get(\"/items/{item_id}\")\nasync def read_user_item(\n    item_id: str, needy: str, skip: int = 0, limit: int | None = None\n):\n    item = {\"item_id\": item_id, \"needy\": needy, \"skip\": skip, \"limit\": limit}\n    return item\n```\n\n这里 `skip` 没传时为 `0`，`limit` 没传时为 `None`。\n\n## 判断规则\n\n- **是否必填由是否有默认值决定**，而不是由类型注解决定。`str | None` 本身并不代表可选，只有写成 `str | None = None`（即默认值为 `None`）才是可选。\n- 参数类型识别规则：在路径中声明的就是路径参数；单一类型（`int`、`float`、`str`、`bool` 等）会被当作查询参数；声明为 Pydantic 模型的会被当作请求体。\n\n## 自定义错误响应\n\n默认返回 JSON 错误，你也可以覆盖 `RequestValidationError` 处理器，改成纯文本等格式：\n\n```python\n@app.exception_handler(RequestValidationError)\nasync def validation_exception_handler(request, exc: RequestValidationError):\n    message = \"Validation errors:\"\n    for error in exc.errors():\n        message += f\"\\nField: {error['loc']}, Error: {error['msg']}\"\n    return PlainTextResponse(message, status_code=400)\n```\n\n这样错误会显示为：\n\n```\nValidation errors:\nField: ('path', 'item_id'), Error: Input should be a valid integer, unable to parse string as an integer\n```",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确区分缺少必填参数和使用可选参数默认值。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q017",
+      "difficulty": "ambiguous",
+      "retrieved_ids": [
+        "middleware",
+        "middleware",
+        "middleware",
+        "security_first_steps",
+        "security_first_steps",
+        "global_dependencies",
+        "dependencies",
+        "dependencies",
+        "dependencies",
+        "dependencies"
+      ],
+      "retrieval_batches": [
+        [
+          "middleware",
+          "middleware",
+          "middleware",
+          "security_first_steps",
+          "security_first_steps"
+        ],
+        [
+          "global_dependencies",
+          "dependencies",
+          "dependencies",
+          "dependencies",
+          "dependencies"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:middleware]\n这会产生如下执行顺序：\n\n\n请求：MiddlewareB → MiddlewareA → 路由\n\n\n响应：路由 → MiddlewareA → MiddlewareB\n\n\n这种栈式行为确保中间件按可预测且可控的顺序执行。\n其他中间件¶\n你可以稍后在高级用户指南：高级中间件中阅读更多关于其他中间件的内容。\n你将在下一节中了解如何使用中间件处理 CORS。\n\n---\n\n[source_id:middleware]\n创建中间件¶\n要创建中间件，你可以在函数的顶部使用装饰器 @app.middleware(\"http\")。\n中间件函数会接收：\n\nrequest。\n一个函数 call_next，它会把 request 作为参数接收。\n这个函数会把 request 传递给相应的路径操作。\n然后它返回由相应路径操作生成的 response。\n\n\n在返回之前，你可以进一步修改 response。\n\nPython 3.10+\n\n\nimport time\n\nfrom fastapi import FastAPI, Request\n\napp = FastAPI()\n\n\n@app.middleware(\"http\")\nasync def add_process_time_header(request: Request, call_next):\n    start_time = time.perf_counter()\n    response = await call_next(request)\n    process_time = time.perf_counter() - start_time\n    response.headers[\"X-Process-Time\"] = str(process_time)\n    return response\n\n---\n\n[source_id:middleware]\n中间件¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n你可以向 FastAPI 应用添加中间件。\n“中间件”是一个函数，它会在每个特定的路径操作处理每个请求之前运行，也会在返回每个响应之前运行。\n\n---\n\n[source_id:security_first_steps]\n假设你的后端 API 位于某个域名下。\n而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。\n你希望前端能通过username 和 password 与后端进行身份验证。\n我们可以用 OAuth2 在 FastAPI 中实现它。\n但为了节省你的时间，不必为获取少量信息而通读冗长的规范。\n我们直接使用 FastAPI 提供的安全工具。\n效果预览¶\n先直接运行代码看看效果，之后再回过头理解其背后的原理。\n创建 main.py¶\n把下面的示例代码复制到 main.py：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\n@app.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n\n---\n\n[source_id:security_first_steps]\n这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。\n我们很快也会创建对应的实际路径操作。\n\n注意\n如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。\n这是因为它使用了与 OpenAPI 规范中相同的名称。这样当你需要深入了解这些安全方案时，可以直接复制粘贴去查找更多信息。\n\noauth2_scheme 变量是 OAuth2PasswordBearer 的一个实例，同时它也是“可调用”的。\n可以像这样调用：\noauth2_scheme(some, parameters)",
+        "[source_id:global_dependencies]\n全局依赖项¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n有时，我们要为整个应用添加依赖项。\n通过与将 dependencies 添加到路径操作装饰器 类似的方式，可以把依赖项添加至整个 FastAPI 应用。\n这样一来，就可以为所有路径操作应用该依赖项：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI, Header, HTTPException\n\n\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n---\n\n[source_id:dependencies]\n@app.get(\"/users/\")\nasync def read_users(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n@app.get(\"/users/\")\nasync def read_users(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n\n\n\n在“dependant”中声明依赖项¶\n与在路径操作函数的参数中使用 Body、Query 等相同，给参数使用 Depends 来声明一个新的依赖项：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n---\n\n[source_id:dependencies]\n这些依赖会照常工作，而最棒的是，类型信息会被保留，这意味着你的编辑器依然能提供自动补全、行内报错等。同样适用于 mypy 等其他工具。\n当你在大型代码库中，在很多路径操作里反复使用相同的依赖时，这会特别有用。\n要不要使用 async？¶\n由于依赖项也会由 FastAPI 调用（与路径操作函数相同），因此定义函数时同样的规则也适用。\n你可以使用 async def 或普通的 def。\n你可以在普通的 def 路径操作函数中声明 async def 的依赖项；也可以在异步的 async def 路径操作函数中声明普通的 def 依赖项，等等。\n都没关系，FastAPI 知道该怎么处理。\n\n---\n\n[source_id:dependencies]\n资源（resources）\n提供方（providers）\n服务（services）\n可注入（injectables）\n组件（components）\n\nFastAPI 插件¶\n可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。\n依赖项可以用非常简单直观的方式创建，你只需导入所需的 Python 包，用字面意义上的几行代码就能把它们与你的 API 函数集成起来。\n在接下来的章节中，你会看到关于关系型数据库、NoSQL 数据库、安全等方面的示例。\nFastAPI 兼容性¶\n依赖注入系统的简洁让 FastAPI 能与以下内容兼容：\n\n---\n\n[source_id:dependencies]\n@app.get(\"/items/\")\nasync def read_items(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n\n@app.get(\"/users/\")\nasync def read_users(commons: Annotated[dict, Depends(common_parameters)]):\n    return commons\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi import Depends, FastAPI\n\napp = FastAPI()\n\n\nasync def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):\n    return {\"q\": q, \"skip\": skip, \"limit\": limit}\n\n\n@app.get(\"/items/\")\nasync def read_items(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n@app.get(\"/users/\")\nasync def read_users(commons: dict = Depends(common_parameters)):\n    return commons\n\n\n\n\n\n大功告成。\n2 行。\n它的形式和结构与所有路径操作函数相同。\n你可以把它当作没有“装饰器”（没有 @app.get(\"/some-path\")）的路径操作函数。\n而且它可以返回任何你想要的内容。\n本例中的依赖项预期接收："
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 4875.814169000023,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "应该放在**中间件（middleware）**里，而不是逐个接口加依赖项。\n\n## 为什么用中间件\n\n中间件是一个函数，它会在**每个请求**被路径操作处理之前运行，也会在**每个响应**返回之前运行。这正好符合“给所有接口统一加一项检查”的需求。\n\n## 写法\n\n用 `@app.middleware(\"http\")` 装饰器定义：\n\n```python\nimport time\n\nfrom fastapi import FastAPI, Request\n\napp = FastAPI()\n\n\n@app.middleware(\"http\")\nasync def add_process_time_header(request: Request, call_next):\n    start_time = time.perf_counter()\n    response = await call_next(request)\n    process_time = time.perf_counter() - start_time\n    response.headers[\"X-Process-Time\"] = str(process_time)\n    return response\n```\n\n中间件函数接收：\n\n- `request`\n- 一个 `call_next` 函数，它接收 `request` 作为参数，把请求传递给相应的路径操作，并返回该路径操作生成的 `response`\n\n在返回之前，你可以进一步修改 `response`。\n\n## 执行顺序\n\n多个中间件时是栈式行为：\n\n- 请求：MiddlewareB → MiddlewareA → 路由\n- 响应：路由 → MiddlewareA → MiddlewareB\n\n这种栈式行为确保中间件按可预测且可控的顺序执行。\n\n## 补充说明\n\n如果你只是想给**所有路径操作**加依赖项（而不是拦截每个请求/响应），也可以用全局依赖项：把 `dependencies` 添加到整个 FastAPI 应用，这样会应用到所有路径操作。但“统一检查”通常指请求级别的拦截，用中间件更合适。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "覆盖中间件与全局依赖两种范围，并已调用本地检索。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q018",
+      "difficulty": "ambiguous",
+      "retrieved_ids": [
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model"
+      ],
+      "retrieval_batches": [
+        [
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model"
+        ],
+        [
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:response_model]\nresponse_model_exclude_defaults=True\nresponse_model_exclude_none=True\n\n详见 Pydantic 文档中对 exclude_defaults 和 exclude_none 的说明。\n\n默认字段有实际值的数据¶\n但是，如果你的数据在具有默认值的模型字段中有实际的值，例如 ID 为 bar 的项：\n{\n    \"name\": \"Bar\",\n    \"description\": \"The bartenders\",\n    \"price\": 62,\n    \"tax\": 20.2\n}\n\n这些值将包含在响应中。\n具有与默认值相同值的数据¶\n如果数据具有与默认值相同的值，例如 ID 为 baz 的项：\n{\n    \"name\": \"Baz\",\n    \"description\": None,\n    \"price\": 50.2,\n    \"tax\": 10.5,\n    \"tags\": []\n}\n\n---\n\n[source_id:response_model]\n提示\n但仍然推荐使用上面的思路，使用多个类，而不是这些参数。\n因为即使你使用 response_model_include 或 response_model_exclude 省略了一些属性，你的应用在 OpenAPI（和文档）中生成的 JSON Schema 仍然会是完整模型。\n这同样适用于类似的 response_model_by_alias。\n\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float = 10.5\n\n\nitems = {\n    \"foo\": {\"name\": \"Foo\", \"price\": 50.2},\n    \"bar\": {\"name\": \"Bar\", \"description\": \"The Bar fighters\", \"price\": 62, \"tax\": 20.2},\n    \"baz\": {\n        \"name\": \"Baz\",\n        \"description\": \"There goes my baz\",\n        \"price\": 50.2,\n        \"tax\": 10.5,\n    },\n}\n\n\n@app.get(\n    \"/items/{item_id}/name\",\n    response_model=Item,\n    response_model_include={\"name\", \"description\"},\n)\nasync def read_item_name(item_id: str):\n    return items[item_id]\n\n---\n\n[source_id:response_model]\nresponse_model 的优先级¶\n如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。\n这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验、文档等。\n你也可以使用 response_model=None 来禁用该路径操作的响应模型生成；当你为一些不是有效 Pydantic 字段的东西添加类型注解时，可能需要这样做，下面的章节会有示例。\n返回与输入相同的数据¶\n这里我们声明一个 UserIn 模型，它包含一个明文密码：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel, EmailStr\n\napp = FastAPI()\n\n---\n\n[source_id:response_model]\n我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。\n在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。\n不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。\n在这些场景里，我们可以使用类和继承，既利用函数的类型注解获取更好的编辑器和工具支持，又能获得 FastAPI 的数据过滤。\nPython 3.10+\n\n---\n\n[source_id:response_model]\nresponse_model 参数¶\n在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。\n例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。\n如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例如 dict）与声明的类型（例如一个 Pydantic 模型）不同。\n在这些情况下，你可以使用路径操作装饰器参数 response_model，而不是返回类型。\n你可以在任意路径操作中使用 response_model 参数：",
+        "[source_id:response_model]\nresponse_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。\nFastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。\n\n提示\n如果你的编辑器、mypy 等进行严格类型检查，你可以将函数返回类型声明为 Any。\n这样你告诉编辑器你是有意返回任意类型。但 FastAPI 仍会使用 response_model 做数据文档、校验、过滤等工作。\n\n---\n\n[source_id:response_model]\n因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。\nresponse_model 还是返回类型¶\n在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。\n这就是为什么在这个例子里我们必须在 response_model 参数中声明它。\n...但继续往下读，看看如何更好地处理这种情况。\n返回类型与数据过滤¶\n延续上一个例子。我们希望用一种类型来注解函数，但希望从函数返回的内容实际上可以包含更多数据。\n\n---\n\n[source_id:response_model]\n我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。\n在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。\n不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。\n在这些场景里，我们可以使用类和继承，既利用函数的类型注解获取更好的编辑器和工具支持，又能获得 FastAPI 的数据过滤。\nPython 3.10+\n\n---\n\n[source_id:response_model]\nresponse_model 的优先级¶\n如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。\n这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验、文档等。\n你也可以使用 response_model=None 来禁用该路径操作的响应模型生成；当你为一些不是有效 Pydantic 字段的东西添加类型注解时，可能需要这样做，下面的章节会有示例。\n返回与输入相同的数据¶\n这里我们声明一个 UserIn 模型，它包含一个明文密码：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel, EmailStr\n\napp = FastAPI()\n\n---\n\n[source_id:response_model]\nresponse_model 参数¶\n在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。\n例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。\n如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例如 dict）与声明的类型（例如一个 Pydantic 模型）不同。\n在这些情况下，你可以使用路径操作装饰器参数 response_model，而不是返回类型。\n你可以在任意路径操作中使用 response_model 参数："
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 6151.982253,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "在 FastAPI 中，用路径操作的 `response_model` 参数来限制返回字段。FastAPI 会用该模型对输出做校验和过滤，**输出模型中未声明的字段会被过滤掉**，即使函数实际返回了更多数据。\n\n```python\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass UserIn(BaseModel):\n    username: str\n    password: str\n    email: str\n\n\nclass UserOut(BaseModel):\n    username: str\n    email: str\n\n\n@app.post(\"/user/\", response_model=UserOut)\nasync def create_user(user: UserIn):\n    # 这里可以返回包含 password 的完整数据\n    return user\n```\n\n要点：\n\n- `response_model` 接收的类型与 Pydantic 模型字段类型相同，也可以是 `List[Item]` 这类模型列表。\n- 如果同时声明了返回类型注解和 `response_model`，**`response_model` 优先**，由 FastAPI 用于校验、文档和过滤。\n- 若返回类型与 `response_model` 不同，编辑器/mypy 可能报错，此时可把函数返回类型注解为 `Any`，或使用类继承（让输出模型继承输入模型并去掉敏感字段）。\n- 也可以用 `response_model_include` / `response_model_exclude` 等参数省略属性，但文档推荐用多个类（如上面的 `UserIn` / `UserOut`），因为即使省略了属性，OpenAPI 中生成的 JSON Schema 仍是完整模型。\n- 若需要禁用响应模型生成，可用 `response_model=None`。\n\n另外，`response_model_exclude_defaults=True` 和 `response_model_exclude_none=True` 可分别排除等于默认值的字段和值为 `None` 的字段；但如果字段有实际值（即使该值恰好等于默认值），仍会包含在响应中。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确使用 response_model 过滤敏感字段，并由本地检索资料支持。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q019",
+      "difficulty": "ambiguous",
+      "retrieved_ids": [
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "lifespan"
+      ],
+      "retrieval_batches": [
+        [
+          "lifespan",
+          "lifespan",
+          "lifespan",
+          "lifespan",
+          "lifespan"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:lifespan]\n你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。\n这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。\nLifespan¶\n你可以使用 FastAPI 应用的 lifespan 参数和一个“上下文管理器”（稍后我将为你展示）来定义启动和关闭的逻辑。\n让我们从一个例子开始，然后详细介绍。\n我们使用 yield 创建了一个异步函数 lifespan() 像这样：\nPython 3.10+\n\n---\n\n[source_id:lifespan]\n你可以定义在应用启动前执行的逻辑（代码）。这意味着在应用开始接收请求之前，这些代码只会被执行一次。\n同样地，你可以定义在应用关闭时应执行的逻辑。在这种情况下，这段代码将在处理可能的多次请求后执行一次。\n因为这段代码在应用开始接收请求之前执行，也会在处理可能的若干请求之后执行，它覆盖了整个应用程序的生命周期（“生命周期”这个词很重要😉）。\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n替代事件（弃用）¶\n\n警告\n配置启动和关闭的推荐方法是使用 FastAPI 应用的 lifespan 参数，如前所示。如果你提供了一个 lifespan 参数，启动（startup）和关闭（shutdown）事件处理器将不再生效。要么使用 lifespan，要么配置所有事件，两者不能共用。\n你可以跳过这一部分。\n\n---\n\n[source_id:lifespan]\nstartup 和 shutdown 一起使用¶\n启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。\n在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。\n因此，推荐使用上面所述的 lifespan。\n技术细节¶\n只是为好奇者提供的技术细节。🤓\n在底层，这部分是 ASGI 技术规范中的 Lifespan 协议的一部分，定义了称为 startup 和 shutdown 的事件。\n\n注意\n你可以在 Starlette 的 Lifespan 文档 中阅读更多关于 lifespan 处理器的内容。\n包括如何处理生命周期状态，以便在代码的其他部分使用。\n\n---\n\n[source_id:lifespan]\n你可以像上面一样创建一个上下文管理器或者异步上下文管理器，它的作用是在进入 with 块时，执行 yield 之前的代码，并且在离开 with 块时，执行 yield 后面的代码。\n但在我们上面的例子里，我们并不是直接使用，而是传递给 FastAPI 来供其使用。\nFastAPI 的 lifespan 参数接受一个异步上下文管理器，所以我们可以把我们新定义的异步上下文管理器 lifespan 传给它。\nPython 3.10+\n\n\nfrom contextlib import asynccontextmanager\n\nfrom fastapi import FastAPI\n\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\n\nml_models = {}\n\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # Load the ML model\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # Clean up the ML models and release the resources\n    ml_models.clear()\n\n\napp = FastAPI(lifespan=lifespan)"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 4372.985585999999,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "应该放在 FastAPI 应用的 **lifespan** 逻辑里（即传给 `FastAPI(lifespan=...)` 的异步上下文管理器中，`yield` 之前的部分）。\n\n这样模型只会在应用开始接收请求之前加载一次，而不是在模块/文件被导入时就加载——后者会导致即使只跑一个简单测试也要等模型加载完成，拖慢测试。\n\n示例：\n\n```python\nfrom contextlib import asynccontextmanager\n\nfrom fastapi import FastAPI\n\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\n\nml_models = {}\n\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # 启动前：加载大模型\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # 关闭时：清理模型、释放资源\n    ml_models.clear()\n\n\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n```\n\n要点：\n\n- `yield` 之前的代码在应用启动、开始接收请求前执行一次；`yield` 之后的代码在应用关闭时执行一次。\n- 加载好的模型可以放在全局变量（如 `ml_models`）中，供各路由使用。\n- 推荐用 lifespan，而不是已弃用的 `startup`/`shutdown` 事件处理器；如果提供了 `lifespan` 参数，`startup` 和 `shutdown` 事件处理器将不再生效，两者不能共用。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确说明 lifespan 中加载与释放共享模型。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q020",
+      "difficulty": "ambiguous",
+      "retrieved_ids": [
+        "async_tests",
+        "async_tests",
+        "async_tests",
+        "sse",
+        "testing"
+      ],
+      "retrieval_batches": [
+        [
+          "async_tests",
+          "async_tests",
+          "async_tests",
+          "sse",
+          "testing"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:async_tests]\nHTTPX¶\n即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。\nTestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由于测试以异步方式运行，我们无法在测试函数中继续使用 TestClient。\nTestClient 是基于 HTTPX 的。幸运的是，我们可以直接使用它来测试 API。\n示例¶\n举个简单的例子，让我们来看一个与更大的应用和测试中描述的类似文件结构：\n.\n├── app\n│   ├── __init__.py\n│   ├── main.py\n│   └── test_main.py\n\n---\n\n[source_id:async_tests]\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n\n\n\n\n\n提示\n请注意，测试函数现在用的是 async def，而不是像以前使用 TestClient 时那样只是 def 。\n\n我们现在可以使用应用程序创建一个 AsyncClient ，并使用 await 向其发送异步请求。\nPython 3.10+\n\n\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n\n\n\n\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n---\n\n[source_id:async_tests]\n您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。\n在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的数据库的库。\n让我们看看如何才能实现这一点。\npytest.mark.anyio¶\n如果我们想在测试中调用异步函数，那么我们的测试函数必须是异步的。 AnyIO 为此提供了一个简洁的插件，它允许我们指定一些测试函数要异步调用。\n\n---\n\n[source_id:sse]\n@app.get(\"/items/stream-no-async-no-annotation\", response_class=EventSourceResponse)\ndef sse_items_no_async_no_annotation():\n    for item in items:\n        yield item\n\n\n\n\n\n\n提示\n由于 Pydantic 会在Rust 端序列化它，相比未声明返回类型，你将获得更高的性能。\n\n非 async 的路径操作函数¶\n你也可以使用常规的 def 函数（没有 async），并以同样的方式使用 yield。\nFastAPI 会确保其正确运行，从而不阻塞事件循环。\n由于此时函数不是 async，正确的返回类型应为 Iterable[Item]：\nPython 3.10+\n\n\n# Code above omitted 👆\n\n@app.get(\"/items/stream-no-async\", response_class=EventSourceResponse)\ndef sse_items_no_async() -> Iterable[Item]:\n    for item in items:\n        yield item\n\n# Code below omitted 👇\n\n\n\n\n\n👀 Full file preview\nPython 3.10+\n\n\nfrom collections.abc import AsyncIterable, Iterable\n\nfrom fastapi import FastAPI\nfrom fastapi.sse import EventSourceResponse\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None\n\n---\n\n[source_id:testing]\ndef test_create_existing_item():\n    response = client.post(\n        \"/items/\",\n        headers={\"X-Token\": \"coneofsilence\"},\n        json={\n            \"id\": \"foo\",\n            \"title\": \"The Foo ID Stealers\",\n            \"description\": \"There goes my stealer\",\n        },\n    )\n    assert response.status_code == 409\n    assert response.json() == {\"detail\": \"Item already exists\"}\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi.testclient import TestClient\n\nfrom .main import app\n\nclient = TestClient(app)\n\n\ndef test_read_item():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 200\n    assert response.json() == {\n        \"id\": \"foo\",\n        \"title\": \"Foo\",\n        \"description\": \"There goes my hero\",\n    }\n\n\ndef test_read_item_bad_token():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"hailhydra\"})\n    assert response.status_code == 400\n    assert response.json() == {\"detail\": \"Invalid X-Token header\"}\n\n\ndef test_read_nonexistent_item():\n    response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 404\n    assert response.json() == {\"detail\": \"Item not found\"}"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 4283.8629179999825,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "测试函数写 `def` 还是 `async def`，取决于你用什么客户端、以及测试里是否需要 `await` 异步操作。\n\n## 写 `def` 的情况\n\n用 `TestClient` 时写普通的 `def`：\n\n```python\nfrom fastapi.testclient import TestClient\nfrom .main import app\n\nclient = TestClient(app)\n\ndef test_read_item():\n    response = client.get(\"/items/foo\", headers={\"X-Token\": \"coneofsilence\"})\n    assert response.status_code == 200\n```\n\n`TestClient` 内部通过一些“魔法”操作，让你能在普通的 `def` 测试函数里调用异步的 FastAPI 应用，并配合标准 pytest 使用。\n\n## 写 `async def` 的情况\n\n一旦测试函数本身是异步的（比如需要 `await` 异步数据库查询），`TestClient` 的那套“魔法”就不再生效了——因为测试以异步方式运行，无法在测试函数中继续使用 `TestClient`。这时要改用 HTTPX 的 `AsyncClient`，测试函数写成 `async def`：\n\n```python\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n```\n\n注意两点：\n\n- 测试函数现在是 `async def`，而不是用 `TestClient` 时的 `def`。\n- 需要 `pytest.mark.anyio`（AnyIO 提供的插件），它允许指定某些测试函数以异步方式调用。\n\n## 小结\n\n| 场景 | 测试函数 | 客户端 |\n|---|---|---|\n| 同步测试，不需要 `await` | `def` | `TestClient` |\n| 需要 `await`（如异步数据库） | `async def` + `@pytest.mark.anyio` | `httpx.AsyncClient` + `ASGITransport` |\n\n也就是说：**能用 `TestClient` 就写 `def`；一旦测试里需要异步操作，就写 `async def` 并换成 `AsyncClient`。**",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "准确区分 TestClient 同步测试和 AsyncClient 异步测试。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q021",
+      "difficulty": "multi_hop",
+      "retrieved_ids": [
+        "security_first_steps",
+        "security_first_steps",
+        "security_first_steps",
+        "security_first_steps",
+        "security_first_steps",
+        "async_tests",
+        "async_tests",
+        "testing",
+        "testing",
+        "testing"
+      ],
+      "retrieval_batches": [
+        [
+          "security_first_steps",
+          "security_first_steps",
+          "security_first_steps",
+          "security_first_steps",
+          "security_first_steps"
+        ],
+        [
+          "async_tests",
+          "async_tests",
+          "testing",
+          "testing",
+          "testing"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:security_first_steps]\n注意\n“Bearer” 令牌并非唯一选项。\n但它非常适合我们的用例。\n对于大多数用例，它也可能是最佳选择，除非你是 OAuth2 专家，并明确知道为何其他方案更适合你的需求。\n在那种情况下，FastAPI 同样提供了相应的构建工具。\n\n创建 OAuth2PasswordBearer 类实例时，需要传入 tokenUrl 参数。该参数包含客户端（运行在用户浏览器中的前端）用来发送 username 和 password 以获取令牌的 URL。\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\n@app.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\n---\n\n[source_id:security_first_steps]\n假设你的后端 API 位于某个域名下。\n而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。\n你希望前端能通过username 和 password 与后端进行身份验证。\n我们可以用 OAuth2 在 FastAPI 中实现它。\n但为了节省你的时间，不必为获取少量信息而通读冗长的规范。\n我们直接使用 FastAPI 提供的安全工具。\n效果预览¶\n先直接运行代码看看效果，之后再回过头理解其背后的原理。\n创建 main.py¶\n把下面的示例代码复制到 main.py：\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n\n@app.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n\n---\n\n[source_id:security_first_steps]\n前端会把令牌临时存储在某处。\n用户在前端中点击跳转到前端应用的其他部分。\n前端需要从 API 获取更多数据。\n但该端点需要身份验证。\n因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。\n如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar。\n\n\n\nFastAPI 的 OAuth2PasswordBearer¶\nFastAPI 在不同抽象层级提供了多种安全工具。\n本示例将使用 OAuth2 的 Password 流程并配合 Bearer 令牌，通过 OAuth2PasswordBearer 类来实现。\n\n---\n\n[source_id:security_first_steps]\n这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。\n我们很快也会创建对应的实际路径操作。\n\n注意\n如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。\n这是因为它使用了与 OpenAPI 规范中相同的名称。这样当你需要深入了解这些安全方案时，可以直接复制粘贴去查找更多信息。\n\noauth2_scheme 变量是 OAuth2PasswordBearer 的一个实例，同时它也是“可调用”的。\n可以像这样调用：\noauth2_scheme(some, parameters)\n\n---\n\n[source_id:security_first_steps]\n注意\n目前无论在表单中输入什么都不会生效，我们稍后就会实现它。\n\n这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。\n前端团队（也可能就是你自己）可以使用它。\n第三方应用和系统也可以使用它。\n你也可以用它来调试、检查和测试同一个应用。\npassword 流¶\n现在回过头来理解这些内容。\npassword “流”（flow）是 OAuth2 定义的处理安全与身份验证的一种方式。\nOAuth2 的设计目标是让后端或 API 与负责用户认证的服务器解耦。\n但在这个例子中，FastAPI 应用同时处理 API 和认证。\n从这个简化的角度来看看流程：",
+        "[source_id:async_tests]\n您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。\n在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的数据库的库。\n让我们看看如何才能实现这一点。\npytest.mark.anyio¶\n如果我们想在测试中调用异步函数，那么我们的测试函数必须是异步的。 AnyIO 为此提供了一个简洁的插件，它允许我们指定一些测试函数要异步调用。\n\n---\n\n[source_id:async_tests]\nHTTPX¶\n即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。\nTestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由于测试以异步方式运行，我们无法在测试函数中继续使用 TestClient。\nTestClient 是基于 HTTPX 的。幸运的是，我们可以直接使用它来测试 API。\n示例¶\n举个简单的例子，让我们来看一个与更大的应用和测试中描述的类似文件结构：\n.\n├── app\n│   ├── __init__.py\n│   ├── main.py\n│   └── test_main.py\n\n---\n\n[source_id:testing]\n测试¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n感谢 Starlette，测试FastAPI 应用轻松又愉快。\n它基于 HTTPX，而HTTPX又是基于Requests设计的，所以很相似且易懂。\n有了它，你可以直接与FastAPI一起使用 pytest。\n使用 TestClient¶\n\n注意\n要使用 TestClient，先要安装 httpx。\n将它添加到你的项目中：\n$ uv add httpx\n\n---\n\n[source_id:testing]\n注意\n要使用 TestClient，先要安装 httpx。\n将它添加到你的项目中：\n$ uv add httpx\n\n\n导入 TestClient。\n通过传入你的FastAPI应用创建一个 TestClient 。\n创建名字以 test_ 开头的函数（这是标准的 pytest 约定）。\n像使用 httpx 那样使用 TestClient 对象。\n为你需要检查的地方用标准的Python表达式写个简单的 assert 语句（重申，标准的pytest）。\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom fastapi.testclient import TestClient\n\napp = FastAPI()\n\n\n@app.get(\"/\")\nasync def read_main():\n    return {\"msg\": \"Hello World\"}\n\n\nclient = TestClient(app)\n\n\ndef test_read_main():\n    response = client.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"msg\": \"Hello World\"}\n\n\n\n\n\n提示\n注意测试函数是普通的 def，不是 async def。\n还有client的调用也是普通的调用，不是用 await。\n这让你可以直接使用 pytest 而不会遇到麻烦。\n\n---\n\n[source_id:testing]\nfrom fastapi.testclient import TestClient\n\nfrom .main import app\n\nclient = TestClient(app)\n\n\ndef test_read_main():\n    response = client.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"msg\": \"Hello World\"}\n\n\n\n\n...然后测试代码和之前一样的。\n测试：扩展示例¶\n现在让我们扩展这个例子，并添加更多细节，看下如何测试不同部分。\n扩展后的 FastAPI app 文件¶\n让我们继续之前的文件结构：\n.\n├── app\n│   ├── __init__.py\n│   ├── main.py\n│   └── test_main.py\n\n假设现在包含FastAPI app的文件 main.py 有些其他路径操作。\n有个 GET 操作可能返回一个错误。\n有个 POST 操作可能返回多个错误。\n两个路径操作 都需要一个X-Token 头。\nPython 3.10+\n\n\nfrom typing import Annotated\n\nfrom fastapi import FastAPI, Header, HTTPException\nfrom pydantic import BaseModel\n\nfake_secret_token = \"coneofsilence\""
+      ],
+      "retrieval_evaluable": true,
+      "recall": 0.6666666666666666,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5951.947044999997,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "# 给所有接口加 Bearer Token 检查 + 测试未登录请求被拒绝\n\n## 1. 应用代码（`app/main.py`）\n\n用 `OAuth2PasswordBearer` 作为依赖，并把它挂到 `APIRouter` 的 `dependencies` 上，这样**该 router 下的所有接口**都会自动做 Bearer Token 检查（而不是只保护单个路由）。\n\n```python\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI, APIRouter, HTTPException\nfrom fastapi.security import OAuth2PasswordBearer\n\napp = FastAPI()\n\n# tokenUrl 只是声明客户端去哪个 URL 取令牌（用于 OpenAPI 文档），\n# 不会自动创建该端点。\noauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")\n\n# 把依赖挂在 router 级别，router 下所有接口都会执行它\nrouter = APIRouter(dependencies=[Depends(oauth2_scheme)])\n\n\n@router.get(\"/items/\")\nasync def read_items(token: Annotated[str, Depends(oauth2_scheme)]):\n    return {\"token\": token}\n\n\n@router.get(\"/users/\")\nasync def read_users():\n    return {\"msg\": \"ok\"}\n\n\napp.include_router(router)\n```\n\n要点：\n- `OAuth2PasswordBearer` 会从 `Authorization: Bearer <token>` 请求头中**提取**令牌。若请求头缺失或格式不对，FastAPI 会直接返回 `401 Unauthorized`，不会进入路径操作函数。\n- 把 `Depends(oauth2_scheme)` 放在 `APIRouter(dependencies=[...])` 里，就实现了“所有接口统一检查”，无需在每个函数上重复写。\n- 注意：`OAuth2PasswordBearer` 只负责**提取令牌**，它本身不校验令牌是否有效。真正的有效性校验需要你自己在依赖里实现（例如解码 JWT、查库等）。\n\n## 2. 测试代码（`app/test_main.py`）\n\n用 `TestClient` 发请求，断言未带令牌时被拒绝（401）。\n\n```python\nfrom fastapi.testclient import TestClient\n\nfrom .main import app\n\nclient = TestClient(app)\n\n\ndef test_items_without_token_is_rejected():\n    response = client.get(\"/items/\")\n    assert response.status_code == 401\n\n\ndef test_users_without_token_is_rejected():\n    response = client.get(\"/users/\")\n    assert response.status_code == 401\n\n\ndef test_items_with_token_is_accepted():\n    response = client.get(\"/items/\", headers={\"Authorization\": \"Bearer foobar\"})\n    assert response.status_code == 200\n    assert response.json() == {\"token\": \"foobar\"}\n```\n\n要点：\n- 测试函数用普通的 `def`（不是 `async def`），`client.get(...)` 也不用 `await`，这样可以直接配合标准 pytest 使用。\n- 未带 `Authorization` 头时，`OAuth2PasswordBearer` 会触发 401，因此断言 `status_code == 401`。\n- 带上 `Authorization: Bearer foobar` 后，令牌被提取并注入到 `token` 参数，接口返回 200。\n\n## 3. 运行\n\n```bash\nuv add httpx   # TestClient 依赖 httpx\npytest\n```\n\n## 边界说明\n\n- 上述检查只覆盖**令牌的提取与存在性**（缺失即 401）。令牌内容是否合法、是否过期，需要你在依赖中额外实现校验逻辑。\n- `tokenUrl=\"token\"` 只是给 OpenAPI 文档声明取令牌的地址，并不会自动生成 `/token` 端点；如需真正的登录发令牌流程，要另行创建该路径操作。",
+      "answer_status": "scored",
+      "answer_score": 0.875,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 0.5,
+        "relevance": 1
+      },
+      "answer_reason": "范围保护、401 测试和提取不等于校验均正确；但 APIRouter 范围依赖这一关键实现没有出现在本轮检索上下文中。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q022",
+      "difficulty": "multi_hop",
+      "retrieved_ids": [
+        "lifespan",
+        "lifespan",
+        "lifespan",
+        "async_tests",
+        "lifespan",
+        "async_tests",
+        "async_tests",
+        "lifespan",
+        "lifespan",
+        "lifespan"
+      ],
+      "retrieval_batches": [
+        [
+          "lifespan",
+          "lifespan",
+          "lifespan",
+          "async_tests",
+          "lifespan"
+        ],
+        [
+          "async_tests",
+          "async_tests",
+          "lifespan",
+          "lifespan",
+          "lifespan"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:lifespan]\nfrom contextlib import asynccontextmanager\n\nfrom fastapi import FastAPI\n\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\n\nml_models = {}\n\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # Load the ML model\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # Clean up the ML models and release the resources\n    ml_models.clear()\n\n\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n在这里，我们在 yield 之前将（虚拟的）模型函数放入机器学习模型的字典中，以此模拟加载模型的耗时启动操作。这段代码将在应用程序开始处理请求之前执行，即启动期间。\n然后，在 yield 之后，我们卸载模型。这段代码将会在应用程序完成处理请求后执行，即在关闭之前。这可以释放诸如内存或 GPU 之类的资源。\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n替代事件（弃用）¶\n\n警告\n配置启动和关闭的推荐方法是使用 FastAPI 应用的 lifespan 参数，如前所示。如果你提供了一个 lifespan 参数，启动（startup）和关闭（shutdown）事件处理器将不再生效。要么使用 lifespan，要么配置所有事件，两者不能共用。\n你可以跳过这一部分。\n\n---\n\n[source_id:lifespan]\nstartup 和 shutdown 一起使用¶\n启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。\n在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。\n因此，推荐使用上面所述的 lifespan。\n技术细节¶\n只是为好奇者提供的技术细节。🤓\n在底层，这部分是 ASGI 技术规范中的 Lifespan 协议的一部分，定义了称为 startup 和 shutdown 的事件。\n\n注意\n你可以在 Starlette 的 Lifespan 文档 中阅读更多关于 lifespan 处理器的内容。\n包括如何处理生命周期状态，以便在代码的其他部分使用。\n\n---\n\n[source_id:async_tests]\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n提示\n请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。\n\n\n警告\n如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 florimondmanca/asgi-lifespan 中的 LifespanManager 。\n\n其他异步函数调用¶\n由于测试函数现在是异步的，因此除了在测试中向 FastAPI 应用程序发送请求之外，您现在还可以调用（和使用 await 等待）其他 async 异步函数，就和您在代码中的其他任何地方调用它们的方法一样。\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n在 Python 中，上下文管理器是一个你可以在 with 语句中使用的东西，例如，open() 可以作为上下文管理器使用。\nwith open(\"file.txt\") as file:\n    file.read()\n\nPython 的最近几个版本也有了一个异步上下文管理器，你可以通过 async with 来使用：\nasync with lifespan(app):\n    await do_stuff()",
+        "[source_id:async_tests]\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n\n\n\n\n\n提示\n请注意，测试函数现在用的是 async def，而不是像以前使用 TestClient 时那样只是 def 。\n\n我们现在可以使用应用程序创建一个 AsyncClient ，并使用 await 向其发送异步请求。\nPython 3.10+\n\n\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\n\nfrom .main import app\n\n\n@pytest.mark.anyio\nasync def test_root():\n    async with AsyncClient(\n        transport=ASGITransport(app=app), base_url=\"http://test\"\n    ) as ac:\n        response = await ac.get(\"/\")\n    assert response.status_code == 200\n    assert response.json() == {\"message\": \"Tomato\"}\n\n\n\n\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n---\n\n[source_id:async_tests]\n这相当于：\nresponse = client.get('/')\n\n...我们曾经通过它向 TestClient 发出请求。\n\n提示\n请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。\n\n\n警告\n如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 florimondmanca/asgi-lifespan 中的 LifespanManager 。\n\n其他异步函数调用¶\n由于测试函数现在是异步的，因此除了在测试中向 FastAPI 应用程序发送请求之外，您现在还可以调用（和使用 await 等待）其他 async 异步函数，就和您在代码中的其他任何地方调用它们的方法一样。\n\n---\n\n[source_id:lifespan]\nfrom contextlib import asynccontextmanager\n\nfrom fastapi import FastAPI\n\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\n\nml_models = {}\n\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # Load the ML model\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # Clean up the ML models and release the resources\n    ml_models.clear()\n\n\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n在这里，我们在 yield 之前将（虚拟的）模型函数放入机器学习模型的字典中，以此模拟加载模型的耗时启动操作。这段代码将在应用程序开始处理请求之前执行，即启动期间。\n然后，在 yield 之后，我们卸载模型。这段代码将会在应用程序完成处理请求后执行，即在关闭之前。这可以释放诸如内存或 GPU 之类的资源。\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n这个函数在 yield 之前的部分，会在应用启动前执行。\n剩下的部分在 yield 之后，会在应用完成后执行。\n异步上下文管理器¶\n如你所见，这个函数有一个装饰器 @asynccontextmanager。\n它将函数转化为所谓的“异步上下文管理器”。\nPython 3.10+\n\n\nfrom contextlib import asynccontextmanager\n\nfrom fastapi import FastAPI\n\n\ndef fake_answer_to_everything_ml_model(x: float):\n    return x * 42\n\n\nml_models = {}\n\n\n@asynccontextmanager\nasync def lifespan(app: FastAPI):\n    # Load the ML model\n    ml_models[\"answer_to_everything\"] = fake_answer_to_everything_ml_model\n    yield\n    # Clean up the ML models and release the resources\n    ml_models.clear()\n\n\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n---\n\n[source_id:lifespan]\napp = FastAPI(lifespan=lifespan)\n\n\n@app.get(\"/predict\")\nasync def predict(x: float):\n    result = ml_models[\"answer_to_everything\"](x)\n    return {\"result\": result}\n\n\n\n\n替代事件（弃用）¶\n\n警告\n配置启动和关闭的推荐方法是使用 FastAPI 应用的 lifespan 参数，如前所示。如果你提供了一个 lifespan 参数，启动（startup）和关闭（shutdown）事件处理器将不再生效。要么使用 lifespan，要么配置所有事件，两者不能共用。\n你可以跳过这一部分。"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5315.114584999975,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "用 `httpx.AsyncClient` + `ASGITransport` 请求应用，但要注意：**`AsyncClient` 不会触发 lifespan 事件**，所以共享模型不会被加载。需要用 `asgi-lifespan` 的 `LifespanManager` 包一层，才能触发启动/关闭逻辑。\n\n```python\nimport pytest\nfrom httpx import ASGITransport, AsyncClient\nfrom asgi_lifespan import LifespanManager\n\nfrom .main import app  # app = FastAPI(lifespan=lifespan)\n\n\n@pytest.mark.anyio\nasync def test_predict():\n    async with LifespanManager(app):          # 触发 startup：加载共享模型\n        async with AsyncClient(\n            transport=ASGITransport(app=app), base_url=\"http://test\"\n        ) as ac:\n            response = await ac.get(\"/predict\", params={\"x\": 2})\n        assert response.status_code == 200\n        assert response.json() == {\"result\": 84}\n    # 退出 LifespanManager 后触发 shutdown：ml_models.clear()\n```\n\n要点：\n\n- 测试函数必须是 `async def`，并用 `@pytest.mark.anyio` 标记。\n- `AsyncClient(transport=ASGITransport(app=app), base_url=\"http://test\")` 负责发异步请求，等价于旧的 `client.get('/')`。\n- 因为应用依赖 lifespan 加载模型，必须用 `LifespanManager(app)` 包裹，否则 `ml_models` 为空，`/predict` 会因取不到 `\"answer_to_everything\"` 而失败。\n- 退出 `LifespanManager` 的上下文时执行 yield 之后的清理代码（`ml_models.clear()`），释放资源。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "完整组合 lifespan、LifespanManager、AsyncClient 和 ASGITransport。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q023",
+      "difficulty": "multi_hop",
+      "retrieved_ids": [
+        "request_body",
+        "request_body",
+        "request_body",
+        "response_model",
+        "response_model",
+        "handling_errors",
+        "handling_errors",
+        "handling_errors",
+        "handling_errors",
+        "handling_errors"
+      ],
+      "retrieval_batches": [
+        [
+          "request_body",
+          "request_body",
+          "request_body",
+          "response_model",
+          "response_model"
+        ],
+        [
+          "handling_errors",
+          "handling_errors",
+          "handling_errors",
+          "handling_errors",
+          "handling_errors"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:request_body]\n函数参数按如下规则进行识别：\n\n如果该参数也在路径中声明了，它就是路径参数。\n如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。\n如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。\n\n\n注意\nFastAPI 会根据默认值 = None 知道 q 的值不是必填的。\nstr | None 并不是 FastAPI 用来判断是否必填的依据；是否必填由是否有默认值 = None 决定。\n但添加这些类型注解可以让你的编辑器提供更好的支持并检测错误。\n\n不使用 Pydantic¶\n即便不使用 Pydantic 模型也能使用 Body 参数。详见请求体 - 多参数：请求体中的单值。\n\n---\n\n[source_id:request_body]\n注意\n发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。\n规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。\n由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。\n\n导入 Pydantic 的 BaseModel¶\n首先，你需要从 pydantic 中导入 BaseModel：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float | None = None\n\n\napp = FastAPI()\n\n\n@app.post(\"/items/\")\nasync def create_item(item: Item):\n    return item\n\n\n\n\n创建数据模型¶\n然后，把数据模型声明为继承 BaseModel 的类。\n使用 Python 标准类型声明所有属性：\nPython 3.10+\n\n---\n\n[source_id:request_body]\n请求体¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n当你需要从客户端（比如浏览器）向你的 API 发送数据时，会把它作为请求体发送。\n请求体是客户端发送给你的 API 的数据。响应体是你的 API 发送给客户端的数据。\n你的 API 几乎总是需要发送响应体。但客户端不一定总是要发送请求体，有时它们只请求某个路径，可能带一些查询参数，但不会发送请求体。\n使用 Pydantic 模型来声明请求体，能充分利用它的功能和优点。\n\n---\n\n[source_id:response_model]\nresponse_model 参数¶\n在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。\n例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。\n如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例如 dict）与声明的类型（例如一个 Pydantic 模型）不同。\n在这些情况下，你可以使用路径操作装饰器参数 response_model，而不是返回类型。\n你可以在任意路径操作中使用 response_model 参数：\n\n---\n\n[source_id:response_model]\nresponse_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。\nFastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。\n\n提示\n如果你的编辑器、mypy 等进行严格类型检查，你可以将函数返回类型声明为 Any。\n这样你告诉编辑器你是有意返回任意类型。但 FastAPI 仍会使用 response_model 做数据文档、校验、过滤等工作。",
+        "[source_id:handling_errors]\napp = FastAPI()\n\n\n@app.exception_handler(StarletteHTTPException)\nasync def http_exception_handler(request, exc):\n    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)\n\n\n@app.exception_handler(RequestValidationError)\nasync def validation_exception_handler(request, exc: RequestValidationError):\n    message = \"Validation errors:\"\n    for error in exc.errors():\n        message += f\"\\nField: {error['loc']}, Error: {error['msg']}\"\n    return PlainTextResponse(message, status_code=400)\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: int):\n    if item_id == 3:\n        raise HTTPException(status_code=418, detail=\"Nope! I don't like 3.\")\n    return {\"item_id\": item_id}\n\n\n\n\n现在，访问 /items/foo 时，默认的 JSON 错误为：\n{\n    \"detail\": [\n        {\n            \"loc\": [\n                \"path\",\n                \"item_id\"\n            ],\n            \"msg\": \"value is not a valid integer\",\n            \"type\": \"type_error.integer\"\n        }\n    ]\n}\n\n将得到如下文本内容：\nValidation errors:\nField: ('path', 'item_id'), Error: Input should be a valid integer, unable to parse string as an integer\n\n---\n\n[source_id:handling_errors]\n覆盖默认异常处理器¶\nFastAPI 自带了一些默认异常处理器。\n当你触发 HTTPException，或者请求中包含无效数据时，这些处理器负责返回默认的 JSON 响应。\n你也可以用自己的处理器覆盖它们。\n覆盖请求验证异常¶\n请求中包含无效数据时，FastAPI 内部会触发 RequestValidationError。\n它也内置了该异常的默认处理器。\n要覆盖它，导入 RequestValidationError，并用 @app.exception_handler(RequestValidationError) 装饰你的异常处理器。\n异常处理器会接收 Request 和该异常。\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\nfrom fastapi.exceptions import RequestValidationError\nfrom fastapi.responses import PlainTextResponse\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n\napp = FastAPI()\n\n\n@app.exception_handler(StarletteHTTPException)\nasync def http_exception_handler(request, exc):\n    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)\n\n---\n\n[source_id:handling_errors]\n将得到如下文本内容：\nValidation errors:\nField: ('path', 'item_id'), Error: Input should be a valid integer, unable to parse string as an integer\n\n覆盖 HTTPException 错误处理器¶\n同理，也可以覆盖 HTTPException 的处理器。\n例如，只为这些错误返回纯文本响应，而不是 JSON：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\nfrom fastapi.exceptions import RequestValidationError\nfrom fastapi.responses import PlainTextResponse\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n\napp = FastAPI()\n\n\n@app.exception_handler(StarletteHTTPException)\nasync def http_exception_handler(request, exc):\n    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)\n\n\n@app.exception_handler(RequestValidationError)\nasync def validation_exception_handler(request, exc: RequestValidationError):\n    message = \"Validation errors:\"\n    for error in exc.errors():\n        message += f\"\\nField: {error['loc']}, Error: {error['msg']}\"\n    return PlainTextResponse(message, status_code=400)\n\n\n@app.get(\"/items/{item_id}\")\nasync def read_item(item_id: int):\n    if item_id == 3:\n        raise HTTPException(status_code=418, detail=\"Nope! I don't like 3.\")\n    return {\"item_id\": item_id}\n\n---\n\n[source_id:handling_errors]\n在代码中触发 HTTPException¶\nHTTPException 是额外包含了和 API 有关数据的常规 Python 异常。\n因为是 Python 异常，所以不能 return，只能 raise。\n这也意味着，如果你在路径操作函数里调用的某个工具函数内部触发了 HTTPException，那么路径操作函数中后续的代码将不会继续执行，请求会立刻终止，并把 HTTPException 的 HTTP 错误发送给客户端。\n在介绍依赖项与安全的章节中，你可以更直观地看到用 raise 异常代替 return 值的优势。\n本例中，客户端用不存在的 ID 请求 item 时，触发状态码为 404 的异常：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n---\n\n[source_id:handling_errors]\n添加自定义响应头¶\n有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。\n一般情况下你可能不会在代码中直接使用它。\n但在某些高级场景中需要时，你可以添加自定义响应头：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n\n@app.get(\"/items-header/{item_id}\")\nasync def read_item_header(item_id: str):\n    if item_id not in items:\n        raise HTTPException(\n            status_code=404,\n            detail=\"Item not found\",\n            headers={\"X-Error\": \"There goes my error\"},\n        )\n    return {\"item\": items[item_id]}"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5644.945127999989,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "# 接收 Pydantic 请求体并返回自定义业务错误\n\n## 1. 接收 Pydantic 请求体\n\n按 FastAPI 的参数识别规则：**参数类型声明为 Pydantic 模型时，它会被当作请求体**。用 `BaseModel` 子类声明数据模型，并在路径操作函数中把参数标注为该模型即可。\n\n```python\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float | None = None\n\napp = FastAPI()\n\n@app.post(\"/items/\")\nasync def create_item(item: Item):\n    return item\n```\n\n要点：\n- 发送请求体应使用 `POST`（最常见）、`PUT`、`DELETE` 或 `PATCH`。规范未定义 `GET` 携带请求体的行为，FastAPI 虽支持但仅用于极端用例，且 Swagger UI 不会显示其请求体文档。\n- 是否必填由**是否有默认值 `= None`** 决定，而不是由 `str | None` 这类类型注解决定；类型注解只是让编辑器提供更好的支持。\n\n## 2. 返回自定义业务错误为指定状态码\n\n业务错误用 `HTTPException` 触发。它是 Python 异常，**只能 `raise`，不能 `return`**；一旦触发，路径操作函数中后续代码立即终止，并把该 HTTP 错误发送给客户端。\n\n```python\nfrom fastapi import FastAPI, HTTPException\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\nclass Item(BaseModel):\n    name: str\n    price: float\n\n@app.post(\"/items/{item_id}\")\nasync def create_item(item_id: str, item: Item):\n    if item_id in items:\n        # 自定义业务错误 + 指定状态码\n        raise HTTPException(status_code=409, detail=\"Item already exists\")\n    items[item_id] = item.name\n    return {\"item_id\": item_id, \"item\": item}\n```\n\n- `status_code` 指定返回的状态码（如 404、409、418 等）。\n- `detail` 是随错误返回的说明信息。\n- 需要时还可通过 `headers` 添加自定义响应头：\n\n```python\nraise HTTPException(\n    status_code=404,\n    detail=\"Item not found\",\n    headers={\"X-Error\": \"There goes my error\"},\n)\n```\n\n## 3. 可选：自定义错误响应格式\n\n默认情况下 `HTTPException` 返回 JSON。若想改成纯文本等格式，可用 `@app.exception_handler(StarletteHTTPException)` 覆盖默认处理器：\n\n```python\nfrom fastapi import FastAPI, HTTPException\nfrom fastapi.responses import PlainTextResponse\nfrom starlette.exceptions import HTTPException as StarletteHTTPException\n\napp = FastAPI()\n\n@app.exception_handler(StarletteHTTPException)\nasync def http_exception_handler(request, exc):\n    return PlainTextResponse(str(exc.detail), status_code=exc.status_code)\n```\n\n注意：覆盖 `StarletteHTTPException` 处理器会影响所有 HTTP 异常（包括框架内部抛出的），而不仅是你的业务错误。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确组合 Pydantic 请求体与指定状态码的 HTTPException。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q024",
+      "difficulty": "multi_hop",
+      "retrieved_ids": [
+        "sse",
+        "sse",
+        "security_first_steps",
+        "global_dependencies",
+        "dependencies",
+        "sse",
+        "sse",
+        "response_model",
+        "response_model",
+        "handling_errors"
+      ],
+      "retrieval_batches": [
+        [
+          "sse",
+          "sse",
+          "security_first_steps",
+          "global_dependencies",
+          "dependencies"
+        ],
+        [
+          "sse",
+          "sse",
+          "response_model",
+          "response_model",
+          "handling_errors"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:sse]\n技术细节¶\nFastAPI 开箱即用地实现了一些 SSE 的最佳实践。\n\n当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。\n设置 Cache-Control: no-cache 响应头，防止缓存流。\n设置特殊响应头 X-Accel-Buffering: no，以防止某些代理（如 Nginx）缓冲。\n\n你无需做任何事，它开箱即用。🤓\n\n---\n\n[source_id:sse]\ndata: {\"name\": \"Plumbus\", \"price\": 32.99}\n\nSSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。\n\n提示\n如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。\n\n使用 FastAPI 流式传输 SSE¶\n要在 FastAPI 中流式传输 SSE，在你的路径操作函数中使用 yield，并设置 response_class=EventSourceResponse。\n从 fastapi.sse 导入 EventSourceResponse：\nPython 3.10+\n\n\nfrom collections.abc import AsyncIterable, Iterable\n\nfrom fastapi import FastAPI\nfrom fastapi.sse import EventSourceResponse\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None\n\n\nitems = [\n    Item(name=\"Plumbus\", description=\"A multi-purpose household device.\"),\n    Item(name=\"Portal Gun\", description=\"A portal opening device.\"),\n    Item(name=\"Meeseeks Box\", description=\"A box that summons a Meeseeks.\"),\n]\n\n---\n\n[source_id:security_first_steps]\n用户在前端输入 username 和 password，然后按下 Enter。\n前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。\nAPI 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。\n“令牌”只是一个字符串，包含一些内容，之后可用来验证该用户。\n通常，令牌会在一段时间后过期。\n因此，用户过一段时间需要重新登录。\n如果令牌被窃取，风险也更小。它不像一把永久有效的钥匙（在大多数情况下）。\n\n---\n\n[source_id:global_dependencies]\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n\nasync def verify_key(x_key: Annotated[str, Header()]):\n    if x_key != \"fake-super-secret-key\":\n        raise HTTPException(status_code=400, detail=\"X-Key header invalid\")\n    return x_key\n\n\napp = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])\n\n\n@app.get(\"/items/\")\nasync def read_items():\n    return [{\"item\": \"Portal Gun\"}, {\"item\": \"Plumbus\"}]\n\n\n@app.get(\"/users/\")\nasync def read_users():\n    return [{\"username\": \"Rick\"}, {\"username\": \"Morty\"}]\n\n\n\n\n\n🤓 Other versions and variants\nPython 3.10+ - non-Annotated\n\n\n\nTip\nPrefer to use the Annotated version if possible.\n\nfrom fastapi import Depends, FastAPI, Header, HTTPException\n\n\nasync def verify_token(x_token: str = Header()):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n\nasync def verify_key(x_key: str = Header()):\n    if x_key != \"fake-super-secret-key\":\n        raise HTTPException(status_code=400, detail=\"X-Key header invalid\")\n    return x_key\n\n\napp = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])\n\n---\n\n[source_id:dependencies]\n注意\n如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。\n\n与 OpenAPI 集成¶\n依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。\n因此，交互式文档中也会包含这些依赖项的所有信息：",
+        "[source_id:sse]\n@app.get(\"/items/stream-no-async-no-annotation\", response_class=EventSourceResponse)\ndef sse_items_no_async_no_annotation():\n    for item in items:\n        yield item\n\n\n\n\n\nServerSentEvent¶\n如果你需要设置 event、id、retry 或 comment 等 SSE 字段，你可以 yield ServerSentEvent 对象，而不是直接返回数据。\n从 fastapi.sse 导入 ServerSentEvent：\nPython 3.10+\n\n\nfrom collections.abc import AsyncIterable\n\nfrom fastapi import FastAPI\nfrom fastapi.sse import EventSourceResponse, ServerSentEvent\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    price: float\n\n\nitems = [\n    Item(name=\"Plumbus\", price=32.99),\n    Item(name=\"Portal Gun\", price=999.99),\n    Item(name=\"Meeseeks Box\", price=49.99),\n]\n\n\n@app.get(\"/items/stream\", response_class=EventSourceResponse)\nasync def stream_items() -> AsyncIterable[ServerSentEvent]:\n    yield ServerSentEvent(comment=\"stream of item updates\")\n    for i, item in enumerate(items):\n        yield ServerSentEvent(data=item, event=\"item_update\", id=str(i + 1), retry=5000)\n\n---\n\n[source_id:sse]\n服务器发送事件（SSE）¶\n\n🌐 由 AI 与人类协作翻译\n本翻译由人类引导的 AI 生成。🤝\n可能存在误解原意或不够自然等问题。🤖\n你可以通过帮助我们更好地引导 AI LLM来改进此翻译。\n英文版本\n\n你可以使用服务器发送事件（SSE）向客户端流式发送数据。\n这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原生通过 EventSource API 支持。\n\n注意\n新增于 FastAPI 0.135.0。\n\n什么是服务器发送事件？¶\nSSE 是一种通过 HTTP 从服务器向客户端流式传输数据的标准。\n每个事件是一个带有 data、event、id 和 retry 等“字段”的小文本块，以空行分隔。\n看起来像这样：\ndata: {\"name\": \"Portal Gun\", \"price\": 999.99}\n\n---\n\n[source_id:response_model]\nfrom fastapi import FastAPI, Response\nfrom fastapi.responses import RedirectResponse\n\napp = FastAPI()\n\n\n@app.get(\"/portal\", response_model=None)\nasync def get_portal(teleport: bool = False) -> Response | dict:\n    if teleport:\n        return RedirectResponse(url=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\")\n    return {\"message\": \"Here's your interdimensional portal.\"}\n\n\n\n\n这会让 FastAPI 跳过响应模型的生成，这样你就可以按需使用任意返回类型注解，而不会影响你的 FastAPI 应用。🤓\n响应模型的编码参数¶\n你的响应模型可以具有默认值，例如：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float = 10.5\n    tags: list[str] = []\n\n\nitems = {\n    \"foo\": {\"name\": \"Foo\", \"price\": 50.2},\n    \"bar\": {\"name\": \"Bar\", \"description\": \"The bartenders\", \"price\": 62, \"tax\": 20.2},\n    \"baz\": {\"name\": \"Baz\", \"description\": None, \"price\": 50.2, \"tax\": 10.5, \"tags\": []},\n}\n\n---\n\n[source_id:response_model]\napp = FastAPI()\n\n\n@app.get(\"/teleport\")\nasync def get_teleport() -> RedirectResponse:\n    return RedirectResponse(url=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\")\n\n\n\n\n这同样可行，因为 RedirectResponse 是 Response 的子类，FastAPI 会自动处理这个简单场景。\n无效的返回类型注解¶\n但当你返回其他任意对象（如数据库对象）而它不是有效的 Pydantic 类型，并在函数中按此进行了注解时，FastAPI 会尝试基于该类型注解创建一个 Pydantic 响应模型，但会失败。\n如果你有一个在多个类型之间的联合类型，其中一个或多个不是有效的 Pydantic 类型，也会发生同样的情况，例如这个会失败 💥：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, Response\nfrom fastapi.responses import RedirectResponse\n\napp = FastAPI()\n\n---\n\n[source_id:handling_errors]\n添加自定义响应头¶\n有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。\n一般情况下你可能不会在代码中直接使用它。\n但在某些高级场景中需要时，你可以添加自定义响应头：\nPython 3.10+\n\n\nfrom fastapi import FastAPI, HTTPException\n\napp = FastAPI()\n\nitems = {\"foo\": \"The Foo Wrestlers\"}\n\n\n@app.get(\"/items-header/{item_id}\")\nasync def read_item_header(item_id: str):\n    if item_id not in items:\n        raise HTTPException(\n            status_code=404,\n            detail=\"Item not found\",\n            headers={\"X-Error\": \"There goes my error\"},\n        )\n    return {\"item\": items[item_id]}"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5862.062169000012,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "可以组合 FastAPI 的依赖注入和 SSE 流式响应：用依赖项在建立 SSE 连接前校验令牌，校验通过后再返回 `EventSourceResponse` 并持续 `yield` 事件。\n\n```python\nfrom collections.abc import AsyncIterable\nfrom typing import Annotated\n\nfrom fastapi import Depends, FastAPI, Header, HTTPException\nfrom fastapi.sse import EventSourceResponse, ServerSentEvent\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    price: float\n\n\nitems = [\n    Item(name=\"Plumbus\", price=32.99),\n    Item(name=\"Portal Gun\", price=999.99),\n    Item(name=\"Meeseeks Box\", price=49.99),\n]\n\n\nasync def verify_token(x_token: Annotated[str, Header()]):\n    if x_token != \"fake-super-secret-token\":\n        raise HTTPException(status_code=400, detail=\"X-Token header invalid\")\n\n\n@app.get(\n    \"/items/stream\",\n    response_class=EventSourceResponse,\n    dependencies=[Depends(verify_token)],\n)\nasync def stream_items() -> AsyncIterable[ServerSentEvent]:\n    yield ServerSentEvent(comment=\"stream of item updates\")\n    for i, item in enumerate(items):\n        yield ServerSentEvent(data=item, event=\"item_update\", id=str(i + 1), retry=5000)\n```\n\n要点：\n\n- **先检查令牌**：`dependencies=[Depends(verify_token)]` 会在路径操作函数执行前运行；令牌无效时抛出 `HTTPException`，SSE 流不会开始。\n- **再持续发送事件**：校验通过后，函数返回 `EventSourceResponse`，通过 `yield ServerSentEvent(...)` 持续推送事件。\n- **保活与响应头**：FastAPI 的 SSE 支持开箱即用地在 15 秒无消息时发送保活 ping 注释，并设置 `Cache-Control: no-cache` 和 `X-Accel-Buffering: no`，无需额外处理。\n\n注意：这里校验的是请求头中的令牌；令牌本身的签发与过期机制需要另行实现。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确组合 Bearer 校验依赖和 SSE 持续发送。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q025",
+      "difficulty": "multi_hop",
+      "retrieved_ids": [
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "dependencies",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model",
+        "response_model"
+      ],
+      "retrieval_batches": [
+        [
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model",
+          "dependencies"
+        ],
+        [
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model",
+          "response_model"
+        ]
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "[source_id:response_model]\n因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。\nresponse_model 还是返回类型¶\n在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。\n这就是为什么在这个例子里我们必须在 response_model 参数中声明它。\n...但继续往下读，看看如何更好地处理这种情况。\n返回类型与数据过滤¶\n延续上一个例子。我们希望用一种类型来注解函数，但希望从函数返回的内容实际上可以包含更多数据。\n\n---\n\n[source_id:response_model]\nresponse_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。\nFastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。\n\n提示\n如果你的编辑器、mypy 等进行严格类型检查，你可以将函数返回类型声明为 Any。\n这样你告诉编辑器你是有意返回任意类型。但 FastAPI 仍会使用 response_model 做数据文档、校验、过滤等工作。\n\n---\n\n[source_id:response_model]\n我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。\n在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。\n不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。\n在这些场景里，我们可以使用类和继承，既利用函数的类型注解获取更好的编辑器和工具支持，又能获得 FastAPI 的数据过滤。\nPython 3.10+\n\n---\n\n[source_id:response_model]\nresponse_model 的优先级¶\n如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。\n这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验、文档等。\n你也可以使用 response_model=None 来禁用该路径操作的响应模型生成；当你为一些不是有效 Pydantic 字段的东西添加类型注解时，可能需要这样做，下面的章节会有示例。\n返回与输入相同的数据¶\n这里我们声明一个 UserIn 模型，它包含一个明文密码：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel, EmailStr\n\napp = FastAPI()\n\n---\n\n[source_id:dependencies]\n这些依赖会照常工作，而最棒的是，类型信息会被保留，这意味着你的编辑器依然能提供自动补全、行内报错等。同样适用于 mypy 等其他工具。\n当你在大型代码库中，在很多路径操作里反复使用相同的依赖时，这会特别有用。\n要不要使用 async？¶\n由于依赖项也会由 FastAPI 调用（与路径操作函数相同），因此定义函数时同样的规则也适用。\n你可以使用 async def 或普通的 def。\n你可以在普通的 def 路径操作函数中声明 async def 的依赖项；也可以在异步的 async def 路径操作函数中声明普通的 def 依赖项，等等。\n都没关系，FastAPI 知道该怎么处理。",
+        "[source_id:response_model]\n@app.get(\"/items/{item_id}\", response_model=Item, response_model_exclude_unset=True)\nasync def read_item(item_id: str):\n    return items[item_id]\n\n\n\n\n\ndescription: Union[str, None] = None（或在 Python 3.10 中的 str | None = None）默认值为 None。\ntax: float = 10.5 默认值为 10.5。\ntags: List[str] = [] 默认值为一个空列表：[]。\n\n但如果它们并没有被实际存储，你可能希望在结果中省略这些默认值。\n例如，当你在 NoSQL 数据库中保存了具有许多可选属性的模型，但又不想发送充满默认值的冗长 JSON 响应。\n使用 response_model_exclude_unset 参数¶\n你可以设置路径操作装饰器参数 response_model_exclude_unset=True：\nPython 3.10+\n\n\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\nclass Item(BaseModel):\n    name: str\n    description: str | None = None\n    price: float\n    tax: float = 10.5\n    tags: list[str] = []\n\n---\n\n[source_id:response_model]\nresponse_model_exclude_defaults=True\nresponse_model_exclude_none=True\n\n详见 Pydantic 文档中对 exclude_defaults 和 exclude_none 的说明。\n\n默认字段有实际值的数据¶\n但是，如果你的数据在具有默认值的模型字段中有实际的值，例如 ID 为 bar 的项：\n{\n    \"name\": \"Bar\",\n    \"description\": \"The bartenders\",\n    \"price\": 62,\n    \"tax\": 20.2\n}\n\n这些值将包含在响应中。\n具有与默认值相同值的数据¶\n如果数据具有与默认值相同的值，例如 ID 为 baz 的项：\n{\n    \"name\": \"Baz\",\n    \"description\": None,\n    \"price\": 50.2,\n    \"tax\": 10.5,\n    \"tags\": []\n}\n\n---\n\n[source_id:response_model]\nFastAPI 足够聪明（实际上是 Pydantic 足够聪明）去认识到，即使 description、tax 和 tags 的值与默认值相同，它们也是被显式设置的（而不是取自默认值）。\n因此，它们将包含在 JSON 响应中。\n\n提示\n请注意默认值可以是任何值，而不仅是 None。\n它们可以是一个列表（[]）、值为 10.5 的 float，等等。\n\nresponse_model_include 和 response_model_exclude¶\n你还可以使用路径操作装饰器的 response_model_include 和 response_model_exclude 参数。\n它们接收一个由属性名 str 组成的 set，用于包含（忽略其他）或排除（包含其他）这些属性。\n当你只有一个 Pydantic 模型，并且想要从输出中移除一些数据时，这可以作为一种快捷方式。\n\n---\n\n[source_id:response_model]\n因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。\nresponse_model 还是返回类型¶\n在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。\n这就是为什么在这个例子里我们必须在 response_model 参数中声明它。\n...但继续往下读，看看如何更好地处理这种情况。\n返回类型与数据过滤¶\n延续上一个例子。我们希望用一种类型来注解函数，但希望从函数返回的内容实际上可以包含更多数据。\n\n---\n\n[source_id:response_model]\n我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。\n在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。\n不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。\n在这些场景里，我们可以使用类和继承，既利用函数的类型注解获取更好的编辑器和工具支持，又能获得 FastAPI 的数据过滤。\nPython 3.10+"
+      ],
+      "retrieval_evaluable": true,
+      "recall": 1.0,
+      "mrr": 1.0,
+      "tool_acc": 1.0,
+      "latency_ms": 6808.634961000024,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "# 复用公共查询逻辑 + 防止响应泄露内部字段\n\n结合上下文，可以用 **依赖注入（Dependency）复用查询逻辑** + **`response_model` 过滤输出** 两步实现。\n\n## 1. 用依赖复用公共查询逻辑\n\nFastAPI 的依赖项由框架调用，规则与路径操作函数相同：可以用 `async def` 或普通 `def`，也可以在普通 `def` 路径操作里声明 `async def` 依赖（反之亦然）。类型信息会被保留，编辑器自动补全、mypy 检查都照常工作。在大型代码库中，把重复的查询逻辑抽成依赖特别有用。\n\n## 2. 用 `response_model` 过滤内部字段\n\n`response_model` 接收与 Pydantic 模型字段相同的类型（可以是模型，也可以是 `List[Item]` 这样的模型列表）。FastAPI 用它做数据文档、校验，并**把输出数据转换并过滤为其类型声明**——即过滤掉输出模型中未声明的所有数据。\n\n关键点：\n- 若同时声明返回类型和 `response_model`，**`response_model` 优先**，由 FastAPI 使用。因此你可以给函数加正确的返回类型注解（供编辑器/mypy 使用），同时让 FastAPI 用 `response_model` 做校验、文档和过滤。\n- 若函数返回类型与响应模型不同，编辑器会报\"返回了无效类型\"。此时可把返回类型注解为 `Any`，告诉编辑器你是有意返回任意类型，FastAPI 仍会用 `response_model` 过滤。\n- 更推荐的做法：用**类继承**——让内部模型继承公开模型，函数返回内部模型（类型注解成立），`response_model` 用公开模型，从而既获得编辑器支持又实现数据过滤。\n\n## 集成示例\n\n```python\nfrom typing import Any\nfrom fastapi import FastAPI, Depends\nfrom pydantic import BaseModel\n\napp = FastAPI()\n\n\n# 公开模型：只声明允许暴露的字段\nclass ItemOut(BaseModel):\n    name: str\n    price: float\n\n\n# 内部模型：继承公开模型，额外含内部字段\nclass ItemInternal(ItemOut):\n    internal_cost: float\n    owner_id: str\n\n\n# 公共查询逻辑抽成依赖，可被多个路径操作复用\nasync def get_item_or_404(item_id: str) -> ItemInternal:\n    # 实际查询逻辑（数据库等）放在这里\n    return ItemInternal(\n        name=\"Foo\", price=50.2, internal_cost=30.0, owner_id=\"secret-user\"\n    )\n\n\n@app.get(\"/items/{item_id}\", response_model=ItemOut)\nasync def read_item(item: ItemInternal = Depends(get_item_or_404)) -> Any:\n    # 返回内部模型，FastAPI 会用 response_model=ItemOut 过滤掉\n    # internal_cost、owner_id 等未声明字段\n    return item\n```\n\n## 说明与边界\n\n- **过滤发生在响应序列化阶段**：`response_model` 负责把输出转换并过滤为声明类型，因此 `internal_cost`、`owner_id` 不会出现在响应中。这是\"输出过滤\"，不是访问控制——依赖内部仍持有完整内部数据。\n- 若只想临时裁剪字段，也可用路径操作装饰器的 `response_model_include` / `response_model_exclude`（接收属性名 `str` 的 `set`），适合只有一个模型、想快速移除部分数据的场景。\n- 若某路径不需要响应模型，可用 `response_model=None` 禁用生成（例如给非有效 Pydantic 字段加注解时）。\n- 想省略未显式设置的默认值，可用 `response_model_exclude_unset=True`；另有 `response_model_exclude_defaults`、`response_model_exclude_none`。注意：即使字段值等于默认值，只要是被**显式设置**的，仍会包含在响应中（Pydantic 能区分\"显式设置\"与\"取自默认值\"）。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确组合公共依赖复用和 response_model 输出过滤。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q026",
+      "difficulty": "out_of_scope",
+      "retrieved_ids": [],
+      "retrieval_batches": [
+        []
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "{\"query\": \"React useEffect runs twice in development StrictMode why\", \"follow_up_questions\": null, \"answer\": null, \"images\": [], \"results\": [{\"url\": \"https://www.dhiwise.com/post/resolving-useeffect-running-twice-a-comprehensive-guide\", \"title\": \"Resolving useEffect Running Twice: A Comprehensive Guide\", \"content\": \"The useEffect hook runs twice due to React's strict mode behavior, which is designed to detect side effect issues. In development mode, strict mode forces the double invocation of the hook to identify any improper side effect logic. This helps developers write cleaner and more reliable code, but can confuse developers who are unaware of this feature. [...] React's strict mode is a tool to highlight potential problems in an application. It helps developers by intentionally invoking certain lifecycle methods twice to detect side effects that might lead to bugs or memory leaks. The useEffect hook runs twice because React performs an additional render to identify unsafe side effects during development. [...] React developers often ask why their hook seems to render twice. This typically happens because strict mode in the development environment triggers the hook twice to help detect side effect bugs early. This behavior ensures developers can spot and fix issues that might otherwise remain hidden. Still, it does not affect production mode, where the executes only once per dependency change or component mount.\", \"score\": 0.93511593, \"raw_content\": null, \"id\": \"c1eb17-00\"}, {\"url\": \"https://www.youtube.com/watch?v=3JyRV3ZiIss\", \"title\": \"Why useEffect running twice and how to handle it well in React?\", \"content\": \"In this video, I dove into a common React challenge involving the useEffect hook running twice in strict mode and shared effective strategies to handle it. I started by explaining why useEffect runs twice due to React's strict mode helping identify code inconsistencies. I demonstrated this with example code, illustrating the issue with making API calls within useEffect. To tackle this, I showed how to prevent duplicate execution using useRef. I also covered best practices for cleanups with [...] hey there welcome back to aast today we are diving into a common recck challenge that many developers face the use effect hook running twice and how to handle it effectively understanding this behavior is crucial for building robust applications first let's understand why use effect sometimes runs twice this behavior is most commonly seen in reacts strict mode which was introduced to help developers identify potential problems in their applications when in strict mode react intentionally double [...] the strict mode so as I mentioned earlier you if you just remove it then it will never execute the logic twice as you can see but it is the good practice to keep it in the development mode so that you can take care such situations so that if for some reason if your code tries to run twice you should have implemented such logic that will take care of such situations like this so uh quickly recap the best practices so always include cleanup functions when dealing with event listeners\", \"score\": 0.9121316, \"raw_content\": null, \"id\": \"c12dd7-01\"}, {\"url\": \"https://dev.to/pockit_tools/why-is-useeffect-running-twice-the-complete-guide-to-react-19-strict-mode-and-effect-cleanup-1n60\", \"title\": \"Why is useEffect Running Twice? The Complete Guide to React 19 Strict Mode and Effect Cleanup - DEV Community\", \"content\": \"Here's the kicker: this intentional double-invocation is designed to expose bugs in your code.\\n\\n## Why Would React Do This? Understanding the Motivation\\n\\nThe React team didn't add this behavior to annoy developers. They added it because of a fundamental truth about effects:\\n\\nIf your effect breaks when it runs twice, it would have broken in production anyway—you just wouldn't have caught it during development.\\n\\nThink about real-world scenarios where effects can run multiple times: [...] ```\\n// Before< StrictMode>< App/>StrictMode> // After <App /> StrictMode>// After< App/>\\n```\\n\\nShould you? Almost never. Here's why:\\n\\n1. You're hiding bugs, not fixing them. Those bugs will manifest in production.\\n2. You lose future-proofing. Next React features may rely on resilient effects.\\n3. It's a code smell. If you need to disable Strict Mode, your effects likely have structural problems. [...] 1. It hides bugs. If your effect needs cleanup but doesn't have it, this pattern masks the issue during development.\\n2. It breaks in production scenarios. What if your component legitimately remounts? The effect won't run again.\\n3. It violates React's expectations. Effects should be resilient to multiple invocations by design.\", \"score\": 0.9071234, \"raw_content\": null, \"id\": \"51522d-02\"}], \"response_time\": 1.32, \"request_id\": \"f008eee9-ca35-4314-8bc9-0dd5a6a3c112\"}"
+      ],
+      "retrieval_evaluable": false,
+      "recall": 0.0,
+      "mrr": 0.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5418.882502000002,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "`useEffect` 执行两次，是因为 **React 的 StrictMode（严格模式）在开发环境下的有意行为**，不是 bug。\n\n具体原因：\n\n- **StrictMode 会故意重复调用某些生命周期/副作用逻辑**，用来暴露代码中不安全的副作用（比如缺少清理函数、重复请求、内存泄漏等）。\n- 在开发模式下，React 会额外执行一次渲染/副作用，因此 `useEffect` 看起来跑了两次。\n- 这个行为**只发生在开发环境**，生产环境（production）中 `useEffect` 每次依赖变化或组件挂载只执行一次。\n\nReact 团队这样设计的原因是：**如果一个 effect 在运行两次时会出问题，那它在生产环境里迟早也会出问题**（例如组件真实地重新挂载时），只是开发阶段不容易被发现。\n\n处理建议：\n\n- **不要为了消除两次执行而移除 StrictMode**，那只是掩盖问题，bug 仍会在生产环境出现。\n- 正确做法是让 effect 具备“可重复执行”的健壮性：\n  - 始终写好 **cleanup（清理）函数**，尤其是事件监听、订阅、定时器等。\n  - 避免在 effect 中做无法安全重复的操作（如重复发请求、重复注册）。\n  - 必要时可用 `useRef` 等标记来防止重复执行，但这属于规避手段，优先还是修好副作用逻辑。\n\n简言之：开发环境两次 = StrictMode 故意为之，用于帮你发现副作用缺陷；生产环境只执行一次。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确说明 React StrictMode 双调用原因、范围和清理方式。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q027",
+      "difficulty": "out_of_scope",
+      "retrieved_ids": [],
+      "retrieval_batches": [
+        [],
+        []
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "{\"query\": \"PostgreSQL B-tree vs BRIN index when to use comparison\", \"follow_up_questions\": null, \"answer\": null, \"images\": [], \"results\": [{\"url\": \"https://www.cybertec-postgresql.com/en/btree-vs-brin-2-options-for-indexing-in-postgresql-data-warehouses\", \"title\": \"btree vs. BRIN index in PostgreSQL data warehouses\", \"content\": \"The btree managed to run the query with just 27,000 blocks - now we need around 55,000 - which translates to more runtime.\\n\\nWhile a BRIN index is usually a good idea for such use cases, it's not always the magic bullet. It does need significantly less space and it can be built faster. But is does not magically fix all cases under all circumstances.\\n\\nPlease keep in mind that I AM NOT SAYING that BRIN is bad - it's usually a speedup compared to btree indexes. What I am saying is that you should compare various setups and decide what is best. Also: Keep in mind that correlation does matter.\\n\\n## Finally …\\n\\nTo find out about reduced B-tree index bloat, check out Laurenz' post. [...] BRIN is not as extensive a sorting exercise as normal btree index creation. This is important because it translates to less temporary I/O and faster index creation.\\n\\n### Compare queries:\", \"score\": 0.8559598, \"raw_content\": null, \"id\": \"2906b3-00\"}, {\"url\": \"https://www.datacamp.com/doc/postgresql/brin-indexes\", \"title\": \"PostgreSQL BRIN Indexes\", \"content\": \"3. BRIN Index with Specific Options\\n\\n`sql\\nCREATE INDEX brin_custom_idx\\nON measurements USING BRIN (temperature) WITH (pages_per_range = 32);`\\n\\nThis example creates a BRIN index on the `temperature` column with a custom `pages\\\\_per\\\\_range` setting, which affects how much data is indexed per block range. A smaller `pages\\\\_per\\\\_range` can improve query performance at the cost of additional storage space.\\n\\nTips and Best Practices\\n\\nIncluding a comparison with other index types such as B-tree or GiST can help users decide when to use BRIN indexes. For example, B-tree indexes are generally better for smaller tables or when exact matches are needed, while BRIN indexes excel in range queries on large datasets.\\n\\nCompany\\n\\nPlans\\n\\nFor Business\\n\\nLearn\\n\\nTopics\\n\\nPopular Courses\\n\\nCertifications [...] # PostgreSQL BRIN Indexes\\n\\nBRIN (Block Range INdexes) indexes in PostgreSQL are used to efficiently handle massive tables, particularly those where data is naturally ordered. These indexes provide a lightweight and space-efficient solution for indexing large datasets.\\n\\nUsage  \\nBRIN indexes are ideal for columns with naturally ordered data, such as timestamps or sequences, and are best used for very large tables where traditional B-tree indexes would be impractical. They perform well when the data is accessed in ranges.\\n\\n`sql\\nCREATE INDEX index_name\\nON table_name USING BRIN (column_name);`\", \"score\": 0.846159, \"raw_content\": null, \"id\": \"4924c3-01\"}, {\"url\": \"https://chandel.hashnode.dev/boosting-postgresql-performance-with-brin-indexes\", \"title\": \"Optimizing PostgreSQL Performance: BRIN vs B-tree Indexing Case Study\", \"content\": \"As we can see in scenarios where the data is naturally ordered, BRIN indexes can demonstrate significant performance benefits due to their block-based structure. In this case, the size of the tables was 1 million rows. Lager the table larger will be the benefit.\\n\\nIndex size comparison\\n\\n```\\n-- size of the table SELECT 'sensor_data_2' \\\"57 MB\\\"\\n```\\n\\n```\\n-- size of the b-tree index SELECT 'btree_timestamp_idx'\\n```\\n\\n```\\n-- size of the brin index SELECT 'brin_timestamp_idx'\\n```\\n\\nThe BTree indexes end up very close to the table size. The BRIN indexes are 1000 times smaller.\\n\\nScenario: Highly Unordered Data [...] The BRIN index is a small table that associates a range of values with a range of pages in the table order. Building the index just requires a single scan of the table, so compared to building a structure like a BTree, it is very fast.\\n\\nBecause the BRIN has one entry for each range of pages, it's also very small. The number of pages in a range is configurable, but the default is 128. Tuning this number can make a big difference in query performance.\\n\\n### Comparing BRIN and B-tree Index Performance\\n\\nLet's consider a real-world case to showcase the performance difference between BRIN and B-tree indexes. Imagine a scenario where you have a large table storing time-series data, and you need to retrieve records within a specific date range.\\n\\nSetting up the Scenario [...] ### Understanding BRIN Indexes\\n\\nBlock Range INdexes are designed to efficiently index large tables with sorted ranges of data, such as chronological or numerical data. Unlike B-tree indexes that store individual values, BRIN indexes divide the table into fixed-size blocks and store summary information for each block. This makes BRIN indexes particularly well-suited for scenarios where data exhibits natural ordering, such as timestamp-based or sequential data.\\n\\nData in PostgreSQL tables are arranged on disk in equal-sized \\\"pages\\\" of 8kb each. So a table will physically reside on disk as a collection of pages. Within each page, rows are packed in from the front, with gaps appearing as data is deleted/updated and usually some spare space at the end for future updates.\", \"score\": 0.8452414, \"raw_content\": null, \"id\": \"400163-02\"}], \"response_time\": 2.5, \"request_id\": \"cd1ceb12-8ebb-4c49-9014-8882b3869245\"}",
+        "{\"query\": \"PostgreSQL BRIN index pages_per_range correlation best practices\", \"follow_up_questions\": null, \"answer\": null, \"images\": [], \"results\": [{\"url\": \"https://www.datacamp.com/doc/postgresql/brin-indexes\", \"title\": \"PostgreSQL BRIN Indexes\", \"content\": \"3. BRIN Index with Specific Options\\n\\n`sql\\nCREATE INDEX brin_custom_idx\\nON measurements USING BRIN (temperature) WITH (pages_per_range = 32);`\\n\\nThis example creates a BRIN index on the `temperature` column with a custom `pages\\\\_per\\\\_range` setting, which affects how much data is indexed per block range. A smaller `pages\\\\_per\\\\_range` can improve query performance at the cost of additional storage space.\\n\\nTips and Best Practices\\n\\nIncluding a comparison with other index types such as B-tree or GiST can help users decide when to use BRIN indexes. For example, B-tree indexes are generally better for smaller tables or when exact matches are needed, while BRIN indexes excel in range queries on large datasets.\\n\\nCompany\\n\\nPlans\\n\\nFor Business\\n\\nLearn\\n\\nTopics\\n\\nPopular Courses\\n\\nCertifications\", \"score\": 0.78670514, \"raw_content\": null, \"id\": \"4ea5cf-00\"}, {\"url\": \"https://pganalyze.com/blog/5mins-postgres-BRIN-index\", \"title\": \"5mins of Postgres E38: When to use BRIN indexes in Postgres, tuning pages_per_range and determining correlation with pg_stats\", \"content\": \"> BRIN indexes are sometimes a really good fit, but sometimes a really bad fit – so it is important to understand when they work well.\\n\\n### Understanding BRIN indexes\\n\\nA BRIN index is a block range index. It’s essentially a very lightweight index that works well for tables where the data is banded together in physical storage. Janet describes this in her article: if you have a table where you’re\\n\\n adding data chronologically and\\n you also have a date column\\n\\nthen you can think of the physical layout of the table to be banded by date. If you had a particular date for one row, the date on the next row is most likely going to be the same date or the next day’s date. There is a correlation between the physical order and the values of a particular column. [...] The way that BRIN works is that it stores the minimum and maximum value of the indexed column for each block range. A block range would be something like “page 1 to page 10”. You can then imagine it would say for the date column in our example: the minimum value I’ve seen is this, and the maximum value I’ve seen is that.\\n\\nWhen Postgres executes a query and it uses a BRIN index, what it’s able to do is to use the BRIN index to identify which part of the table to look at. A BRIN index is always going to be fuzzy, it’s not going to give you an exact row, like a B-tree index does, but it is very small, and that has a lot of benefits in terms of caching behavior and such. [...] ### Using pg\\\\_stats and the correlation column\\n\\nI can query the pg\\\\_stats table and I can look at that correlation column for this particular table. What I can see is the “run\\\\_at” column. You can think of this as a timestamp we assign each time we run our indexing engine. As this timestamp is the current time, the value of “run\\\\_at” highly correlates with the physical order. You can see in the video that the correlation for “run\\\\_at” is close to 1, which is an almost perfect correlation. But, for example, if I looked at “server\\\\_id” that does not correlate.\", \"score\": 0.78650844, \"raw_content\": null, \"id\": \"b0da85-01\"}, {\"url\": \"https://hakibenita.com/postgresql-correlation-brin-multi-minmax\", \"title\": \"When Good Correlation is Not Enough | Haki Benita\", \"content\": \"```\\ndb=#  CREATE  INDEX  t_happened_at_brin_minmax  ON  t USING  brin(happened_at)  WITH  (pages_per_range = 10); CREATE INDEX\\n```\\n\\nWe create a BRIN index on the field `happened_at`. We did not explicitly provide an opclass, so the default `minmax` is used. We also override the default `pages_per_range` and set it to 10. This means the BRIN index will keep the minimum and maximum values of the field `happened_at` for every range of 10 adjacent pages in the table.\\n\\nBeing a lossy index, one of the main benefits of BRIN indexes is their small size: [...] ```\\ndb=#  ANALYZE  t_outliers; ANALYZEdb=#  SELECT  correlation FROM  pg_stats WHERE  tablename  =  't_outliers' AND  attname  =  'happened_at';  correlation ───────────── 0.97344303  0.97344303\\n```\\n\\nThe correlation is no longer perfect, but it's still very high - 0.97. Under normal circumstances, this type of correlation can be considered high, thus a BRIN index is a good candidate:\\n\\n```\\ndb=#  CREATE  INDEX  t_outliers_happened_at_brin_minmax  ON  t_outliers USING  brin(happened_at)  WITH  (pages_per_range = 10); CREATE INDEX\\n```\\n\\nWith the BRIN index in place, execute the same query as before: [...] Every group of 3 adjacent pages is a range:\\n\\n| Physical Ordering | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\\n ---  ---  ---  ---  --- |\\n| Value | `A` | `B` | `C` | `D` | `E` | `F` | `G` | `H` | `I` |\\n| Logical Ordering | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |\\n\\nFor each range, keep only the minimum and the maximum value:\\n\\n| Range | Minmax |\\n --- |\\n| 1-3 | `A`-`C` |\\n| 4-6 | `D`-`F` |\\n| 7-9 | `G`-`I` |\\n\\nThis is a single minimax block range index.\\n\\nLet's use the index to find the value `E`:\\n\\n| Range | Minmax | Is `E` in range? |\\n --- \\n| 1-3 | `A`-`C` | 💀 Definitely not here |\\n| 4-6 | `D`-`F` | 💩 Might be here |\\n| 7-9 | `G`-`I` | 💀 Definitely not here |\\n\\nUsing the BRIN index we can eliminate blocks 1-3 and 7-9, and narrow the search to just blocks 4-5 in the table. That's pretty good.\", \"score\": 0.78631157, \"raw_content\": null, \"id\": \"cdaf27-02\"}], \"response_time\": 2.11, \"request_id\": \"a8e5a6f4-1a96-4189-adbe-851f4e2dff75\"}"
+      ],
+      "retrieval_evaluable": false,
+      "recall": 0.0,
+      "mrr": 0.0,
+      "tool_acc": 1.0,
+      "latency_ms": 7934.282587000012,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "# PostgreSQL B-tree vs BRIN 索引选择指南\n\n## 核心区别\n\n| 特性 | B-tree | BRIN |\n|------|--------|------|\n| 结构 | 存储每个具体值 | 按块范围（block range）存储最小/最大值 |\n| 精度 | 精确定位到行 | 模糊（lossy），只能缩小扫描范围 |\n| 大小 | 接近表大小 | 可小约 1000 倍 |\n| 构建速度 | 较慢（需排序） | 很快（单次扫描） |\n| 适用数据 | 任意 | 物理存储上有自然顺序的数据 |\n\n## 什么时候用 BRIN\n\nBRIN 适合**大表 + 数据在物理存储上自然有序（相关性高）**的场景：\n\n- 时间序列数据（如按时间顺序追加的 `timestamp` 列）\n- 顺序/递增的数值列\n- 大范围查询（range query）\n\nBRIN 的原理是：为每个块范围（默认 128 页）记录索引列的最小值和最大值。查询时能排除掉不相关的块，只扫描可能命中的范围。它**永远无法像 B-tree 那样精确定位到某一行**，但体积小、构建快，缓存友好。\n\n## 什么时候用 B-tree\n\n- **小表**\n- 需要**精确匹配**（exact match）的查询\n- 数据物理顺序与索引列**不相关**的情况\n\n## 关键：检查相关性（correlation）\n\nBRIN 是否有效，取决于索引列的值与物理存储顺序的相关性。可以用 `pg_stats` 查看：\n\n```sql\nSELECT correlation\nFROM pg_stats\nWHERE tablename = 'your_table'\n  AND attname = 'your_column';\n```\n\n- 相关性接近 **1**（如按时间追加的 `run_at` 列）→ BRIN 是很好的候选\n- 相关性低（如 `server_id` 这类不随物理顺序变化的列）→ BRIN 效果差\n\n注意：即使相关性很高（如 0.97），也不代表一定有效——数据中的**离群值（outliers）**仍可能破坏 BRIN 的效果，需要实际测试。\n\n## 调优：pages_per_range\n\n`pages_per_range` 控制每个块范围包含多少页，默认 128：\n\n```sql\nCREATE INDEX brin_custom_idx\nON measurements USING BRIN (temperature)\nWITH (pages_per_range = 32);\n```\n\n- **值越小** → 查询性能越好，但索引占用空间越大\n- **值越大** → 索引更小，但过滤精度下降\n\n## 实践建议\n\n1. **不要盲目假设 BRIN 一定更快**——它通常比 B-tree 快，但并非万能。应针对实际场景对比测试。\n2. 用 `pg_stats.correlation` 判断候选列是否适合 BRIN。\n3. 根据查询模式调整 `pages_per_range`。\n4. 表越大，BRIN 相对 B-tree 的收益越明显（案例中 100 万行表，BRIN 索引比 B-tree 小约 1000 倍）。\n\n**一句话总结**：小表或需要精确匹配 → B-tree；大表 + 数据物理有序 + 范围查询 → BRIN，但务必先验证相关性并实测。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确比较 B-tree 与 BRIN 的规模、相关性、范围查询和空间取舍。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q028",
+      "difficulty": "out_of_scope",
+      "retrieved_ids": [],
+      "retrieval_batches": [
+        []
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "{\"query\": \"Kubernetes PodDisruptionBudget 配置 示例\", \"follow_up_questions\": null, \"answer\": null, \"images\": [], \"results\": [{\"url\": \"https://k8s-examples.container-solutions.com/examples/PodDisruptionBudget/PodDisruptionBudget.html\", \"title\": \"PodDisruptionBudget - Kubernetes examples\", \"content\": \"## Pod Disruption Budget Example\\n\\n1. Make sure Pod Disruption Budget is supported by your provider and/or cluster owner.\\n2. Change the metadata `name` tag to the name you want.\\n3. Set the `app` value. All pods that have this label will fall under this Pod Disruption Budget.\\n4. Set the `minAvailable` or `maxUnavailable` value. This can be an integer (for example when specififying minimum 3 pods should be available) or a percentage (for example when maximum 50% may be unavailable).\\n\\nReference: [...] # PodDisruptionBudget\\n\\n## pod-disruption-budget-max-unavailable.yaml\\n\\n```\\n--- apiVersion:policy/v1 kind: PodDisruptionBudget metadata: name:pod-disruption-budget-max-unavailable-simple spec: maxUnavailable: \\\" 10%\\\" selector: matchLabels: app:app-simple\\n```\\n\\n## pod-disruption-budget-min-available.yaml\\n\\n```\\n--- apiVersion:policy/v1 kind: PodDisruptionBudget metadata: name:pod-disruption-budget-min-available-simple spec: minAvailable: 2 selector: matchLabels: app:app-simple\\n```\", \"score\": 0.8997663, \"raw_content\": null, \"id\": \"572274-00\"}, {\"url\": \"https://kubernetes.io/zh/docs/tasks/run-application/configure-pdb\", \"title\": \"为应用程序设置干扰预算（Disruption Budget） | Kubernetes\", \"content\": \"用户在同一个 `PodDisruptionBudget` 中只能够指定 `maxUnavailable` 和 `minAvailable` 中的一个。 `maxUnavailable` 只能够用于控制存在同一个关联控制器的 Pod 的驱逐（即不受控制器控制的 Pod 不在 `maxUnavailable` 控制范围内）。在下面的示例中， “所需副本”指的是相应控制器的 `scale`，控制器对 `PodDisruptionBudget` 所选择的 Pod 进行管理。\\n\\n示例 1：设置 `minAvailable` 值为 5 的情况下，驱逐时需保证 PodDisruptionBudget 的 `selector` 选中的 Pod 中 5 个或 5 个以上处于健康状态。\\n\\n示例 2：设置 `minAvailable` 值为 30% 的情况下，驱逐时需保证 Pod 所需副本的至少 30% 处于健康状态。\\n\\n示例 3：设置 `maxUnavailable` 值为 5 的情况下，驱逐时需保证所需副本中最多 5 个处于不可用状态。 [...] 示例 4：设置 `maxUnavailable` 值为 30% 的情况下，只要不健康的副本数量不超过所需副本总数的 30% （取整到最接近的整数），就允许驱逐。如果所需副本的总数仅为一个，则仍允许该单个副本中断， 从而导致不可用性实际达到 100%。\\n\\n在典型用法中，干扰预算会被用于一个控制器管理的一组 Pod 中 —— 例如：一个 ReplicaSet 或 StatefulSet 中的 Pod。\\n\\n#### 说明：\\n\\n干扰预算并不能真正保证指定数量/百分比的 Pod 一直处于运行状态。例如：当 Pod 集合的规模处于预算指定的最小值时，承载集合中某个 Pod 的节点发生了故障，这样就导致集合中可用 Pod 的数量低于预算指定值。预算只能够针对自发的驱逐提供保护，而不能针对所有 Pod 不可用的诱因。 [...] 如果你将 `maxUnavailable` 的值设置为 0%（或 0）或设置 `minAvailable` 值为 100%（或等于副本数） 则会阻止所有的自愿驱逐。 当你为 ReplicaSet 等工作负载对象设置阻止自愿驱逐时，你将无法成功地腾空运行其中一个 Pod 的节点。 如果你尝试腾空正在运行着被阻止驱逐的 Pod 的节点，则腾空永远不会完成。 按照 `PodDisruptionBudget` 的语义，这是允许的。\\n\\n用户可以在下面看到 Pod 干扰预算定义的示例，它们与带有 `app: zookeeper` 标签的 Pod 相匹配：\\n\\n使用 minAvailable 的 PDB 示例：\\n\\n`policy/zookeeper-pod-disruption-budget-minavailable.yaml`\", \"score\": 0.8952393, \"raw_content\": null, \"id\": \"0cc1e5-01\"}, {\"url\": \"https://zesty.co/finops-glossary/k8s-pod-disruption-budgets\", \"title\": \"Pod Disruption Budgets (PDB) in Kubernetes: A Complete Guide\", \"content\": \"1. Deploy and Configure a PDB:  \\n   Attach a PDB to a deployment or stateful set. For example:  \\n   `apiVersion: policy/v1 kind: PodDisruptionBudget metadata: name: example-pdb spec: minAvailable: 2 selector: matchLabels: app: example`\\n2. Simulate a Node Drain:  \\n   Run a node drain command to simulate voluntary disruption:bashCopy code`kubectl drain  --ignore-daemonsets`\\n3. Monitor Pod Status: [...] For instance, if you set a PDB with `minAvailable: 2` for a deployment with three replicas, at least two pods must always be running. Kubernetes uses this information to control disruptions, ensuring availability while allowing operational flexibility.\\n\\n## How to Test a Pod Disruption Budget\\n\\nTesting your PDBs helps ensure they protect application availability while permitting necessary operations. Here’s a practical approach:\", \"score\": 0.8757978, \"raw_content\": null, \"id\": \"c358c8-02\"}], \"response_time\": 0.98, \"request_id\": \"82e3f94a-d682-44d1-a680-7c10e7789f4d\"}"
+      ],
+      "retrieval_evaluable": false,
+      "recall": 0.0,
+      "mrr": 0.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5081.7059610000115,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "# 在 Kubernetes 中配置 PodDisruptionBudget (PDB)\n\n## 基本结构\n\nPDB 使用 `policy/v1` API 版本，通过 `selector` 选中一组 Pod，并指定 `minAvailable` 或 `maxUnavailable` 中的一个（两者不能同时指定）。\n\n### 示例 1：使用 minAvailable（整数）\n\n```yaml\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: pod-disruption-budget-min-available-simple\nspec:\n  minAvailable: 2\n  selector:\n    matchLabels:\n      app: app-simple\n```\n\n### 示例 2：使用 maxUnavailable（百分比）\n\n```yaml\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: pod-disruption-budget-max-unavailable-simple\nspec:\n  maxUnavailable: \"10%\"\n  selector:\n    matchLabels:\n      app: app-simple\n```\n\n## 配置步骤\n\n1. 确认你的集群/提供商支持 PodDisruptionBudget。\n2. 修改 `metadata.name` 为你想要的名称。\n3. 设置 `app` 标签值——所有带该标签的 Pod 都会归入此 PDB 管理。\n4. 设置 `minAvailable` 或 `maxUnavailable`，可以是整数（如最少 3 个 Pod 可用）或百分比（如最多 50% 不可用）。\n\n## 语义说明\n\n- **minAvailable**：驱逐时需保证 selector 选中的 Pod 中至少有该数量/比例处于健康状态。\n- **maxUnavailable**：驱逐时需保证所需副本中最多有该数量/比例处于不可用状态。它只适用于由同一控制器管理的 Pod。\n- 典型用法是配合 ReplicaSet、StatefulSet 等控制器管理的一组 Pod。\n\n## 注意事项\n\n- PDB 只针对**自愿驱逐**提供保护，不能防止节点故障等非自愿中断导致的 Pod 不可用。\n- 将 `maxUnavailable` 设为 `0`（或 `0%`），或将 `minAvailable` 设为 `100%`（或等于副本数），会阻止所有自愿驱逐，导致节点腾空（drain）永远无法完成。\n\n## 测试方法\n\n可以运行节点腾空命令来模拟自愿中断，验证 PDB 是否生效：\n\n```bash\nkubectl drain <node-name> --ignore-daemonsets\n```\n\n例如，为 3 副本的 Deployment 设置 `minAvailable: 2`，则至少 2 个 Pod 必须始终运行，Kubernetes 会据此控制中断，在保证可用性的同时允许运维操作。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确说明 policy/v1、selector、minAvailable 和 maxUnavailable。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q029",
+      "difficulty": "out_of_scope",
+      "retrieved_ids": [],
+      "retrieval_batches": [
+        []
+      ],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [
+        "{\"query\": \"Django ORM 创建和运行数据库迁移 makemigrations migrate\", \"follow_up_questions\": null, \"answer\": null, \"images\": [], \"results\": [{\"url\": \"https://docs.djangoproject.com/zh-hans/6.1/howto/writing-migrations\", \"title\": \"如何创建数据库迁移 | Django 文档 | Django\", \"content\": \"在模型中以 `default=uuid.uuid4` 和 `unique=True` 参数添加该字段（根据字段类型，为其选择一个合适的默认值）。\\n 运行 `makemigrations` 命令。这将生成一个 `AddField` 操作的迁移。\\n 通过运行 `makemigrations myapp --empty` 两次为同一应用生成两个相同的空迁移文件。我们已在以下例子中将迁移文件重命名成有意义的名字。\\n 从自动生成的迁移（3个新文件中的第一个）中将 `AddField` 操作拷贝至上一个迁移，将 `AddField` 改为 `AlterField`，添加 `uuid` 和 `models` 的导入。例子：\\n\\n  `0006_remove_uuid_null.py`¶ [...] ```\\n   class  Migration(migrations. Migration): dependencies =[(\\\"myapp\\\", \\\"0003_auto_20150129_1705\\\"),] operations =[migrations. AddField(model_name = \\\"mymodel\\\", name = \\\"uuid\\\", field = models. UUIDField(default = uuid. uuid4, unique = True),),]\\n  ```\\n\\n  将 `unique=True` 改为 `null=True`——这将创建中间 null 字段，并延迟创建唯一性约束，直到我们已为所以行填充了唯一值。\\n 在第一个空的迁移文件中，添加一个 `RunPython` 或 `RunSQL` 操作，为每个已存在的行创建一个唯一值（本例中 UUID）。同时添加 `uuid` 的导入。例子：\\n\\n  `0005_populate_uuid_values.py`¶ [...] from  django.db  import migrations, models import  django.db.models.deletion class  Migration(migrations. Migration): dependencies =[(\\\"core\\\", \\\"0001_initial\\\"),] operations =[migrations. SeparateDatabaseAndState(database_operations =[# Old table name from checking with sqlmigrate, new table# name from AuthorBook._meta.db_table. migrations. RunSQL(sql = \\\"ALTER TABLE core_book_authors RENAME TO core_authorbook\\\", reverse_sql = \\\"ALTER TABLE core_authorbook RENAME TO core_book_authors\\\",),],\", \"score\": 0.83452857, \"raw_content\": null, \"id\": \"0549ca-00\"}, {\"url\": \"https://docs.djangoproject.com/zh-hans/6.1/topics/migrations\", \"title\": \"迁移 | Django 文档 | Django\", \"content\": \"跳到主要内容\\n\\nDjango\\n\\nThe web framework for perfectionists with deadlines.\\n\\n Getting Help\\n\\n sv\\n pt-br\\n pl\\n ko\\n ja\\n it\\n id\\n fr\\n es\\n en\\n el\\n\\n dev\\n 6.0\\n 5.2\\n 5.1\\n 5.0\\n 4.2\\n 4.1\\n 4.0\\n 3.2\\n 3.1\\n 3.0\\n 2.2\\n 2.1\\n 2.0\\n\\n# 迁移¶\\n\\n迁移是 Django 将你对模型的修改（例如增加一个字段，删除一个模型）应用至数据库架构中的方式。它们被设计的尽可能自动化，但你仍需要知道何时构建和运行迁移，你还需要了解一些常见问题。\\n\\n## 命令¶\\n\\n以下是几个常用的与迁移交互的命令，即 Django 处理数据库架构的方式：\\n\\n `migrate`，负责应用和撤销迁移。\\n `makemigrations`，基于模型的修改创建迁移。\\n `sqlmigrate`，展示迁移使用的 SQL 语句。\\n `showmigrations`，列出项目的迁移和迁移的状态。 [...] ## 工作流程¶\\n\\nThe examples in this section use a `books` app with the following models:\\n\\n```\\n from  django.db  import models class  Author(models. Model): name = models. CharField(max_length = 100) class  Book(models. Model): title = models. CharField(max_length = 100) author = models. ForeignKey(Author, on_delete = models. CASCADE)\\n```\\n\\nDjango 可以为您创建迁移。对您的模型进行更改，比如添加一个字段或删除一个模型，然后运行 `makemigrations`：\\n\\n```\\n     for  'books'        \\n``` [...] 你应该将迁移看作是数据库架构的版本控制系统。 `makemigrations` 负责将模型修改打包进独立的迁移文件中——类似提交修改，而 `migrate` 负责将其应用至数据库。\\n\\n每个应用的迁移文件位于该应用的 \\\"migrations\\\" 目录中，他们被设计成应用代码的一部分，与应用代码一起被提交，被发布。你只需在开发机上构建一次，就可以在同事的电脑或测试机上运行同样的迁移而保证结果一致。最后在生产环境运行同样的迁移。\\n\\n通过修改配置 `MIGRATION_MODULES` 可以重写包含迁移的应用的包名。\\n\\nDjango 会在修改模型或字段时生成迁移——即便修改的是不会影响数据库的配置——因为唯一能确保结果正确性的方法时完整记录修改历史，而且这些东西你以后可能在某些数据迁移中用的到（例如，已设置了自定义验证器的时候）。\\n\\n## 后端支持¶\\n\\n所有 Django 支持的数据库后端都支持迁移，还有些支持表修改（通过 SchemaEditor 类实现）的第三方后端也支持。\\n\\n### PostgreSQL¶\\n\\nPostgreSQL 在架构支持方面是所有数据库中是最强的。\", \"score\": 0.82492816, \"raw_content\": null, \"id\": \"066593-01\"}, {\"url\": \"https://www.cnblogs.com/emanlee/p/18017241\", \"title\": \"Django数据库迁移命令 - emanlee - 博客园\", \"content\": \"博客园logo\\n搜索\\n搜索\\n搜索\\n搜索\\n写随笔\\n我的博客\\n短消息\\n简洁模式\\n用户头像\\n返回主页\\n\\n# \\n\\n## \\n\\n# Django数据库迁移命令\\n\\nDjango数据库迁移命令\\n\\n迁移命令 migrate\\n\\npython manage.py migrate  # 全部项目\\n\\npython manage.py migrate  AppName # 一个项目\\n\\n执行迁移命令必须确保当前在项目目录下(执行ls命令能看到 manage.py文件), 然后使用  python manage.py migrate 即可。\\n\\n如果IDE为pycharm也可以在运行/调试配置中创建命令,下方我所有迁移命令均在pycharm中完成。\\n\\nmakemigrations (生成迁移脚本)  \\n  \\nmakemigrations 是我们多次使用的命令,他会将我们 model.py 中创建的数据库模型生成迁移脚本库,每次只要我们的数据库模型model.py中发生了变化,使用 python manage.py makemigrations 就会在migrations中创建一个记录我们变化的脚本\", \"score\": 0.7950386, \"raw_content\": null, \"id\": \"93c6ec-02\"}], \"response_time\": 1.1, \"request_id\": \"cd184539-69d3-494c-bbf9-940a38bc05aa\"}"
+      ],
+      "retrieval_evaluable": false,
+      "recall": 0.0,
+      "mrr": 0.0,
+      "tool_acc": 1.0,
+      "latency_ms": 5017.964793999994,
+      "input_tokens": null,
+      "output_tokens": null,
+      "answer": "在 Django 中，迁移（migration）是模型修改同步到数据库架构的方式。核心命令是 `makemigrations`（创建迁移）和 `migrate`（运行迁移）。\n\n## 工作流程\n\n1. **修改模型**：在应用的 `models.py` 中增删字段或模型。\n2. **创建迁移**：运行 `makemigrations`，Django 会把模型修改打包成迁移文件。\n3. **运行迁移**：运行 `migrate`，把迁移应用到数据库。\n\nDjango 文档把迁移比作数据库架构的版本控制系统：`makemigrations` 类似提交修改，`migrate` 负责应用修改。\n\n## 常用命令\n\n- `makemigrations`：基于模型的修改创建迁移。\n- `migrate`：应用和撤销迁移。\n- `sqlmigrate`：展示迁移使用的 SQL 语句。\n- `showmigrations`：列出项目的迁移及其状态。\n\n## 示例\n\n假设有一个 `books` 应用：\n\n```python\nfrom django.db import models\n\nclass Author(models.Model):\n    name = models.CharField(max_length=100)\n\nclass Book(models.Model):\n    title = models.CharField(max_length=100)\n    author = models.ForeignKey(Author, on_delete=models.CASCADE)\n```\n\n修改模型后，在项目目录下（能看到 `manage.py`）执行：\n\n```bash\n# 为 books 应用创建迁移\npython manage.py makemigrations books\n\n# 应用全部迁移\npython manage.py migrate\n\n# 只应用某个应用的迁移\npython manage.py migrate books\n```\n\n## 说明\n\n- 每个应用的迁移文件位于该应用的 `migrations` 目录中，应作为应用代码的一部分一起提交、发布。在开发机上构建一次，即可在同事电脑、测试机和生产环境运行同样的迁移，保证结果一致。\n- 可以通过配置 `MIGRATION_MODULES` 重写包含迁移的应用的包名。\n- 所有 Django 支持的数据库后端都支持迁移；PostgreSQL 在架构支持方面最强。\n- 对于需要数据填充的复杂场景（如为已有行添加唯一 UUID 字段），可先创建空迁移（`makemigrations myapp --empty`），再在其中使用 `RunPython` 或 `RunSQL` 操作。\n\n以上内容来自 Django 6.1 文档及博客园文章。",
+      "answer_status": "scored",
+      "answer_score": 1,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 1,
+        "relevance": 1
+      },
+      "answer_reason": "正确说明 makemigrations、migrate 以及迁移文件的作用。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    },
+    {
+      "id": "q030",
+      "difficulty": "out_of_scope",
+      "retrieved_ids": [],
+      "retrieval_batches": [],
+      "retrieved_doc_ids": [],
+      "retrieved_contexts": [],
+      "retrieval_evaluable": false,
+      "recall": 0.0,
+      "mrr": 0.0,
+      "tool_acc": 0.0,
+      "latency_ms": 2485.0042930000027,
+      "input_tokens": 1964,
+      "output_tokens": 630,
+      "answer": "CSS 中让元素水平和垂直居中有多种方法，取决于你的具体场景（元素尺寸是否已知、父容器布局方式等）。下面按常用程度介绍几种：\n\n## 1. Flexbox（最推荐，现代通用方案）\n\n```css\n.parent {\n  display: flex;\n  justify-content: center; /* 水平居中 */\n  align-items: center;     /* 垂直居中 */\n}\n```\n\n不需要知道子元素尺寸，一行代码搞定，兼容性也很好。\n\n## 2. Grid（同样简洁）\n\n```css\n.parent {\n  display: grid;\n  place-items: center; /* 同时水平+垂直居中 */\n}\n```\n\n`place-items: center` 是 `align-items` 和 `justify-items` 的简写。\n\n## 3. 绝对定位 + transform（元素尺寸未知时）\n\n```css\n.parent {\n  position: relative;\n}\n.child {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n```\n\n`translate(-50%, -50%)` 是相对于元素自身尺寸的，所以不需要知道宽高。\n\n## 4. 绝对定位 + margin: auto（元素尺寸已知）\n\n```css\n.parent {\n  position: relative;\n}\n.child {\n  position: absolute;\n  inset: 0;          /* 等价于 top/right/bottom/left: 0 */\n  margin: auto;\n  width: 200px;\n  height: 100px;\n}\n```\n\n需要给子元素设置明确的宽高，`margin: auto` 才能生效。\n\n## 5. 绝对定位 + 负 margin（尺寸已知）\n\n```css\n.child {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  width: 200px;\n  height: 100px;\n  margin-top: -50px;   /* 高度的一半 */\n  margin-left: -100px; /* 宽度的一半 */\n}\n```\n\n## 6. 行内元素 / 文本居中\n\n```css\n.parent {\n  height: 200px;\n  line-height: 200px; /* 与高度相同，实现单行文本垂直居中 */\n  text-align: center; /* 水平居中 */\n}\n```\n\n只适合单行文本，多行会出问题。\n\n## 7. table-cell（老式方案）\n\n```css\n.parent {\n  display: table-cell;\n  vertical-align: middle;\n  text-align: center;\n}\n```\n\n---\n\n**选择建议：**\n\n| 场景 | 推荐方案 |\n|------|----------|\n| 现代项目、通用 | Flexbox 或 Grid |\n| 弹窗/浮层、脱离文档流 | 绝对定位 + transform |\n| 单行文本 | line-height + text-align |\n| 需要兼容很老的浏览器 | table-cell 或负 margin |\n\n日常开发中，**Flexbox 的 `justify-content: center` + `align-items: center`** 是最常用也最省心的写法。",
+      "answer_status": "scored",
+      "answer_score": 0.75,
+      "answer_dimensions": {
+        "correctness": 1,
+        "completeness": 1,
+        "faithfulness": 0,
+        "relevance": 1
+      },
+      "answer_reason": "CSS 居中方案正确完整，但未按预期调用联网工具，没有本轮上下文证据。",
+      "answer_evaluator": "codex-assisted-review-v3",
+      "evaluation_error": null,
+      "error": null
+    }
+  ],
+  "scoring": {
+    "source_run": "agent-reranker-regression-20260929.json",
+    "scores_file_sha256": "8baae40a3f638bc5b144efc9a98ebdf09d17297ce402001d821e3eb55bbf39d6"
+  }
+}

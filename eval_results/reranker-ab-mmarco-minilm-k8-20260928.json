@@ -1,0 +1,3623 @@
+{
+  "experiment": "dense_top5_vs_dense_top10_cross_encoder_top5",
+  "timestamp": "2026-09-28T13:22:24.586510+00:00",
+  "config": {
+    "dataset": "domain/evalset.jsonl",
+    "collection": "fastapi_docs_hybrid",
+    "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "reranker_model": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+    "device": "cpu",
+    "candidate_k": 8,
+    "final_k": 5,
+    "metric_scope": "source_id/page-level; not chunk-level answer sufficiency"
+  },
+  "summary": {
+    "cases": 25,
+    "dense_recall@5": 0.7533,
+    "dense_mrr@5": 0.6713,
+    "dense_candidate_recall@8": 0.8067,
+    "reranked_recall@5": 0.8067,
+    "reranked_mrr@5": 0.756,
+    "recall_gain": 0.0533,
+    "mrr_gain": 0.0847,
+    "candidate_headroom": 0.0533,
+    "dense_latency_p50_ms": 31.2,
+    "dense_latency_p95_ms": 38.2,
+    "reranker_only_latency_p50_ms": 175.5,
+    "reranker_only_latency_p95_ms": 249.0,
+    "reranked_total_latency_p50_ms": 191.5,
+    "reranked_total_latency_p95_ms": 264.8,
+    "added_p95_ms": 226.6,
+    "decision": "integrate",
+    "decision_rule": {
+      "candidate_headroom_at_least": 0.05,
+      "reranked_recall_not_lower": true,
+      "recall_or_mrr_gain_at_least": 0.05,
+      "added_p95_ms_at_most": 500
+    }
+  },
+  "cases": [
+    {
+      "id": "q001",
+      "question": "FastAPI 默认把交互式 API 文档放在哪两个地址？",
+      "relevant_ids": [
+        "first_steps"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          },
+          {
+            "rank": 3,
+            "doc_id": "path_params#chunk-003",
+            "source_id": "path_params",
+            "text_preview": "文档¶ 访问 http://127.0.0.1:8000/docs，查看自动生成的交互式 API 文档：   提示 还是使用 Python 类型声明，FastAPI 提供了（集成 Swagger UI 的）自动交互式文档。 注意，路径参数的类型是整数。  基于标准的好处，备选文档¶ FastAPI 使用 OpenAPI 生成概图，所以能兼容很多工具。 因此，"
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-011",
+            "source_id": "first_steps",
+            "text_preview": "步骤 2：创建一个 FastAPI「实例」¶ Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/\") async def root():     return {\"message\": \"Hello World\"}     这里的变量 app 会是 FastAPI "
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          },
+          {
+            "rank": 3,
+            "doc_id": "path_params#chunk-003",
+            "source_id": "path_params",
+            "text_preview": "文档¶ 访问 http://127.0.0.1:8000/docs，查看自动生成的交互式 API 文档：   提示 还是使用 Python 类型声明，FastAPI 提供了（集成 Swagger UI 的）自动交互式文档。 注意，路径参数的类型是整数。  基于标准的好处，备选文档¶ FastAPI 使用 OpenAPI 生成概图，所以能兼容很多工具。 因此，"
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-011",
+            "source_id": "first_steps",
+            "text_preview": "步骤 2：创建一个 FastAPI「实例」¶ Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/\") async def root():     return {\"message\": \"Hello World\"}     这里的变量 app 会是 FastAPI "
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 6,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的"
+          },
+          {
+            "rank": 7,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "path_params#chunk-003",
+            "source_id": "path_params",
+            "text_preview": "文档¶ 访问 http://127.0.0.1:8000/docs，查看自动生成的交互式 API 文档：   提示 还是使用 Python 类型声明，FastAPI 提供了（集成 Swagger UI 的）自动交互式文档。 注意，路径参数的类型是整数。  基于标准的好处，备选文档¶ FastAPI 使用 OpenAPI 生成概图，所以能兼容很多工具。 因此，",
+            "reranker_score": 1.999308
+          },
+          {
+            "rank": 2,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程",
+            "reranker_score": 1.736627
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import",
+            "reranker_score": 0.923869
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的",
+            "reranker_score": -2.189535
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直",
+            "reranker_score": -2.774056
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 20.5,
+        "dense_top10": 17.3,
+        "reranker": 157.8,
+        "dense_top10_plus_reranker": 175.1
+      }
+    },
+    {
+      "id": "q002",
+      "question": "路径参数声明为 int 后，FastAPI 会做什么？",
+      "relevant_ids": [
+        "path_params"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 0.25,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 2,
+            "doc_id": "query_params#chunk-000",
+            "source_id": "query_params",
+            "text_preview": "查询参数¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  声明的参数不是路径参数时，路径操作函数会把该参数自动解释为“查询”参数。 Python 3.10+   from fastapi import FastAPI  app ="
+          },
+          {
+            "rank": 3,
+            "doc_id": "query_params#chunk-003",
+            "source_id": "query_params",
+            "text_preview": "提示 注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。  查询参数类型转换¶ 参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/items/{it"
+          },
+          {
+            "rank": 4,
+            "doc_id": "path_params#chunk-013",
+            "source_id": "path_params",
+            "text_preview": "本例中，参数名为 file_path，结尾部分的 :path 说明该参数应匹配任意路径。 用法如下： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/files/{file_path:path}\") async def read_file(file_path: "
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-008",
+            "source_id": "dependencies",
+            "text_preview": "接收到新的请求时，FastAPI 会负责：  用正确的参数调用你的依赖项（“dependable”）函数 获取函数返回的结果 将该结果赋值给你的路径操作函数中的参数  graph TB  common_parameters([\"common_parameters\"]) read_items[\"/items/\"] read_users[\"/users/\"]  "
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 2,
+            "doc_id": "query_params#chunk-000",
+            "source_id": "query_params",
+            "text_preview": "查询参数¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  声明的参数不是路径参数时，路径操作函数会把该参数自动解释为“查询”参数。 Python 3.10+   from fastapi import FastAPI  app ="
+          },
+          {
+            "rank": 3,
+            "doc_id": "query_params#chunk-003",
+            "source_id": "query_params",
+            "text_preview": "提示 注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。  查询参数类型转换¶ 参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/items/{it"
+          },
+          {
+            "rank": 4,
+            "doc_id": "path_params#chunk-013",
+            "source_id": "path_params",
+            "text_preview": "本例中，参数名为 file_path，结尾部分的 :path 说明该参数应匹配任意路径。 用法如下： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/files/{file_path:path}\") async def read_file(file_path: "
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-008",
+            "source_id": "dependencies",
+            "text_preview": "接收到新的请求时，FastAPI 会负责：  用正确的参数调用你的依赖项（“dependable”）函数 获取函数返回的结果 将该结果赋值给你的路径操作函数中的参数  graph TB  common_parameters([\"common_parameters\"]) read_items[\"/items/\"] read_users[\"/users/\"]  "
+          },
+          {
+            "rank": 6,
+            "doc_id": "first_steps#chunk-018",
+            "source_id": "first_steps",
+            "text_preview": "导入 FastAPI。 创建一个 app 实例。 编写一个路径操作装饰器，如 @app.get(\"/\")。 定义一个路径操作函数，如 def root(): ...。 使用命令 fastapi dev 运行开发服务器。 可选：使用 fastapi deploy 部署你的应用。"
+          },
+          {
+            "rank": 7,
+            "doc_id": "middleware#chunk-000",
+            "source_id": "middleware",
+            "text_preview": "中间件¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以向 FastAPI 应用添加中间件。 “中间件”是一个函数，它会在每个特定的路径操作处理每个请求之前运行，也会在返回每个响应之前运行。"
+          },
+          {
+            "rank": 8,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 0.2,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些",
+            "reranker_score": 4.192118
+          },
+          {
+            "rank": 2,
+            "doc_id": "query_params#chunk-000",
+            "source_id": "query_params",
+            "text_preview": "查询参数¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  声明的参数不是路径参数时，路径操作函数会把该参数自动解释为“查询”参数。 Python 3.10+   from fastapi import FastAPI  app =",
+            "reranker_score": 4.01274
+          },
+          {
+            "rank": 3,
+            "doc_id": "query_params#chunk-003",
+            "source_id": "query_params",
+            "text_preview": "提示 注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。  查询参数类型转换¶ 参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/items/{it",
+            "reranker_score": 3.912373
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-008",
+            "source_id": "dependencies",
+            "text_preview": "接收到新的请求时，FastAPI 会负责：  用正确的参数调用你的依赖项（“dependable”）函数 获取函数返回的结果 将该结果赋值给你的路径操作函数中的参数  graph TB  common_parameters([\"common_parameters\"]) read_items[\"/items/\"] read_users[\"/users/\"]  ",
+            "reranker_score": 2.155098
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-013",
+            "source_id": "path_params",
+            "text_preview": "本例中，参数名为 file_path，结尾部分的 :path 说明该参数应匹配任意路径。 用法如下： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/files/{file_path:path}\") async def read_file(file_path: ",
+            "reranker_score": 0.49557
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 19.7,
+        "dense_top10": 18.6,
+        "reranker": 181.6,
+        "dense_top10_plus_reranker": 200.2
+      }
+    },
+    {
+      "id": "q003",
+      "question": "怎样使用 OAuth2PasswordBearer 从请求头读取 Bearer Token？",
+      "relevant_ids": [
+        "security_first_steps"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-007",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 “Bearer” 令牌并非唯一选项。 但它非常适合我们的用例。 对于大多数用例，它也可能是最佳选择，除非你是 OAuth2 专家，并明确知道为何其他方案更适合你的需求。 在那种情况下，FastAPI 同样提供了相应的构建工具。  创建 OAuth2PasswordBearer 类实例时，需要传入 tokenUrl 参数。该参数包含客户端（运行在用户浏览"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-007",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 “Bearer” 令牌并非唯一选项。 但它非常适合我们的用例。 对于大多数用例，它也可能是最佳选择，除非你是 OAuth2 专家，并明确知道为何其他方案更适合你的需求。 在那种情况下，FastAPI 同样提供了相应的构建工具。  创建 OAuth2PasswordBearer 类实例时，需要传入 tokenUrl 参数。该参数包含客户端（运行在用户浏览"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 6,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包"
+          },
+          {
+            "rank": 7,
+            "doc_id": "response_model#chunk-014",
+            "source_id": "response_model",
+            "text_preview": "这样一来，我们既能从编辑器和 mypy 获得工具支持（这段代码在类型上是正确的），也能从 FastAPI 获得数据过滤。 这是如何做到的？我们来看看。🤓 类型注解与工具链¶ 先看看编辑器、mypy 和其他工具会如何看待它。 BaseUser 有基础字段。然后 UserIn 继承自 BaseUser 并新增了 password 字段，因此它包含了两个模型的全部"
+          },
+          {
+            "rank": 8,
+            "doc_id": "security_first_steps#chunk-002",
+            "source_id": "security_first_steps",
+            "text_preview": "app = FastAPI()  oauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")   @app.get(\"/items/\") async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):     return {\"toke"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-007",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 “Bearer” 令牌并非唯一选项。 但它非常适合我们的用例。 对于大多数用例，它也可能是最佳选择，除非你是 OAuth2 专家，并明确知道为何其他方案更适合你的需求。 在那种情况下，FastAPI 同样提供了相应的构建工具。  创建 OAuth2PasswordBearer 类实例时，需要传入 tokenUrl 参数。该参数包含客户端（运行在用户浏览",
+            "reranker_score": 6.287223
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar",
+            "reranker_score": 6.174085
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-002",
+            "source_id": "security_first_steps",
+            "text_preview": "app = FastAPI()  oauth2_scheme = OAuth2PasswordBearer(tokenUrl=\"token\")   @app.get(\"/items/\") async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):     return {\"toke",
+            "reranker_score": 5.935165
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直",
+            "reranker_score": 4.25273
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA",
+            "reranker_score": 2.190733
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.8,
+        "dense_top10": 15.6,
+        "reranker": 242.9,
+        "dense_top10_plus_reranker": 258.5
+      }
+    },
+    {
+      "id": "q004",
+      "question": "FastAPI 如何区分必填查询参数和可选查询参数？",
+      "relevant_ids": [
+        "query_params"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          },
+          {
+            "rank": 2,
+            "doc_id": "query_params#chunk-003",
+            "source_id": "query_params",
+            "text_preview": "提示 注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。  查询参数类型转换¶ 参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/items/{it"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 4,
+            "doc_id": "request_body#chunk-001",
+            "source_id": "request_body",
+            "text_preview": "注意 发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。 规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。 由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。  导入 Pydantic 的 Bas"
+          },
+          {
+            "rank": 5,
+            "doc_id": "query_params#chunk-005",
+            "source_id": "query_params",
+            "text_preview": "必选查询参数¶ 为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。 如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。 如果要把查询参数设置为必选，就不要声明默认值： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get("
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          },
+          {
+            "rank": 2,
+            "doc_id": "query_params#chunk-003",
+            "source_id": "query_params",
+            "text_preview": "提示 注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。  查询参数类型转换¶ 参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/items/{it"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 4,
+            "doc_id": "request_body#chunk-001",
+            "source_id": "request_body",
+            "text_preview": "注意 发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。 规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。 由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。  导入 Pydantic 的 Bas"
+          },
+          {
+            "rank": 5,
+            "doc_id": "query_params#chunk-005",
+            "source_id": "query_params",
+            "text_preview": "必选查询参数¶ 为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。 如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。 如果要把查询参数设置为必选，就不要声明默认值： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get("
+          },
+          {
+            "rank": 6,
+            "doc_id": "response_model#chunk-024",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 足够聪明（实际上是 Pydantic 足够聪明）去认识到，即使 description、tax 和 tags 的值与默认值相同，它们也是被显式设置的（而不是取自默认值）。 因此，它们将包含在 JSON 响应中。  提示 请注意默认值可以是任何值，而不仅是 None。 它们可以是一个列表（[]）、值为 10.5 的 float，等等。  res"
+          },
+          {
+            "rank": 7,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "query_params#chunk-005",
+            "source_id": "query_params",
+            "text_preview": "必选查询参数¶ 为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。 如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。 如果要把查询参数设置为必选，就不要声明默认值： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(",
+            "reranker_score": 7.94757
+          },
+          {
+            "rank": 2,
+            "doc_id": "query_params#chunk-003",
+            "source_id": "query_params",
+            "text_preview": "提示 注意，FastAPI 可以识别出 item_id 是路径参数，q 不是路径参数，而是查询参数。  查询参数类型转换¶ 参数还可以声明为 bool 类型，FastAPI 会自动转换参数类型： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/items/{it",
+            "reranker_score": 2.58731
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-024",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 足够聪明（实际上是 Pydantic 足够聪明）去认识到，即使 description、tax 和 tags 的值与默认值相同，它们也是被显式设置的（而不是取自默认值）。 因此，它们将包含在 JSON 响应中。  提示 请注意默认值可以是任何值，而不仅是 None。 它们可以是一个列表（[]）、值为 10.5 的 float，等等。  res",
+            "reranker_score": -1.438733
+          },
+          {
+            "rank": 4,
+            "doc_id": "request_body#chunk-001",
+            "source_id": "request_body",
+            "text_preview": "注意 发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。 规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。 由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。  导入 Pydantic 的 Bas",
+            "reranker_score": -3.000373
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些",
+            "reranker_score": -3.40452
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 34.3,
+        "dense_top10": 16.0,
+        "reranker": 175.5,
+        "dense_top10_plus_reranker": 191.5
+      }
+    },
+    {
+      "id": "q005",
+      "question": "为什么请求体通常声明成 Pydantic 模型？",
+      "relevant_ids": [
+        "request_body"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 0.2,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编"
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验"
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-011",
+            "source_id": "response_model",
+            "text_preview": "因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。 response_model 还是返回类型¶ 在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。 这就是为什么在这个例子里我们必须在 response_model 参数中声明它。 .."
+          },
+          {
+            "rank": 5,
+            "doc_id": "request_body#chunk-008",
+            "source_id": "request_body",
+            "text_preview": "函数参数按如下规则进行识别：  如果该参数也在路径中声明了，它就是路径参数。 如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。 如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。   注意 FastAPI 会根据默认值 = None 知道 q 的值不是必填的。 str | None 并不是 FastAPI"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编"
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验"
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-011",
+            "source_id": "response_model",
+            "text_preview": "因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。 response_model 还是返回类型¶ 在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。 这就是为什么在这个例子里我们必须在 response_model 参数中声明它。 .."
+          },
+          {
+            "rank": 5,
+            "doc_id": "request_body#chunk-008",
+            "source_id": "request_body",
+            "text_preview": "函数参数按如下规则进行识别：  如果该参数也在路径中声明了，它就是路径参数。 如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。 如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。   注意 FastAPI 会根据默认值 = None 知道 q 的值不是必填的。 str | None 并不是 FastAPI"
+          },
+          {
+            "rank": 6,
+            "doc_id": "request_body#chunk-001",
+            "source_id": "request_body",
+            "text_preview": "注意 发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。 规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。 由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。  导入 Pydantic 的 Bas"
+          },
+          {
+            "rank": 7,
+            "doc_id": "response_model#chunk-024",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 足够聪明（实际上是 Pydantic 足够聪明）去认识到，即使 description、tax 和 tags 的值与默认值相同，它们也是被显式设置的（而不是取自默认值）。 因此，它们将包含在 JSON 响应中。  提示 请注意默认值可以是任何值，而不仅是 None。 它们可以是一个列表（[]）、值为 10.5 的 float，等等。  res"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "request_body#chunk-008",
+            "source_id": "request_body",
+            "text_preview": "函数参数按如下规则进行识别：  如果该参数也在路径中声明了，它就是路径参数。 如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。 如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。   注意 FastAPI 会根据默认值 = None 知道 q 的值不是必填的。 str | None 并不是 FastAPI",
+            "reranker_score": 4.592824
+          },
+          {
+            "rank": 2,
+            "doc_id": "request_body#chunk-001",
+            "source_id": "request_body",
+            "text_preview": "注意 发送数据应使用以下之一：POST（最常见）、PUT、DELETE 或 PATCH。 规范中没有定义用 GET 请求发送请求体的行为，但 FastAPI 仍支持这种方式，只用于非常复杂/极端的用例。 由于不推荐，在使用 GET 时，Swagger UI 的交互式文档不会显示请求体的文档，而且中间的代理可能也不支持它。  导入 Pydantic 的 Bas",
+            "reranker_score": 2.180623
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例",
+            "reranker_score": 1.200318
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-011",
+            "source_id": "response_model",
+            "text_preview": "因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。 response_model 还是返回类型¶ 在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。 这就是为什么在这个例子里我们必须在 response_model 参数中声明它。 ..",
+            "reranker_score": 0.319755
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编",
+            "reranker_score": -0.627183
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.0,
+        "dense_top10": 16.5,
+        "reranker": 148.3,
+        "dense_top10_plus_reranker": 164.8
+      }
+    },
+    {
+      "id": "q006",
+      "question": "一个路径操作可以同时接收路径参数、查询参数和请求体吗？",
+      "relevant_ids": [
+        "request_body"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "request_body#chunk-008",
+            "source_id": "request_body",
+            "text_preview": "函数参数按如下规则进行识别：  如果该参数也在路径中声明了，它就是路径参数。 如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。 如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。   注意 FastAPI 会根据默认值 = None 知道 q 的值不是必填的。 str | None 并不是 FastAPI"
+          },
+          {
+            "rank": 2,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 3,
+            "doc_id": "query_params#chunk-005",
+            "source_id": "query_params",
+            "text_preview": "必选查询参数¶ 为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。 如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。 如果要把查询参数设置为必选，就不要声明默认值： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get("
+          },
+          {
+            "rank": 4,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "request_body#chunk-008",
+            "source_id": "request_body",
+            "text_preview": "函数参数按如下规则进行识别：  如果该参数也在路径中声明了，它就是路径参数。 如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。 如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。   注意 FastAPI 会根据默认值 = None 知道 q 的值不是必填的。 str | None 并不是 FastAPI"
+          },
+          {
+            "rank": 2,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 3,
+            "doc_id": "query_params#chunk-005",
+            "source_id": "query_params",
+            "text_preview": "必选查询参数¶ 为不是路径参数的参数声明默认值（至此，仅有查询参数），该参数就不是必选的了。 如果只想把参数设为可选，但又不想指定参数的值，则要把默认值设为 None。 如果要把查询参数设置为必选，就不要声明默认值： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get("
+          },
+          {
+            "rank": 4,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 6,
+            "doc_id": "testing#chunk-012",
+            "source_id": "testing",
+            "text_preview": "传一个路径 或查询 参数，添加到URL上。 传一个JSON体，传一个Python对象(例如一个dict)到参数 json。 如果你需要发送 Form Data 而不是 JSON，使用 data 参数。 要发送 headers，传 dict 给 headers 参数。 对于 cookies，传 dict 给 cookies 参数。  关于如何传数据给后端的更多"
+          },
+          {
+            "rank": 7,
+            "doc_id": "query_params#chunk-001",
+            "source_id": "query_params",
+            "text_preview": "...查询参数为：  skip：值为 0 limit：值为 10  这些值都是 URL 的组成部分，因此，它们的类型“本应”是字符串。 但声明 Python 类型（上例中为 int）之后，这些值就会转换为声明的类型，并进行类型校验。 所有应用于路径参数的流程也适用于查询参数：  （显而易见的）编辑器支持 数据\"解析\" 数据校验 自动文档  默认值¶ 查询参数"
+          },
+          {
+            "rank": 8,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "request_body#chunk-008",
+            "source_id": "request_body",
+            "text_preview": "函数参数按如下规则进行识别：  如果该参数也在路径中声明了，它就是路径参数。 如果该参数是（int、float、str、bool 等）单一类型，它会被当作查询参数。 如果该参数的类型声明为 Pydantic 模型，它会被当作请求体。   注意 FastAPI 会根据默认值 = None 知道 q 的值不是必填的。 str | None 并不是 FastAPI",
+            "reranker_score": 2.117785
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-012",
+            "source_id": "testing",
+            "text_preview": "传一个路径 或查询 参数，添加到URL上。 传一个JSON体，传一个Python对象(例如一个dict)到参数 json。 如果你需要发送 Form Data 而不是 JSON，使用 data 参数。 要发送 headers，传 dict 给 headers 参数。 对于 cookies，传 dict 给 cookies 参数。  关于如何传数据给后端的更多",
+            "reranker_score": 0.655206
+          },
+          {
+            "rank": 3,
+            "doc_id": "query_params#chunk-001",
+            "source_id": "query_params",
+            "text_preview": "...查询参数为：  skip：值为 0 limit：值为 10  这些值都是 URL 的组成部分，因此，它们的类型“本应”是字符串。 但声明 Python 类型（上例中为 int）之后，这些值就会转换为声明的类型，并进行类型校验。 所有应用于路径参数的流程也适用于查询参数：  （显而易见的）编辑器支持 数据\"解析\" 数据校验 自动文档  默认值¶ 查询参数",
+            "reranker_score": -0.130065
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些",
+            "reranker_score": -0.926869
+          },
+          {
+            "rank": 5,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。",
+            "reranker_score": -1.562234
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 20.3,
+        "dense_top10": 18.4,
+        "reranker": 127.2,
+        "dense_top10_plus_reranker": 145.6
+      }
+    },
+    {
+      "id": "q007",
+      "question": "response_model 为什么能避免响应中泄露多余字段？",
+      "relevant_ids": [
+        "response_model"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这"
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-011",
+            "source_id": "response_model",
+            "text_preview": "因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。 response_model 还是返回类型¶ 在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。 这就是为什么在这个例子里我们必须在 response_model 参数中声明它。 .."
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例"
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这"
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-011",
+            "source_id": "response_model",
+            "text_preview": "因此，FastAPI 会负责过滤掉输出模型中未声明的所有数据（使用 Pydantic）。 response_model 还是返回类型¶ 在这个例子中，因为两个模型不同，如果我们将函数返回类型注解为 UserOut，编辑器和工具会抱怨我们返回了无效类型，因为它们是不同的类。 这就是为什么在这个例子里我们必须在 response_model 参数中声明它。 .."
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例"
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编"
+          },
+          {
+            "rank": 6,
+            "doc_id": "response_model#chunk-023",
+            "source_id": "response_model",
+            "text_preview": "response_model_exclude_defaults=True response_model_exclude_none=True  详见 Pydantic 文档中对 exclude_defaults 和 exclude_none 的说明。  默认字段有实际值的数据¶ 但是，如果你的数据在具有默认值的模型字段中有实际的值，例如 ID 为 bar 的项"
+          },
+          {
+            "rank": 7,
+            "doc_id": "response_model#chunk-024",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 足够聪明（实际上是 Pydantic 足够聪明）去认识到，即使 description、tax 和 tags 的值与默认值相同，它们也是被显式设置的（而不是取自默认值）。 因此，它们将包含在 JSON 响应中。  提示 请注意默认值可以是任何值，而不仅是 None。 它们可以是一个列表（[]）、值为 10.5 的 float，等等。  res"
+          },
+          {
+            "rank": 8,
+            "doc_id": "lifespan#chunk-006",
+            "source_id": "lifespan",
+            "text_preview": "app = FastAPI(lifespan=lifespan)   @app.get(\"/predict\") async def predict(x: float):     result = ml_models[\"answer_to_everything\"](x)     return {\"result\": result}     这个函数在 yield"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这",
+            "reranker_score": 3.159689
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-023",
+            "source_id": "response_model",
+            "text_preview": "response_model_exclude_defaults=True response_model_exclude_none=True  详见 Pydantic 文档中对 exclude_defaults 和 exclude_none 的说明。  默认字段有实际值的数据¶ 但是，如果你的数据在具有默认值的模型字段中有实际的值，例如 ID 为 bar 的项",
+            "reranker_score": -0.491605
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-024",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 足够聪明（实际上是 Pydantic 足够聪明）去认识到，即使 description、tax 和 tags 的值与默认值相同，它们也是被显式设置的（而不是取自默认值）。 因此，它们将包含在 JSON 响应中。  提示 请注意默认值可以是任何值，而不仅是 None。 它们可以是一个列表（[]）、值为 10.5 的 float，等等。  res",
+            "reranker_score": -0.700856
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编",
+            "reranker_score": -1.120673
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验",
+            "reranker_score": -1.254863
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 34.5,
+        "dense_top10": 16.3,
+        "reranker": 209.7,
+        "dense_top10_plus_reranker": 226.0
+      }
+    },
+    {
+      "id": "q008",
+      "question": "什么时候应该抛出 HTTPException？",
+      "relevant_ids": [
+        "handling_errors"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "handling_errors#chunk-002",
+            "source_id": "handling_errors",
+            "text_preview": "在代码中触发 HTTPException¶ HTTPException 是额外包含了和 API 有关数据的常规 Python 异常。 因为是 Python 异常，所以不能 return，只能 raise。 这也意味着，如果你在路径操作函数里调用的某个工具函数内部触发了 HTTPException，那么路径操作函数中后续的代码将不会继续执行，请求会立刻终止，并"
+          },
+          {
+            "rank": 2,
+            "doc_id": "handling_errors#chunk-001",
+            "source_id": "handling_errors",
+            "text_preview": "遇到这些情况时，通常要返回 400 范围内（400 至 499）的 HTTP 状态码。 这与 200 HTTP 状态码（200 至 299）类似。那些“200”状态码表示请求在某种程度上“成功”。 而 400 范围内的状态码表示客户端发生了错误。 大家都知道「404 Not Found」错误，还有调侃这个错误的笑话吧？ 使用 HTTPException¶ 向"
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-012",
+            "source_id": "handling_errors",
+            "text_preview": "FastAPI 的 HTTPException vs Starlette 的 HTTPException¶ FastAPI 也提供了自有的 HTTPException。 FastAPI 的 HTTPException 错误类继承自 Starlette 的 HTTPException 错误类。 它们之间的唯一区别是，FastAPI 的 HTTPExceptio"
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-012",
+            "source_id": "first_steps",
+            "text_preview": "POST GET PUT DELETE  ...以及更少见的几种：  OPTIONS HEAD PATCH TRACE  在 HTTP 协议中，你可以使用以上的其中一种（或多种）「方法」与每个路径进行通信。  在开发 API 时，你通常使用特定的 HTTP 方法去执行特定的行为。 通常使用：  POST：创建数据。 GET：读取数据。 PUT：更新数据。 D"
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items ="
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "handling_errors#chunk-002",
+            "source_id": "handling_errors",
+            "text_preview": "在代码中触发 HTTPException¶ HTTPException 是额外包含了和 API 有关数据的常规 Python 异常。 因为是 Python 异常，所以不能 return，只能 raise。 这也意味着，如果你在路径操作函数里调用的某个工具函数内部触发了 HTTPException，那么路径操作函数中后续的代码将不会继续执行，请求会立刻终止，并"
+          },
+          {
+            "rank": 2,
+            "doc_id": "handling_errors#chunk-001",
+            "source_id": "handling_errors",
+            "text_preview": "遇到这些情况时，通常要返回 400 范围内（400 至 499）的 HTTP 状态码。 这与 200 HTTP 状态码（200 至 299）类似。那些“200”状态码表示请求在某种程度上“成功”。 而 400 范围内的状态码表示客户端发生了错误。 大家都知道「404 Not Found」错误，还有调侃这个错误的笑话吧？ 使用 HTTPException¶ 向"
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-012",
+            "source_id": "handling_errors",
+            "text_preview": "FastAPI 的 HTTPException vs Starlette 的 HTTPException¶ FastAPI 也提供了自有的 HTTPException。 FastAPI 的 HTTPException 错误类继承自 Starlette 的 HTTPException 错误类。 它们之间的唯一区别是，FastAPI 的 HTTPExceptio"
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-012",
+            "source_id": "first_steps",
+            "text_preview": "POST GET PUT DELETE  ...以及更少见的几种：  OPTIONS HEAD PATCH TRACE  在 HTTP 协议中，你可以使用以上的其中一种（或多种）「方法」与每个路径进行通信。  在开发 API 时，你通常使用特定的 HTTP 方法去执行特定的行为。 通常使用：  POST：创建数据。 GET：读取数据。 PUT：更新数据。 D"
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items ="
+          },
+          {
+            "rank": 6,
+            "doc_id": "path_params#chunk-002",
+            "source_id": "path_params",
+            "text_preview": "数据校验¶ 通过浏览器访问 http://127.0.0.1:8000/items/foo，接收如下 HTTP 错误信息： {   \"detail\": [     {       \"type\": \"int_parsing\",       \"loc\": [         \"path\",         \"item_id\"       ],       \"ms"
+          },
+          {
+            "rank": 7,
+            "doc_id": "handling_errors#chunk-009",
+            "source_id": "handling_errors",
+            "text_preview": "将得到如下文本内容： Validation errors: Field: ('path', 'item_id'), Error: Input should be a valid integer, unable to parse string as an integer  覆盖 HTTPException 错误处理器¶ 同理，也可以覆盖 HTTPExcepti"
+          },
+          {
+            "rank": 8,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "handling_errors#chunk-002",
+            "source_id": "handling_errors",
+            "text_preview": "在代码中触发 HTTPException¶ HTTPException 是额外包含了和 API 有关数据的常规 Python 异常。 因为是 Python 异常，所以不能 return，只能 raise。 这也意味着，如果你在路径操作函数里调用的某个工具函数内部触发了 HTTPException，那么路径操作函数中后续的代码将不会继续执行，请求会立刻终止，并",
+            "reranker_score": 0.764441
+          },
+          {
+            "rank": 2,
+            "doc_id": "handling_errors#chunk-001",
+            "source_id": "handling_errors",
+            "text_preview": "遇到这些情况时，通常要返回 400 范围内（400 至 499）的 HTTP 状态码。 这与 200 HTTP 状态码（200 至 299）类似。那些“200”状态码表示请求在某种程度上“成功”。 而 400 范围内的状态码表示客户端发生了错误。 大家都知道「404 Not Found」错误，还有调侃这个错误的笑话吧？ 使用 HTTPException¶ 向",
+            "reranker_score": -1.213562
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items =",
+            "reranker_score": -2.01063
+          },
+          {
+            "rank": 4,
+            "doc_id": "handling_errors#chunk-012",
+            "source_id": "handling_errors",
+            "text_preview": "FastAPI 的 HTTPException vs Starlette 的 HTTPException¶ FastAPI 也提供了自有的 HTTPException。 FastAPI 的 HTTPException 错误类继承自 Starlette 的 HTTPException 错误类。 它们之间的唯一区别是，FastAPI 的 HTTPExceptio",
+            "reranker_score": -2.268438
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-009",
+            "source_id": "handling_errors",
+            "text_preview": "将得到如下文本内容： Validation errors: Field: ('path', 'item_id'), Error: Input should be a valid integer, unable to parse string as an integer  覆盖 HTTPException 错误处理器¶ 同理，也可以覆盖 HTTPExcepti",
+            "reranker_score": -2.567302
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 37.3,
+        "dense_top10": 15.8,
+        "reranker": 249.0,
+        "dense_top10_plus_reranker": 264.8
+      }
+    },
+    {
+      "id": "q009",
+      "question": "FastAPI 的依赖注入解决什么问题？",
+      "relevant_ids": [
+        "dependencies"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-001",
+            "source_id": "dependencies",
+            "text_preview": "FastAPI 提供了简单直观但功能强大的依赖注入系统。 它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。 什么是「依赖注入」¶ 在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。 然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的"
+          },
+          {
+            "rank": 3,
+            "doc_id": "first_steps#chunk-010",
+            "source_id": "first_steps",
+            "text_preview": "$ uv run fastapi deploy  Deploying to FastAPI Cloud...  ✅ Deployment successful!  🐔 Ready the chicken! Your app is ready at https://myapp.fastapicloud.dev   CLI 会自动检测你的 FastAPI 应用并"
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-000",
+            "source_id": "first_steps",
+            "text_preview": "第一步¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  最简单的 FastAPI 文件可能像下面这样： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @"
+          },
+          {
+            "rank": 5,
+            "doc_id": "first_steps#chunk-017",
+            "source_id": "first_steps",
+            "text_preview": "FastAPI Cloud 是 FastAPI 及其朋友们 开源项目的主要赞助和资金提供方。✨ 部署到其他云服务商¶ FastAPI 是开源并基于标准的。你可以将 FastAPI 应用部署到你选择的任何云服务商。 按照你的云服务商的指南部署 FastAPI 应用即可。🤓 总结¶"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-001",
+            "source_id": "dependencies",
+            "text_preview": "FastAPI 提供了简单直观但功能强大的依赖注入系统。 它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。 什么是「依赖注入」¶ 在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。 然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的"
+          },
+          {
+            "rank": 3,
+            "doc_id": "first_steps#chunk-010",
+            "source_id": "first_steps",
+            "text_preview": "$ uv run fastapi deploy  Deploying to FastAPI Cloud...  ✅ Deployment successful!  🐔 Ready the chicken! Your app is ready at https://myapp.fastapicloud.dev   CLI 会自动检测你的 FastAPI 应用并"
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-000",
+            "source_id": "first_steps",
+            "text_preview": "第一步¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  最简单的 FastAPI 文件可能像下面这样： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @"
+          },
+          {
+            "rank": 5,
+            "doc_id": "first_steps#chunk-017",
+            "source_id": "first_steps",
+            "text_preview": "FastAPI Cloud 是 FastAPI 及其朋友们 开源项目的主要赞助和资金提供方。✨ 部署到其他云服务商¶ FastAPI 是开源并基于标准的。你可以将 FastAPI 应用部署到你选择的任何云服务商。 按照你的云服务商的指南部署 FastAPI 应用即可。🤓 总结¶"
+          },
+          {
+            "rank": 6,
+            "doc_id": "response_model#chunk-020",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\", response_model=None) async def get_portal(teleport: bool"
+          },
+          {
+            "rank": 7,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-019",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\") async def get_portal(teleport: bool = False) -> Response"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-001",
+            "source_id": "dependencies",
+            "text_preview": "FastAPI 提供了简单直观但功能强大的依赖注入系统。 它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。 什么是「依赖注入」¶ 在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。 然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（",
+            "reranker_score": 6.549218
+          },
+          {
+            "rank": 2,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导",
+            "reranker_score": 2.424654
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的",
+            "reranker_score": -1.063146
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-019",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\") async def get_portal(teleport: bool = False) -> Response",
+            "reranker_score": -2.471519
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-020",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\", response_model=None) async def get_portal(teleport: bool",
+            "reranker_score": -2.652751
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.7,
+        "dense_top10": 19.1,
+        "reranker": 206.9,
+        "dense_top10_plus_reranker": 226.1
+      }
+    },
+    {
+      "id": "q010",
+      "question": "怎样让一个依赖项应用到整个 FastAPI 应用？",
+      "relevant_ids": [
+        "global_dependencies"
+      ],
+      "dense_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-001",
+            "source_id": "dependencies",
+            "text_preview": "FastAPI 提供了简单直观但功能强大的依赖注入系统。 它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。 什么是「依赖注入」¶ 在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。 然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（"
+          },
+          {
+            "rank": 2,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的"
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 5,
+            "doc_id": "first_steps#chunk-000",
+            "source_id": "first_steps",
+            "text_preview": "第一步¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  最简单的 FastAPI 文件可能像下面这样： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-001",
+            "source_id": "dependencies",
+            "text_preview": "FastAPI 提供了简单直观但功能强大的依赖注入系统。 它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。 什么是「依赖注入」¶ 在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。 然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（"
+          },
+          {
+            "rank": 2,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的"
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 5,
+            "doc_id": "first_steps#chunk-000",
+            "source_id": "first_steps",
+            "text_preview": "第一步¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  最简单的 FastAPI 文件可能像下面这样： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @"
+          },
+          {
+            "rank": 6,
+            "doc_id": "first_steps#chunk-010",
+            "source_id": "first_steps",
+            "text_preview": "$ uv run fastapi deploy  Deploying to FastAPI Cloud...  ✅ Deployment successful!  🐔 Ready the chicken! Your app is ready at https://myapp.fastapicloud.dev   CLI 会自动检测你的 FastAPI 应用并"
+          },
+          {
+            "rank": 7,
+            "doc_id": "first_steps#chunk-011",
+            "source_id": "first_steps",
+            "text_preview": "步骤 2：创建一个 FastAPI「实例」¶ Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/\") async def root():     return {\"message\": \"Hello World\"}     这里的变量 app 会是 FastAPI "
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导",
+            "reranker_score": 4.797359
+          },
+          {
+            "rank": 2,
+            "doc_id": "dependencies#chunk-001",
+            "source_id": "dependencies",
+            "text_preview": "FastAPI 提供了简单直观但功能强大的依赖注入系统。 它被设计得非常易用，能让任何开发者都能轻松把其他组件与 FastAPI 集成。 什么是「依赖注入」¶ 在编程中，「依赖注入」指的是，你的代码（本文中为路径操作函数）声明其运行所需并要使用的东西：“依赖”。 然后，由该系统（本文中为 FastAPI）负责执行所有必要的逻辑，为你的代码提供这些所需的依赖（",
+            "reranker_score": 3.31591
+          },
+          {
+            "rank": 3,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程",
+            "reranker_score": 1.462821
+          },
+          {
+            "rank": 4,
+            "doc_id": "first_steps#chunk-010",
+            "source_id": "first_steps",
+            "text_preview": "$ uv run fastapi deploy  Deploying to FastAPI Cloud...  ✅ Deployment successful!  🐔 Ready the chicken! Your app is ready at https://myapp.fastapicloud.dev   CLI 会自动检测你的 FastAPI 应用并",
+            "reranker_score": 1.328122
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-011",
+            "source_id": "security_first_steps",
+            "text_preview": "技术细节 FastAPI 之所以知道可以使用（在依赖中声明的）OAuth2PasswordBearer 在 OpenAPI 中定义安全方案，是因为它继承自 fastapi.security.oauth2.OAuth2，而后者又继承自 fastapi.security.base.SecurityBase。 所有与 OpenAPI（以及自动 API 文档）集成的",
+            "reranker_score": -0.271545
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.1,
+        "dense_top10": 16.2,
+        "reranker": 150.4,
+        "dense_top10_plus_reranker": 166.6
+      }
+    },
+    {
+      "id": "q011",
+      "question": "FastAPI 中间件在一次请求中什么时候执行？",
+      "relevant_ids": [
+        "middleware"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-017",
+            "source_id": "response_model",
+            "text_preview": "这个简单场景 FastAPI 会自动处理，因为返回类型注解是 Response（或其子类）。 工具也会满意，因为 RedirectResponse 和 JSONResponse 都是 Response 的子类，所以类型注解是正确的。 注解 Response 的子类¶ 你也可以在类型注解中使用 Response 的子类： Python 3.10+   from"
+          },
+          {
+            "rank": 2,
+            "doc_id": "middleware#chunk-004",
+            "source_id": "middleware",
+            "text_preview": "import time  from fastapi import FastAPI, Request  app = FastAPI()   @app.middleware(\"http\") async def add_process_time_header(request: Request, call_next):     start_time = time.p"
+          },
+          {
+            "rank": 3,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:"
+          },
+          {
+            "rank": 4,
+            "doc_id": "middleware#chunk-000",
+            "source_id": "middleware",
+            "text_preview": "中间件¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以向 FastAPI 应用添加中间件。 “中间件”是一个函数，它会在每个特定的路径操作处理每个请求之前运行，也会在返回每个响应之前运行。"
+          },
+          {
+            "rank": 5,
+            "doc_id": "middleware#chunk-002",
+            "source_id": "middleware",
+            "text_preview": "创建中间件¶ 要创建中间件，你可以在函数的顶部使用装饰器 @app.middleware(\"http\")。 中间件函数会接收：  request。 一个函数 call_next，它会把 request 作为参数接收。 这个函数会把 request 传递给相应的路径操作。 然后它返回由相应路径操作生成的 response。   在返回之前，你可以进一步修改 r"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-017",
+            "source_id": "response_model",
+            "text_preview": "这个简单场景 FastAPI 会自动处理，因为返回类型注解是 Response（或其子类）。 工具也会满意，因为 RedirectResponse 和 JSONResponse 都是 Response 的子类，所以类型注解是正确的。 注解 Response 的子类¶ 你也可以在类型注解中使用 Response 的子类： Python 3.10+   from"
+          },
+          {
+            "rank": 2,
+            "doc_id": "middleware#chunk-004",
+            "source_id": "middleware",
+            "text_preview": "import time  from fastapi import FastAPI, Request  app = FastAPI()   @app.middleware(\"http\") async def add_process_time_header(request: Request, call_next):     start_time = time.p"
+          },
+          {
+            "rank": 3,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:"
+          },
+          {
+            "rank": 4,
+            "doc_id": "middleware#chunk-000",
+            "source_id": "middleware",
+            "text_preview": "中间件¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以向 FastAPI 应用添加中间件。 “中间件”是一个函数，它会在每个特定的路径操作处理每个请求之前运行，也会在返回每个响应之前运行。"
+          },
+          {
+            "rank": 5,
+            "doc_id": "middleware#chunk-002",
+            "source_id": "middleware",
+            "text_preview": "创建中间件¶ 要创建中间件，你可以在函数的顶部使用装饰器 @app.middleware(\"http\")。 中间件函数会接收：  request。 一个函数 call_next，它会把 request 作为参数接收。 这个函数会把 request 传递给相应的路径操作。 然后它返回由相应路径操作生成的 response。   在返回之前，你可以进一步修改 r"
+          },
+          {
+            "rank": 6,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          },
+          {
+            "rank": 7,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个"
+          },
+          {
+            "rank": 8,
+            "doc_id": "first_steps#chunk-000",
+            "source_id": "first_steps",
+            "text_preview": "第一步¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  最简单的 FastAPI 文件可能像下面这样： Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "middleware#chunk-004",
+            "source_id": "middleware",
+            "text_preview": "import time  from fastapi import FastAPI, Request  app = FastAPI()   @app.middleware(\"http\") async def add_process_time_header(request: Request, call_next):     start_time = time.p",
+            "reranker_score": 3.008264
+          },
+          {
+            "rank": 2,
+            "doc_id": "middleware#chunk-000",
+            "source_id": "middleware",
+            "text_preview": "中间件¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以向 FastAPI 应用添加中间件。 “中间件”是一个函数，它会在每个特定的路径操作处理每个请求之前运行，也会在返回每个响应之前运行。",
+            "reranker_score": 1.908885
+          },
+          {
+            "rank": 3,
+            "doc_id": "middleware#chunk-002",
+            "source_id": "middleware",
+            "text_preview": "创建中间件¶ 要创建中间件，你可以在函数的顶部使用装饰器 @app.middleware(\"http\")。 中间件函数会接收：  request。 一个函数 call_next，它会把 request 作为参数接收。 这个函数会把 request 传递给相应的路径操作。 然后它返回由相应路径操作生成的 response。   在返回之前，你可以进一步修改 r",
+            "reranker_score": -0.063703
+          },
+          {
+            "rank": 4,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个",
+            "reranker_score": -2.821624
+          },
+          {
+            "rank": 5,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:",
+            "reranker_score": -3.404467
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 40.5,
+        "dense_top10": 14.6,
+        "reranker": 180.0,
+        "dense_top10_plus_reranker": 194.7
+      }
+    },
+    {
+      "id": "q012",
+      "question": "怎样用 TestClient 和 pytest 测试一个 FastAPI 接口？",
+      "relevant_ids": [
+        "testing"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的"
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-002",
+            "source_id": "testing",
+            "text_preview": "技术细节 你也可以用 from starlette.testclient import TestClient。 FastAPI 提供了和 starlette.testclient 一样的 fastapi.testclient，只是为了方便开发者。但它直接来自Starlette。   提示 除了发送请求之外，如果你还想测试时在FastAPI应用中调用 asyn"
+          },
+          {
+            "rank": 3,
+            "doc_id": "testing#chunk-003",
+            "source_id": "testing",
+            "text_preview": "在 main.py 文件中你有一个 FastAPI app: Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/\") async def read_main():     return {\"msg\": \"Hello World\"}     测试文件¶ 然后你会有一"
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          },
+          {
+            "rank": 5,
+            "doc_id": "testing#chunk-013",
+            "source_id": "testing",
+            "text_preview": "运行起来¶ 之后，你只需要安装 pytest。 将它添加到你的项目中：  $ uv add pytest  ---> 100%   它会自动检测文件和测试，执行测试，然后向你报告结果。 执行测试：  $ uv run pytest  ================ test session starts ================ platform "
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的"
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-002",
+            "source_id": "testing",
+            "text_preview": "技术细节 你也可以用 from starlette.testclient import TestClient。 FastAPI 提供了和 starlette.testclient 一样的 fastapi.testclient，只是为了方便开发者。但它直接来自Starlette。   提示 除了发送请求之外，如果你还想测试时在FastAPI应用中调用 asyn"
+          },
+          {
+            "rank": 3,
+            "doc_id": "testing#chunk-003",
+            "source_id": "testing",
+            "text_preview": "在 main.py 文件中你有一个 FastAPI app: Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/\") async def read_main():     return {\"msg\": \"Hello World\"}     测试文件¶ 然后你会有一"
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          },
+          {
+            "rank": 5,
+            "doc_id": "testing#chunk-013",
+            "source_id": "testing",
+            "text_preview": "运行起来¶ 之后，你只需要安装 pytest。 将它添加到你的项目中：  $ uv add pytest  ---> 100%   它会自动检测文件和测试，执行测试，然后向你报告结果。 执行测试：  $ uv run pytest  ================ test session starts ================ platform "
+          },
+          {
+            "rank": 6,
+            "doc_id": "testing#chunk-000",
+            "source_id": "testing",
+            "text_preview": "测试¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  感谢 Starlette，测试FastAPI 应用轻松又愉快。 它基于 HTTPX，而HTTPX又是基于Requests设计的，所以很相似且易懂。 有了它，你可以直接与Fast"
+          },
+          {
+            "rank": 7,
+            "doc_id": "testing#chunk-004",
+            "source_id": "testing",
+            "text_preview": "from fastapi.testclient import TestClient  from .main import app  client = TestClient(app)   def test_read_main():     response = client.get(\"/\")     assert response.status_code =="
+          },
+          {
+            "rank": 8,
+            "doc_id": "first_steps#chunk-008",
+            "source_id": "first_steps",
+            "text_preview": "...  OpenAPI 的用途¶ 驱动 FastAPI 内置的 2 个交互式文档系统的正是 OpenAPI 模式。 并且还有数十种替代方案，它们全部都基于 OpenAPI。你可以轻松地将这些替代方案中的任何一种添加到使用 FastAPI 构建的应用程序中。 你还可以使用它自动生成与你的 API 进行通信的客户端代码。例如 web 前端，移动端或物联网嵌入程"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的",
+            "reranker_score": 7.788429
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-004",
+            "source_id": "testing",
+            "text_preview": "from fastapi.testclient import TestClient  from .main import app  client = TestClient(app)   def test_read_main():     response = client.get(\"/\")     assert response.status_code ==",
+            "reranker_score": 6.945676
+          },
+          {
+            "rank": 3,
+            "doc_id": "testing#chunk-003",
+            "source_id": "testing",
+            "text_preview": "在 main.py 文件中你有一个 FastAPI app: Python 3.10+   from fastapi import FastAPI  app = FastAPI()   @app.get(\"/\") async def read_main():     return {\"msg\": \"Hello World\"}     测试文件¶ 然后你会有一",
+            "reranker_score": 5.324489
+          },
+          {
+            "rank": 4,
+            "doc_id": "testing#chunk-000",
+            "source_id": "testing",
+            "text_preview": "测试¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  感谢 Starlette，测试FastAPI 应用轻松又愉快。 它基于 HTTPX，而HTTPX又是基于Requests设计的，所以很相似且易懂。 有了它，你可以直接与Fast",
+            "reranker_score": 5.282777
+          },
+          {
+            "rank": 5,
+            "doc_id": "testing#chunk-002",
+            "source_id": "testing",
+            "text_preview": "技术细节 你也可以用 from starlette.testclient import TestClient。 FastAPI 提供了和 starlette.testclient 一样的 fastapi.testclient，只是为了方便开发者。但它直接来自Starlette。   提示 除了发送请求之外，如果你还想测试时在FastAPI应用中调用 asyn",
+            "reranker_score": 4.543831
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.3,
+        "dense_top10": 16.2,
+        "reranker": 158.4,
+        "dense_top10_plus_reranker": 174.6
+      }
+    },
+    {
+      "id": "q013",
+      "question": "为什么适合用 lifespan 加载应用共享资源？",
+      "relevant_ids": [
+        "lifespan"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需"
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-008",
+            "source_id": "lifespan",
+            "text_preview": "你可以像上面一样创建一个上下文管理器或者异步上下文管理器，它的作用是在进入 with 块时，执行 yield 之前的代码，并且在离开 with 块时，执行 yield 后面的代码。 但在我们上面的例子里，我们并不是直接使用，而是传递给 FastAPI 来供其使用。 FastAPI 的 lifespan 参数接受一个异步上下文管理器，所以我们可以把我们新定义的"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-015",
+            "source_id": "dependencies",
+            "text_preview": "各类关系型数据库 NoSQL 数据库 外部包 外部 API 认证与授权系统 API 使用监控系统 响应数据注入系统 等等...  简单而强大¶ 虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。 你可以定义依赖其他依赖项的依赖项。 最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。 例"
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-002",
+            "source_id": "dependencies",
+            "text_preview": "共享业务逻辑（同一段代码逻辑反复复用） 共享数据库连接 实施安全、认证、角色权限等要求 以及更多其他内容...  同时尽量减少代码重复。 第一步¶ 先来看一个非常简单的例子。它现在简单到几乎没什么用。 但这样我们就可以专注于依赖注入系统是如何工作的。 创建依赖项，或“dependable”¶ 首先关注依赖项。 它只是一个函数，且可以接收与路径操作函数相同的所"
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需"
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-008",
+            "source_id": "lifespan",
+            "text_preview": "你可以像上面一样创建一个上下文管理器或者异步上下文管理器，它的作用是在进入 with 块时，执行 yield 之前的代码，并且在离开 with 块时，执行 yield 后面的代码。 但在我们上面的例子里，我们并不是直接使用，而是传递给 FastAPI 来供其使用。 FastAPI 的 lifespan 参数接受一个异步上下文管理器，所以我们可以把我们新定义的"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-015",
+            "source_id": "dependencies",
+            "text_preview": "各类关系型数据库 NoSQL 数据库 外部包 外部 API 认证与授权系统 API 使用监控系统 响应数据注入系统 等等...  简单而强大¶ 虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。 你可以定义依赖其他依赖项的依赖项。 最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。 例"
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-002",
+            "source_id": "dependencies",
+            "text_preview": "共享业务逻辑（同一段代码逻辑反复复用） 共享数据库连接 实施安全、认证、角色权限等要求 以及更多其他内容...  同时尽量减少代码重复。 第一步¶ 先来看一个非常简单的例子。它现在简单到几乎没什么用。 但这样我们就可以专注于依赖注入系统是如何工作的。 创建依赖项，或“dependable”¶ 首先关注依赖项。 它只是一个函数，且可以接收与路径操作函数相同的所"
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 6,
+            "doc_id": "lifespan#chunk-013",
+            "source_id": "lifespan",
+            "text_preview": "startup 和 shutdown 一起使用¶ 启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。 在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。 因此，推荐使用上面所述的 lifespan。 技术细节¶ 只是为好奇者提供的技术细节。🤓 在底层，这部分是 "
+          },
+          {
+            "rank": 7,
+            "doc_id": "lifespan#chunk-009",
+            "source_id": "lifespan",
+            "text_preview": "app = FastAPI(lifespan=lifespan)   @app.get(\"/predict\") async def predict(x: float):     result = ml_models[\"answer_to_everything\"](x)     return {\"result\": result}     替代事件（弃用）¶  "
+          },
+          {
+            "rank": 8,
+            "doc_id": "async_tests#chunk-005",
+            "source_id": "async_tests",
+            "text_preview": "这相当于： response = client.get('/')  ...我们曾经通过它向 TestClient 发出请求。  提示 请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。   警告 如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 f"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-013",
+            "source_id": "lifespan",
+            "text_preview": "startup 和 shutdown 一起使用¶ 启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。 在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。 因此，推荐使用上面所述的 lifespan。 技术细节¶ 只是为好奇者提供的技术细节。🤓 在底层，这部分是 ",
+            "reranker_score": -0.638376
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需",
+            "reranker_score": -1.878381
+          },
+          {
+            "rank": 3,
+            "doc_id": "lifespan#chunk-008",
+            "source_id": "lifespan",
+            "text_preview": "你可以像上面一样创建一个上下文管理器或者异步上下文管理器，它的作用是在进入 with 块时，执行 yield 之前的代码，并且在离开 with 块时，执行 yield 后面的代码。 但在我们上面的例子里，我们并不是直接使用，而是传递给 FastAPI 来供其使用。 FastAPI 的 lifespan 参数接受一个异步上下文管理器，所以我们可以把我们新定义的",
+            "reranker_score": -4.071315
+          },
+          {
+            "rank": 4,
+            "doc_id": "lifespan#chunk-009",
+            "source_id": "lifespan",
+            "text_preview": "app = FastAPI(lifespan=lifespan)   @app.get(\"/predict\") async def predict(x: float):     result = ml_models[\"answer_to_everything\"](x)     return {\"result\": result}     替代事件（弃用）¶  ",
+            "reranker_score": -4.861094
+          },
+          {
+            "rank": 5,
+            "doc_id": "async_tests#chunk-005",
+            "source_id": "async_tests",
+            "text_preview": "这相当于： response = client.get('/')  ...我们曾经通过它向 TestClient 发出请求。  提示 请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。   警告 如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 f",
+            "reranker_score": -5.899053
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 31.2,
+        "dense_top10": 24.1,
+        "reranker": 157.2,
+        "dense_top10_plus_reranker": 181.3
+      }
+    },
+    {
+      "id": "q014",
+      "question": "异步测试 FastAPI 应用时为什么常用 HTTPX AsyncClient？",
+      "relevant_ids": [
+        "async_tests"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-002",
+            "source_id": "async_tests",
+            "text_preview": "HTTPX¶ 即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。 TestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由"
+          },
+          {
+            "rank": 2,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 4,
+            "doc_id": "handling_errors#chunk-003",
+            "source_id": "handling_errors",
+            "text_preview": "from fastapi import FastAPI, HTTPException  app = FastAPI()  items = {\"foo\": \"The Foo Wrestlers\"}   @app.get(\"/items/{item_id}\") async def read_item(item_id: str):     if item_id n"
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-006",
+            "source_id": "path_params",
+            "text_preview": "from fastapi import FastAPI  app = FastAPI()   @app.get(\"/users\") async def read_users():     return [\"Rick\", \"Morty\"]   @app.get(\"/users\") async def read_users2():     return [\"Be"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-002",
+            "source_id": "async_tests",
+            "text_preview": "HTTPX¶ 即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。 TestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由"
+          },
+          {
+            "rank": 2,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-013",
+            "source_id": "dependencies",
+            "text_preview": "簡单用法¶ 观察一下就会发现，只要路径和操作匹配，就会使用声明的路径操作函数。随后，FastAPI 会用正确的参数调用该函数，并从请求中提取数据。 事实上，所有（或大多数）Web 框架的工作方式都是这样的。 你从不会直接调用这些函数。它们由你的框架（此处为 FastAPI）调用。 通过依赖注入系统，你还可以告诉 FastAPI，你的路径操作函数还“依赖”某些"
+          },
+          {
+            "rank": 4,
+            "doc_id": "handling_errors#chunk-003",
+            "source_id": "handling_errors",
+            "text_preview": "from fastapi import FastAPI, HTTPException  app = FastAPI()  items = {\"foo\": \"The Foo Wrestlers\"}   @app.get(\"/items/{item_id}\") async def read_item(item_id: str):     if item_id n"
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-006",
+            "source_id": "path_params",
+            "text_preview": "from fastapi import FastAPI  app = FastAPI()   @app.get(\"/users\") async def read_users():     return [\"Rick\", \"Morty\"]   @app.get(\"/users\") async def read_users2():     return [\"Be"
+          },
+          {
+            "rank": 6,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items ="
+          },
+          {
+            "rank": 7,
+            "doc_id": "handling_errors#chunk-012",
+            "source_id": "handling_errors",
+            "text_preview": "FastAPI 的 HTTPException vs Starlette 的 HTTPException¶ FastAPI 也提供了自有的 HTTPException。 FastAPI 的 HTTPException 错误类继承自 Starlette 的 HTTPException 错误类。 它们之间的唯一区别是，FastAPI 的 HTTPExceptio"
+          },
+          {
+            "rank": 8,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息："
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-002",
+            "source_id": "async_tests",
+            "text_preview": "HTTPX¶ 即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。 TestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由",
+            "reranker_score": 10.765397
+          },
+          {
+            "rank": 2,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的",
+            "reranker_score": 5.929459
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-012",
+            "source_id": "handling_errors",
+            "text_preview": "FastAPI 的 HTTPException vs Starlette 的 HTTPException¶ FastAPI 也提供了自有的 HTTPException。 FastAPI 的 HTTPException 错误类继承自 Starlette 的 HTTPException 错误类。 它们之间的唯一区别是，FastAPI 的 HTTPExceptio",
+            "reranker_score": 2.84688
+          },
+          {
+            "rank": 4,
+            "doc_id": "handling_errors#chunk-003",
+            "source_id": "handling_errors",
+            "text_preview": "from fastapi import FastAPI, HTTPException  app = FastAPI()  items = {\"foo\": \"The Foo Wrestlers\"}   @app.get(\"/items/{item_id}\") async def read_item(item_id: str):     if item_id n",
+            "reranker_score": 1.005846
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items =",
+            "reranker_score": -0.275267
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.7,
+        "dense_top10": 16.0,
+        "reranker": 184.5,
+        "dense_top10_plus_reranker": 200.5
+      }
+    },
+    {
+      "id": "q015",
+      "question": "FastAPI 如何返回服务器发送事件 SSE？",
+      "relevant_ids": [
+        "sse"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:"
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-001",
+            "source_id": "sse",
+            "text_preview": "data: {\"name\": \"Plumbus\", \"price\": 32.99}  SSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。  提示 如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。  使用 FastAPI 流式传输 SSE¶ 要在 FastAPI 中流式传输 SSE，"
+          },
+          {
+            "rank": 3,
+            "doc_id": "sse#chunk-000",
+            "source_id": "sse",
+            "text_preview": "服务器发送事件（SSE）¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以使用服务器发送事件（SSE）向客户端流式发送数据。 这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原"
+          },
+          {
+            "rank": 4,
+            "doc_id": "handling_errors#chunk-010",
+            "source_id": "handling_errors",
+            "text_preview": "技术细节 还可以使用 from starlette.responses import PlainTextResponse。 FastAPI 提供了与 starlette.responses 相同的 fastapi.responses 作为便捷方式，但大多数可用的响应都直接来自 Starlette。   警告 请注意，RequestValidationErro"
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-020",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\", response_model=None) async def get_portal(teleport: bool"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:"
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-001",
+            "source_id": "sse",
+            "text_preview": "data: {\"name\": \"Plumbus\", \"price\": 32.99}  SSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。  提示 如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。  使用 FastAPI 流式传输 SSE¶ 要在 FastAPI 中流式传输 SSE，"
+          },
+          {
+            "rank": 3,
+            "doc_id": "sse#chunk-000",
+            "source_id": "sse",
+            "text_preview": "服务器发送事件（SSE）¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以使用服务器发送事件（SSE）向客户端流式发送数据。 这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原"
+          },
+          {
+            "rank": 4,
+            "doc_id": "handling_errors#chunk-010",
+            "source_id": "handling_errors",
+            "text_preview": "技术细节 还可以使用 from starlette.responses import PlainTextResponse。 FastAPI 提供了与 starlette.responses 相同的 fastapi.responses 作为便捷方式，但大多数可用的响应都直接来自 Starlette。   警告 请注意，RequestValidationErro"
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-020",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\", response_model=None) async def get_portal(teleport: bool"
+          },
+          {
+            "rank": 6,
+            "doc_id": "response_model#chunk-015",
+            "source_id": "response_model",
+            "text_preview": "FastAPI 的数据过滤¶ 对于 FastAPI，它会查看返回类型并确保你返回的内容只包含该类型中声明的字段。 FastAPI 在内部配合 Pydantic 做了多项处理，确保不会把类继承的这些规则用于返回数据的过滤，否则你可能会返回比预期多得多的数据。 这样，你就能兼得两方面的优势：带有工具支持的类型注解和数据过滤。 在文档中查看¶ 当你查看自动文档时，"
+          },
+          {
+            "rank": 7,
+            "doc_id": "response_model#chunk-017",
+            "source_id": "response_model",
+            "text_preview": "这个简单场景 FastAPI 会自动处理，因为返回类型注解是 Response（或其子类）。 工具也会满意，因为 RedirectResponse 和 JSONResponse 都是 Response 的子类，所以类型注解是正确的。 注解 Response 的子类¶ 你也可以在类型注解中使用 Response 的子类： Python 3.10+   from"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-019",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\") async def get_portal(teleport: bool = False) -> Response"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "sse#chunk-001",
+            "source_id": "sse",
+            "text_preview": "data: {\"name\": \"Plumbus\", \"price\": 32.99}  SSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。  提示 如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。  使用 FastAPI 流式传输 SSE¶ 要在 FastAPI 中流式传输 SSE，",
+            "reranker_score": 9.022488
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-000",
+            "source_id": "sse",
+            "text_preview": "服务器发送事件（SSE）¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以使用服务器发送事件（SSE）向客户端流式发送数据。 这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原",
+            "reranker_score": 8.833552
+          },
+          {
+            "rank": 3,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:",
+            "reranker_score": 8.102676
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-019",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\") async def get_portal(teleport: bool = False) -> Response",
+            "reranker_score": -0.642966
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-020",
+            "source_id": "response_model",
+            "text_preview": "from fastapi import FastAPI, Response from fastapi.responses import RedirectResponse  app = FastAPI()   @app.get(\"/portal\", response_model=None) async def get_portal(teleport: bool",
+            "reranker_score": -0.670767
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 38.2,
+        "dense_top10": 16.0,
+        "reranker": 206.5,
+        "dense_top10_plus_reranker": 222.5
+      }
+    },
+    {
+      "id": "q016",
+      "question": "接口参数没传时会发生什么？",
+      "relevant_ids": [
+        "query_params"
+      ],
+      "dense_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 2,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息："
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import"
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 2,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息："
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import"
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限"
+          },
+          {
+            "rank": 6,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items ="
+          },
+          {
+            "rank": 7,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-018",
+            "source_id": "response_model",
+            "text_preview": "app = FastAPI()   @app.get(\"/teleport\") async def get_teleport() -> RedirectResponse:     return RedirectResponse(url=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\")     这同样可行，因为 Re"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。",
+            "reranker_score": -5.346287
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f",
+            "reranker_score": -5.745072
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA",
+            "reranker_score": -5.995996
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息：",
+            "reranker_score": -6.185408
+          },
+          {
+            "rank": 5,
+            "doc_id": "response_model#chunk-018",
+            "source_id": "response_model",
+            "text_preview": "app = FastAPI()   @app.get(\"/teleport\") async def get_teleport() -> RedirectResponse:     return RedirectResponse(url=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\")     这同样可行，因为 Re",
+            "reranker_score": -6.195217
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 21.8,
+        "dense_top10": 19.6,
+        "reranker": 129.6,
+        "dense_top10_plus_reranker": 149.2
+      }
+    },
+    {
+      "id": "q017",
+      "question": "我想给所有接口统一加一项检查，应该放在哪里？",
+      "relevant_ids": [
+        "global_dependencies"
+      ],
+      "dense_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息："
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-015",
+            "source_id": "dependencies",
+            "text_preview": "各类关系型数据库 NoSQL 数据库 外部包 外部 API 认证与授权系统 API 使用监控系统 响应数据注入系统 等等...  简单而强大¶ 虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。 你可以定义依赖其他依赖项的依赖项。 最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。 例"
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-003",
+            "source_id": "path_params",
+            "text_preview": "文档¶ 访问 http://127.0.0.1:8000/docs，查看自动生成的交互式 API 文档：   提示 还是使用 Python 类型声明，FastAPI 提供了（集成 Swagger UI 的）自动交互式文档。 注意，路径参数的类型是整数。  基于标准的好处，备选文档¶ FastAPI 使用 OpenAPI 生成概图，所以能兼容很多工具。 因此，"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息："
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-015",
+            "source_id": "dependencies",
+            "text_preview": "各类关系型数据库 NoSQL 数据库 外部包 外部 API 认证与授权系统 API 使用监控系统 响应数据注入系统 等等...  简单而强大¶ 虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。 你可以定义依赖其他依赖项的依赖项。 最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。 例"
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-003",
+            "source_id": "path_params",
+            "text_preview": "文档¶ 访问 http://127.0.0.1:8000/docs，查看自动生成的交互式 API 文档：   提示 还是使用 Python 类型声明，FastAPI 提供了（集成 Swagger UI 的）自动交互式文档。 注意，路径参数的类型是整数。  基于标准的好处，备选文档¶ FastAPI 使用 OpenAPI 生成概图，所以能兼容很多工具。 因此，"
+          },
+          {
+            "rank": 6,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          },
+          {
+            "rank": 7,
+            "doc_id": "security_first_steps#chunk-007",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 “Bearer” 令牌并非唯一选项。 但它非常适合我们的用例。 对于大多数用例，它也可能是最佳选择，除非你是 OAuth2 专家，并明确知道为何其他方案更适合你的需求。 在那种情况下，FastAPI 同样提供了相应的构建工具。  创建 OAuth2PasswordBearer 类实例时，需要传入 tokenUrl 参数。该参数包含客户端（运行在用户浏览"
+          },
+          {
+            "rank": 8,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息：",
+            "reranker_score": -6.727609
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f",
+            "reranker_score": -6.887207
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直",
+            "reranker_score": -7.149881
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar",
+            "reranker_score": -7.243056
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA",
+            "reranker_score": -8.207921
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 20.4,
+        "dense_top10": 19.0,
+        "reranker": 167.3,
+        "dense_top10_plus_reranker": 186.4
+      }
+    },
+    {
+      "id": "q018",
+      "question": "接口返回了不该给用户看的字段，应该怎么限制？",
+      "relevant_ids": [
+        "response_model"
+      ],
+      "dense_top5": {
+        "recall": 0.0,
+        "mrr": 0.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限"
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限"
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          },
+          {
+            "rank": 6,
+            "doc_id": "security_first_steps#chunk-003",
+            "source_id": "security_first_steps",
+            "text_preview": "这是因为 OAuth2 使用“表单数据”来发送 username 和 password。  用下面的命令运行示例：  $ uv run fastapi dev  <span style=\"color: green;\">INFO</span>:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C"
+          },
+          {
+            "rank": 7,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包",
+            "reranker_score": -4.53704
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import",
+            "reranker_score": -4.816842
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-003",
+            "source_id": "security_first_steps",
+            "text_preview": "这是因为 OAuth2 使用“表单数据”来发送 username 和 password。  用下面的命令运行示例：  $ uv run fastapi dev  <span style=\"color: green;\">INFO</span>:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C",
+            "reranker_score": -6.07492
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f",
+            "reranker_score": -6.149427
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限",
+            "reranker_score": -6.553879
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 18.7,
+        "dense_top10": 17.2,
+        "reranker": 159.0,
+        "dense_top10_plus_reranker": 176.2
+      }
+    },
+    {
+      "id": "q019",
+      "question": "服务启动时需要先准备一个很大的模型，代码应该放在哪里？",
+      "relevant_ids": [
+        "lifespan"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个"
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-013",
+            "source_id": "lifespan",
+            "text_preview": "startup 和 shutdown 一起使用¶ 启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。 在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。 因此，推荐使用上面所述的 lifespan。 技术细节¶ 只是为好奇者提供的技术细节。🤓 在底层，这部分是 "
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-015",
+            "source_id": "dependencies",
+            "text_preview": "各类关系型数据库 NoSQL 数据库 外部包 外部 API 认证与授权系统 API 使用监控系统 响应数据注入系统 等等...  简单而强大¶ 虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。 你可以定义依赖其他依赖项的依赖项。 最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。 例"
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 5,
+            "doc_id": "lifespan#chunk-001",
+            "source_id": "lifespan",
+            "text_preview": "你可以定义在应用启动前执行的逻辑（代码）。这意味着在应用开始接收请求之前，这些代码只会被执行一次。 同样地，你可以定义在应用关闭时应执行的逻辑。在这种情况下，这段代码将在处理可能的多次请求后执行一次。 因为这段代码在应用开始接收请求之前执行，也会在处理可能的若干请求之后执行，它覆盖了整个应用程序的生命周期（“生命周期”这个词很重要😉）。"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个"
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-013",
+            "source_id": "lifespan",
+            "text_preview": "startup 和 shutdown 一起使用¶ 启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。 在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。 因此，推荐使用上面所述的 lifespan。 技术细节¶ 只是为好奇者提供的技术细节。🤓 在底层，这部分是 "
+          },
+          {
+            "rank": 3,
+            "doc_id": "dependencies#chunk-015",
+            "source_id": "dependencies",
+            "text_preview": "各类关系型数据库 NoSQL 数据库 外部包 外部 API 认证与授权系统 API 使用监控系统 响应数据注入系统 等等...  简单而强大¶ 虽然层级式依赖注入系统的定义与使用非常简单，但它依然非常强大。 你可以定义依赖其他依赖项的依赖项。 最终会构建出一个依赖项的层级树，依赖注入系统会处理所有这些依赖（及其子依赖），并在每一步提供（注入）相应的结果。 例"
+          },
+          {
+            "rank": 4,
+            "doc_id": "dependencies#chunk-014",
+            "source_id": "dependencies",
+            "text_preview": "资源（resources） 提供方（providers） 服务（services） 可注入（injectables） 组件（components）  FastAPI 插件¶ 可以使用依赖注入系统构建集成和“插件”。但实际上，根本不需要创建“插件”，因为通过依赖项可以声明无限多的集成与交互，使其可用于路径操作函数。 依赖项可以用非常简单直观的方式创建，你只需导"
+          },
+          {
+            "rank": 5,
+            "doc_id": "lifespan#chunk-001",
+            "source_id": "lifespan",
+            "text_preview": "你可以定义在应用启动前执行的逻辑（代码）。这意味着在应用开始接收请求之前，这些代码只会被执行一次。 同样地，你可以定义在应用关闭时应执行的逻辑。在这种情况下，这段代码将在处理可能的多次请求后执行一次。 因为这段代码在应用开始接收请求之前执行，也会在处理可能的若干请求之后执行，它覆盖了整个应用程序的生命周期（“生命周期”这个词很重要😉）。"
+          },
+          {
+            "rank": 6,
+            "doc_id": "lifespan#chunk-010",
+            "source_id": "lifespan",
+            "text_preview": "有一种替代方法可以定义在启动和关闭期间执行的逻辑。 你可以定义在应用启动前或应用关闭时需要执行的事件处理器（函数）。 事件函数既可以声明为异步函数（async def），也可以声明为普通函数（def）。 startup 事件¶ 使用事件 \"startup\" 声明一个在应用启动前运行的函数： Python 3.10+   from fastapi import"
+          },
+          {
+            "rank": 7,
+            "doc_id": "request_body#chunk-004",
+            "source_id": "request_body",
+            "text_preview": "为你的模型生成 JSON Schema 定义，如果对你的项目有意义，还可以在其他地方使用它们。 这些 schema 会成为生成的 OpenAPI Schema 的一部分，并被自动文档的 UIs 使用。  自动文档¶ 你的模型的 JSON Schema 会成为生成的 OpenAPI Schema 的一部分，并显示在交互式 API 文档中：  并且，还会用于需要"
+          },
+          {
+            "rank": 8,
+            "doc_id": "middleware#chunk-000",
+            "source_id": "middleware",
+            "text_preview": "中间件¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以向 FastAPI 应用添加中间件。 “中间件”是一个函数，它会在每个特定的路径操作处理每个请求之前运行，也会在返回每个响应之前运行。"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个",
+            "reranker_score": -2.263659
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-001",
+            "source_id": "lifespan",
+            "text_preview": "你可以定义在应用启动前执行的逻辑（代码）。这意味着在应用开始接收请求之前，这些代码只会被执行一次。 同样地，你可以定义在应用关闭时应执行的逻辑。在这种情况下，这段代码将在处理可能的多次请求后执行一次。 因为这段代码在应用开始接收请求之前执行，也会在处理可能的若干请求之后执行，它覆盖了整个应用程序的生命周期（“生命周期”这个词很重要😉）。",
+            "reranker_score": -4.225754
+          },
+          {
+            "rank": 3,
+            "doc_id": "lifespan#chunk-010",
+            "source_id": "lifespan",
+            "text_preview": "有一种替代方法可以定义在启动和关闭期间执行的逻辑。 你可以定义在应用启动前或应用关闭时需要执行的事件处理器（函数）。 事件函数既可以声明为异步函数（async def），也可以声明为普通函数（def）。 startup 事件¶ 使用事件 \"startup\" 声明一个在应用启动前运行的函数： Python 3.10+   from fastapi import",
+            "reranker_score": -5.469972
+          },
+          {
+            "rank": 4,
+            "doc_id": "lifespan#chunk-013",
+            "source_id": "lifespan",
+            "text_preview": "startup 和 shutdown 一起使用¶ 启动和关闭的逻辑很可能是连接在一起的，你可能希望启动某个东西然后结束它，获取一个资源然后释放它等等。 在不共享逻辑或变量的不同函数中处理这些逻辑比较困难，因为你需要在全局变量中存储值或使用类似的方式。 因此，推荐使用上面所述的 lifespan。 技术细节¶ 只是为好奇者提供的技术细节。🤓 在底层，这部分是 ",
+            "reranker_score": -6.374943
+          },
+          {
+            "rank": 5,
+            "doc_id": "request_body#chunk-004",
+            "source_id": "request_body",
+            "text_preview": "为你的模型生成 JSON Schema 定义，如果对你的项目有意义，还可以在其他地方使用它们。 这些 schema 会成为生成的 OpenAPI Schema 的一部分，并被自动文档的 UIs 使用。  自动文档¶ 你的模型的 JSON Schema 会成为生成的 OpenAPI Schema 的一部分，并显示在交互式 API 文档中：  并且，还会用于需要",
+            "reranker_score": -6.898945
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 20.1,
+        "dense_top10": 18.5,
+        "reranker": 124.3,
+        "dense_top10_plus_reranker": 142.8
+      }
+    },
+    {
+      "id": "q020",
+      "question": "测试函数什么时候写 def，什么时候写 async def？",
+      "relevant_ids": [
+        "testing",
+        "async_tests"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-002",
+            "source_id": "async_tests",
+            "text_preview": "HTTPX¶ 即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。 TestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由"
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-008",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() =="
+          },
+          {
+            "rank": 3,
+            "doc_id": "testing#chunk-010",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() =="
+          },
+          {
+            "rank": 4,
+            "doc_id": "async_tests#chunk-005",
+            "source_id": "async_tests",
+            "text_preview": "这相当于： response = client.get('/')  ...我们曾经通过它向 TestClient 发出请求。  提示 请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。   警告 如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 f"
+          },
+          {
+            "rank": 5,
+            "doc_id": "lifespan#chunk-006",
+            "source_id": "lifespan",
+            "text_preview": "app = FastAPI(lifespan=lifespan)   @app.get(\"/predict\") async def predict(x: float):     result = ml_models[\"answer_to_everything\"](x)     return {\"result\": result}     这个函数在 yield"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-002",
+            "source_id": "async_tests",
+            "text_preview": "HTTPX¶ 即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。 TestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由"
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-008",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() =="
+          },
+          {
+            "rank": 3,
+            "doc_id": "testing#chunk-010",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() =="
+          },
+          {
+            "rank": 4,
+            "doc_id": "async_tests#chunk-005",
+            "source_id": "async_tests",
+            "text_preview": "这相当于： response = client.get('/')  ...我们曾经通过它向 TestClient 发出请求。  提示 请注意，我们正在将 async/await 与新的 AsyncClient 一起使用——请求是异步的。   警告 如果您的应用程序依赖于生命周期事件， AsyncClient 将不会触发这些事件。为了确保它们被触发，请使用 f"
+          },
+          {
+            "rank": 5,
+            "doc_id": "lifespan#chunk-006",
+            "source_id": "lifespan",
+            "text_preview": "app = FastAPI(lifespan=lifespan)   @app.get(\"/predict\") async def predict(x: float):     result = ml_models[\"answer_to_everything\"](x)     return {\"result\": result}     这个函数在 yield"
+          },
+          {
+            "rank": 6,
+            "doc_id": "async_tests#chunk-004",
+            "source_id": "async_tests",
+            "text_preview": "import pytest from httpx import ASGITransport, AsyncClient  from .main import app   @pytest.mark.anyio async def test_root():     async with AsyncClient(         transport=ASGITran"
+          },
+          {
+            "rank": 7,
+            "doc_id": "sse#chunk-005",
+            "source_id": "sse",
+            "text_preview": "@app.get(\"/items/stream-no-async-no-annotation\", response_class=EventSourceResponse) def sse_items_no_async_no_annotation():     for item in items:         yield item       提示 由于 P"
+          },
+          {
+            "rank": 8,
+            "doc_id": "testing#chunk-009",
+            "source_id": "testing",
+            "text_preview": "def test_create_existing_item():     response = client.post(         \"/items/\",         headers={\"X-Token\": \"coneofsilence\"},         json={             \"id\": \"foo\",             \"t"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "async_tests#chunk-004",
+            "source_id": "async_tests",
+            "text_preview": "import pytest from httpx import ASGITransport, AsyncClient  from .main import app   @pytest.mark.anyio async def test_root():     async with AsyncClient(         transport=ASGITran",
+            "reranker_score": 3.660734
+          },
+          {
+            "rank": 2,
+            "doc_id": "async_tests#chunk-002",
+            "source_id": "async_tests",
+            "text_preview": "HTTPX¶ 即使您的 FastAPI 应用程序使用普通的 def 函数而不是 async def ，它本质上仍是一个 async 异步应用程序。 TestClient 在内部通过一些“魔法”操作，使得您可以在普通的 def 测试函数中调用异步的 FastAPI 应用程序，并使用标准的 pytest。但当我们在异步函数中使用它时，这种“魔法”就不再生效了。由",
+            "reranker_score": 0.376913
+          },
+          {
+            "rank": 3,
+            "doc_id": "lifespan#chunk-006",
+            "source_id": "lifespan",
+            "text_preview": "app = FastAPI(lifespan=lifespan)   @app.get(\"/predict\") async def predict(x: float):     result = ml_models[\"answer_to_everything\"](x)     return {\"result\": result}     这个函数在 yield",
+            "reranker_score": -0.94617
+          },
+          {
+            "rank": 4,
+            "doc_id": "testing#chunk-008",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() ==",
+            "reranker_score": -2.321106
+          },
+          {
+            "rank": 5,
+            "doc_id": "testing#chunk-010",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() ==",
+            "reranker_score": -2.321106
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 16.7,
+        "dense_top10": 19.3,
+        "reranker": 339.5,
+        "dense_top10_plus_reranker": 358.8
+      }
+    },
+    {
+      "id": "q021",
+      "question": "如何给所有接口加 Bearer Token 检查，并用测试确认未登录请求被拒绝？",
+      "relevant_ids": [
+        "security_first_steps",
+        "global_dependencies",
+        "testing"
+      ],
+      "dense_top5": {
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.6666666666666666,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定"
+          },
+          {
+            "rank": 2,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar"
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-009",
+            "source_id": "security_first_steps",
+            "text_preview": "这个参数不会创建该端点 / 路径操作，而是声明客户端应使用 /token 这个 URL 来获取令牌。这些信息会用于 OpenAPI，进而用于交互式 API 文档系统。 我们很快也会创建对应的实际路径操作。  注意 如果你是非常严格的 “Pythonista”，可能不喜欢使用参数名 tokenUrl 而不是 token_url。 这是因为它使用了与 OpenA"
+          },
+          {
+            "rank": 6,
+            "doc_id": "testing#chunk-008",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() =="
+          },
+          {
+            "rank": 7,
+            "doc_id": "testing#chunk-010",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() =="
+          },
+          {
+            "rank": 8,
+            "doc_id": "async_tests#chunk-001",
+            "source_id": "async_tests",
+            "text_preview": "您已经了解了如何使用 TestClient 测试 FastAPI 应用程序。但是到目前为止，您只了解了如何编写同步测试，而没有使用 async 异步函数。 在测试中能够使用异步函数可能会很有用，比如当您需要异步查询数据库的时候。想象一下，您想要测试向 FastAPI 应用程序发送请求，然后验证您的后端是否成功在数据库中写入了正确的数据，与此同时您使用了异步的"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.6666666666666666,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "testing#chunk-008",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() ==",
+            "reranker_score": 0.18043
+          },
+          {
+            "rank": 2,
+            "doc_id": "testing#chunk-010",
+            "source_id": "testing",
+            "text_preview": "def test_read_nonexistent_item():     response = client.get(\"/items/baz\", headers={\"X-Token\": \"coneofsilence\"})     assert response.status_code == 404     assert response.json() ==",
+            "reranker_score": 0.18043
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定",
+            "reranker_score": -0.749813
+          },
+          {
+            "rank": 4,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包",
+            "reranker_score": -3.398544
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-006",
+            "source_id": "security_first_steps",
+            "text_preview": "前端会把令牌临时存储在某处。 用户在前端中点击跳转到前端应用的其他部分。 前端需要从 API 获取更多数据。 但该端点需要身份验证。 因此，为了与我们的 API 进行身份验证，它会发送一个 Authorization 请求头，值为 Bearer 加上令牌。 如果令牌内容是 foobar，Authorization 请求头的内容就是：Bearer foobar",
+            "reranker_score": -4.840742
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 30.5,
+        "dense_top10": 12.8,
+        "reranker": 200.4,
+        "dense_top10_plus_reranker": 213.2
+      }
+    },
+    {
+      "id": "q022",
+      "question": "应用启动时加载共享模型后，怎样在异步测试里请求这个应用？",
+      "relevant_ids": [
+        "lifespan",
+        "async_tests"
+      ],
+      "dense_top5": {
+        "recall": 0.5,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个"
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需"
+          },
+          {
+            "rank": 3,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 4,
+            "doc_id": "lifespan#chunk-014",
+            "source_id": "lifespan",
+            "text_preview": "子应用¶ 🚨 请注意，这些生命周期事件（startup 和 shutdown）只会在主应用上执行，不会在子应用 - 挂载上执行。"
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-002",
+            "source_id": "dependencies",
+            "text_preview": "共享业务逻辑（同一段代码逻辑反复复用） 共享数据库连接 实施安全、认证、角色权限等要求 以及更多其他内容...  同时尽量减少代码重复。 第一步¶ 先来看一个非常简单的例子。它现在简单到几乎没什么用。 但这样我们就可以专注于依赖注入系统是如何工作的。 创建依赖项，或“dependable”¶ 首先关注依赖项。 它只是一个函数，且可以接收与路径操作函数相同的所"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个"
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需"
+          },
+          {
+            "rank": 3,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 4,
+            "doc_id": "lifespan#chunk-014",
+            "source_id": "lifespan",
+            "text_preview": "子应用¶ 🚨 请注意，这些生命周期事件（startup 和 shutdown）只会在主应用上执行，不会在子应用 - 挂载上执行。"
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-002",
+            "source_id": "dependencies",
+            "text_preview": "共享业务逻辑（同一段代码逻辑反复复用） 共享数据库连接 实施安全、认证、角色权限等要求 以及更多其他内容...  同时尽量减少代码重复。 第一步¶ 先来看一个非常简单的例子。它现在简单到几乎没什么用。 但这样我们就可以专注于依赖注入系统是如何工作的。 创建依赖项，或“dependable”¶ 首先关注依赖项。 它只是一个函数，且可以接收与路径操作函数相同的所"
+          },
+          {
+            "rank": 6,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息："
+          },
+          {
+            "rank": 7,
+            "doc_id": "testing#chunk-004",
+            "source_id": "testing",
+            "text_preview": "from fastapi.testclient import TestClient  from .main import app  client = TestClient(app)   def test_read_main():     response = client.get(\"/\")     assert response.status_code =="
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-025",
+            "source_id": "response_model",
+            "text_preview": "提示 但仍然推荐使用上面的思路，使用多个类，而不是这些参数。 因为即使你使用 response_model_include 或 response_model_exclude 省略了一些属性，你的应用在 OpenAPI（和文档）中生成的 JSON Schema 仍然会是完整模型。 这同样适用于类似的 response_model_by_alias。  Pyth"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.5,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "lifespan#chunk-003",
+            "source_id": "lifespan",
+            "text_preview": "你可以在模块/文件的顶部加载它，但这也意味着即使你只是在运行一个简单的自动化测试，它也会加载模型，这样测试将变慢，因为它必须在能够独立运行代码的其他部分之前等待模型加载完成。 这就是我们要解决的问题——在处理请求前加载模型，但只是在应用开始接收请求前，而不是在代码被加载时。 Lifespan¶ 你可以使用 FastAPI 应用的 lifespan 参数和一个",
+            "reranker_score": 3.661414
+          },
+          {
+            "rank": 2,
+            "doc_id": "lifespan#chunk-002",
+            "source_id": "lifespan",
+            "text_preview": "这对于设置你需要在整个应用中使用的资源非常有用，这些资源在请求之间共享，你可能需要在之后进行释放。例如，数据库连接池，或加载一个共享的机器学习模型。 用例¶ 让我们从一个示例用例开始，看看如何用它来解决问题。 假设你有几个机器学习的模型，你想要用它们来处理请求。🤖 相同的模型在请求之间是共享的，因此并非每个请求或每个用户各自拥有一个模型。 假设加载模型可能需",
+            "reranker_score": 0.69153
+          },
+          {
+            "rank": 3,
+            "doc_id": "testing#chunk-004",
+            "source_id": "testing",
+            "text_preview": "from fastapi.testclient import TestClient  from .main import app  client = TestClient(app)   def test_read_main():     response = client.get(\"/\")     assert response.status_code ==",
+            "reranker_score": -2.333179
+          },
+          {
+            "rank": 4,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。",
+            "reranker_score": -2.853844
+          },
+          {
+            "rank": 5,
+            "doc_id": "dependencies#chunk-012",
+            "source_id": "dependencies",
+            "text_preview": "注意 如果不了解异步，请参阅文档中关于 async 和 await 的章节：异步：“着急了？”。  与 OpenAPI 集成¶ 依赖项及子依赖项中声明的所有请求、验证和需求都会集成到同一个 OpenAPI 模式中。 因此，交互式文档中也会包含这些依赖项的所有信息：",
+            "reranker_score": -3.993445
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 24.6,
+        "dense_top10": 18.9,
+        "reranker": 184.3,
+        "dense_top10_plus_reranker": 203.2
+      }
+    },
+    {
+      "id": "q023",
+      "question": "怎样接收 Pydantic 请求体，并把自定义业务错误返回为指定状态码？",
+      "relevant_ids": [
+        "request_body",
+        "handling_errors"
+      ],
+      "dense_top5": {
+        "recall": 0.5,
+        "mrr": 0.3333333333333333,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例"
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items ="
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import"
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-004",
+            "source_id": "path_params",
+            "text_preview": "同样，还有很多兼容工具，包括多种语言的代码生成工具。 Pydantic¶ 所有数据校验都由 Pydantic 在幕后完成，因此你能从中获得所有好处。而且你可以放心。 同样，str、float、bool 以及很多复合数据类型都可以使用类型声明。 接下来的章节会介绍其中的好几种。 顺序很重要¶ 有时，路径操作中的路径是写死的。 比如要使用 /users/me 获"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-005",
+            "source_id": "response_model",
+            "text_preview": "response_model 接收的类型与为 Pydantic 模型字段声明的类型相同，因此它可以是一个 Pydantic 模型，也可以是一个由 Pydantic 模型组成的 list，例如 List[Item]。 FastAPI 会使用这个 response_model 来完成数据文档、校验等，并且还会将输出数据转换并过滤为其类型声明。  提示 如果你的编"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例"
+          },
+          {
+            "rank": 3,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items ="
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import"
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-004",
+            "source_id": "path_params",
+            "text_preview": "同样，还有很多兼容工具，包括多种语言的代码生成工具。 Pydantic¶ 所有数据校验都由 Pydantic 在幕后完成，因此你能从中获得所有好处。而且你可以放心。 同样，str、float、bool 以及很多复合数据类型都可以使用类型声明。 接下来的章节会介绍其中的好几种。 顺序很重要¶ 有时，路径操作中的路径是写死的。 比如要使用 /users/me 获"
+          },
+          {
+            "rank": 6,
+            "doc_id": "response_model#chunk-018",
+            "source_id": "response_model",
+            "text_preview": "app = FastAPI()   @app.get(\"/teleport\") async def get_teleport() -> RedirectResponse:     return RedirectResponse(url=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\")     这同样可行，因为 Re"
+          },
+          {
+            "rank": 7,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定"
+          },
+          {
+            "rank": 8,
+            "doc_id": "sse#chunk-008",
+            "source_id": "sse",
+            "text_preview": "@app.get(\"/items/stream-no-async-no-annotation\", response_class=EventSourceResponse) def sse_items_no_async_no_annotation():     for item in items:         yield item      ServerSe"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.5,
+        "mrr": 0.2,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定",
+            "reranker_score": 0.390826
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-008",
+            "source_id": "sse",
+            "text_preview": "@app.get(\"/items/stream-no-async-no-annotation\", response_class=EventSourceResponse) def sse_items_no_async_no_annotation():     for item in items:         yield item      ServerSe",
+            "reranker_score": -1.449553
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-016",
+            "source_id": "response_model",
+            "text_preview": "并且两个模型都会用于交互式 API 文档：  其他返回类型注解¶ 有些情况下你会返回一些不是有效 Pydantic 字段的内容，并在函数上做了相应注解，只是为了获得工具链（编辑器、mypy 等）的支持。 直接返回 Response¶ 最常见的情况是直接返回 Response，详见进阶文档。 Python 3.10+   from fastapi import",
+            "reranker_score": -1.600989
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-003",
+            "source_id": "response_model",
+            "text_preview": "response_model 参数¶ 在一些情况下，你需要或希望返回的数据与声明的类型不完全一致。 例如，你可能希望返回一个字典或数据库对象，但将其声明为一个 Pydantic 模型。这样 Pydantic 模型就会为你返回的对象（例如字典或数据库对象）完成文档、校验等工作。 如果你添加了返回类型注解，工具和编辑器会（正确地）报错，提示你的函数返回的类型（例",
+            "reranker_score": -1.615439
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-004",
+            "source_id": "handling_errors",
+            "text_preview": "添加自定义响应头¶ 有些场景下要为 HTTP 错误添加自定义响应头。例如，出于某些类型的安全需要。 一般情况下你可能不会在代码中直接使用它。 但在某些高级场景中需要时，你可以添加自定义响应头： Python 3.10+   from fastapi import FastAPI, HTTPException  app = FastAPI()  items =",
+            "reranker_score": -1.895448
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 16.1,
+        "dense_top10": 14.3,
+        "reranker": 200.2,
+        "dense_top10_plus_reranker": 214.6
+      }
+    },
+    {
+      "id": "q024",
+      "question": "如何让 SSE 接口先检查访问令牌，再持续发送事件？",
+      "relevant_ids": [
+        "security_first_steps",
+        "sse"
+      ],
+      "dense_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:"
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-001",
+            "source_id": "sse",
+            "text_preview": "data: {\"name\": \"Plumbus\", \"price\": 32.99}  SSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。  提示 如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。  使用 FastAPI 流式传输 SSE¶ 要在 FastAPI 中流式传输 SSE，"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 4,
+            "doc_id": "sse#chunk-000",
+            "source_id": "sse",
+            "text_preview": "服务器发送事件（SSE）¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以使用服务器发送事件（SSE）向客户端流式发送数据。 这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:"
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-001",
+            "source_id": "sse",
+            "text_preview": "data: {\"name\": \"Plumbus\", \"price\": 32.99}  SSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。  提示 如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。  使用 FastAPI 流式传输 SSE¶ 要在 FastAPI 中流式传输 SSE，"
+          },
+          {
+            "rank": 3,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 4,
+            "doc_id": "sse#chunk-000",
+            "source_id": "sse",
+            "text_preview": "服务器发送事件（SSE）¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以使用服务器发送事件（SSE）向客户端流式发送数据。 这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原"
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定"
+          },
+          {
+            "rank": 6,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包"
+          },
+          {
+            "rank": 7,
+            "doc_id": "middleware#chunk-001",
+            "source_id": "middleware",
+            "text_preview": "它接收你的应用的每一个请求。 然后它可以对这个请求做一些事情或者执行任何需要的代码。 然后它将这个请求传递给应用程序的其他部分（某个路径操作）处理。 之后它获取应用程序生成的响应（由某个路径操作产生）。 它可以对该响应做一些事情或者执行任何需要的代码。 然后它返回这个响应。   技术细节 如果你有使用 yield 的依赖，依赖中的退出代码会在中间件之后运行。"
+          },
+          {
+            "rank": 8,
+            "doc_id": "security_first_steps#chunk-001",
+            "source_id": "security_first_steps",
+            "text_preview": "假设你的后端 API 位于某个域名下。 而前端在另一个域名，或同一域名的不同路径（或在移动应用中）。 你希望前端能通过username 和 password 与后端进行身份验证。 我们可以用 OAuth2 在 FastAPI 中实现它。 但为了节省你的时间，不必为获取少量信息而通读冗长的规范。 我们直接使用 FastAPI 提供的安全工具。 效果预览¶ 先直"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 1.0,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-005",
+            "source_id": "security_first_steps",
+            "text_preview": "用户在前端输入 username 和 password，然后按下 Enter。 前端（运行在用户浏览器中）把 username 和 password 发送到我们 API 中的特定 URL（使用 tokenUrl=\"token\" 声明）。 API 校验 username 和 password，并返回一个“令牌”（这些我们尚未实现）。 “令牌”只是一个字符串，包",
+            "reranker_score": -1.988596
+          },
+          {
+            "rank": 2,
+            "doc_id": "sse#chunk-012",
+            "source_id": "sse",
+            "text_preview": "技术细节¶ FastAPI 开箱即用地实现了一些 SSE 的最佳实践。  当 15 秒内没有任何消息时，发送一个保活 ping 注释，以防某些代理关闭连接，正如 HTML 规范：Server-Sent Events 中建议的那样。 设置 Cache-Control: no-cache 响应头，防止缓存流。 设置特殊响应头 X-Accel-Buffering:",
+            "reranker_score": -2.2689
+          },
+          {
+            "rank": 3,
+            "doc_id": "sse#chunk-000",
+            "source_id": "sse",
+            "text_preview": "服务器发送事件（SSE）¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  你可以使用服务器发送事件（SSE）向客户端流式发送数据。 这类似于流式传输 JSON Lines，但使用 text/event-stream 格式，浏览器原",
+            "reranker_score": -2.742556
+          },
+          {
+            "rank": 4,
+            "doc_id": "sse#chunk-001",
+            "source_id": "sse",
+            "text_preview": "data: {\"name\": \"Plumbus\", \"price\": 32.99}  SSE 常用于 AI 聊天流式输出、实时通知、日志与可观测性，以及其他服务器向客户端推送更新的场景。  提示 如果你想流式传输二进制数据（例如视频或音频），请查看高级指南：流式传输数据。  使用 FastAPI 流式传输 SSE¶ 要在 FastAPI 中流式传输 SSE，",
+            "reranker_score": -2.812074
+          },
+          {
+            "rank": 5,
+            "doc_id": "security_first_steps#chunk-012",
+            "source_id": "security_first_steps",
+            "text_preview": "它做了什么¶ 它会在请求中查找 Authorization 请求头，检查其值是否为 Bearer 加上一些令牌，并将该令牌作为 str 返回。 如果没有 Authorization 请求头，或者其值不包含 Bearer 令牌，它会直接返回 401 状态码错误（UNAUTHORIZED）。 你甚至无需检查令牌是否存在即可返回错误；只要你的函数被执行，就可以确定",
+            "reranker_score": -3.688402
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 35.1,
+        "dense_top10": 18.0,
+        "reranker": 166.3,
+        "dense_top10_plus_reranker": 184.3
+      }
+    },
+    {
+      "id": "q025",
+      "question": "怎样复用公共查询逻辑，同时确保响应不会泄露内部字段？",
+      "relevant_ids": [
+        "dependencies",
+        "response_model"
+      ],
+      "dense_top5": {
+        "recall": 0.5,
+        "mrr": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这"
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验"
+          },
+          {
+            "rank": 4,
+            "doc_id": "path_params#chunk-004",
+            "source_id": "path_params",
+            "text_preview": "同样，还有很多兼容工具，包括多种语言的代码生成工具。 Pydantic¶ 所有数据校验都由 Pydantic 在幕后完成，因此你能从中获得所有好处。而且你可以放心。 同样，str、float、bool 以及很多复合数据类型都可以使用类型声明。 接下来的章节会介绍其中的好几种。 顺序很重要¶ 有时，路径操作中的路径是写死的。 比如要使用 /users/me 获"
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限"
+          }
+        ]
+      },
+      "dense_top10_candidates": {
+        "recall": 0.5,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "security_first_steps#chunk-004",
+            "source_id": "security_first_steps",
+            "text_preview": "注意 目前无论在表单中输入什么都不会生效，我们稍后就会实现它。  这当然不是面向最终用户的前端，但它是一个很棒的自动化工具，可交互式地为整个 API 提供文档。 前端团队（也可能就是你自己）可以使用它。 第三方应用和系统也可以使用它。 你也可以用它来调试、检查和测试同一个应用。 password 流¶ 现在回过头来理解这些内容。 password “流”（f"
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这"
+          },
+          {
+            "rank": 3,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验"
+          },
+          {
+            "rank": 4,
+            "doc_id": "path_params#chunk-004",
+            "source_id": "path_params",
+            "text_preview": "同样，还有很多兼容工具，包括多种语言的代码生成工具。 Pydantic¶ 所有数据校验都由 Pydantic 在幕后完成，因此你能从中获得所有好处。而且你可以放心。 同样，str、float、bool 以及很多复合数据类型都可以使用类型声明。 接下来的章节会介绍其中的好几种。 顺序很重要¶ 有时，路径操作中的路径是写死的。 比如要使用 /users/me 获"
+          },
+          {
+            "rank": 5,
+            "doc_id": "handling_errors#chunk-000",
+            "source_id": "handling_errors",
+            "text_preview": "处理错误¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本  某些情况下，需要向使用你的 API 的客户端返回错误提示。 这里所谓的客户端包括前端浏览器、他人的代码、物联网设备等。 你可能需要告诉客户端：  客户端没有执行该操作的权限"
+          },
+          {
+            "rank": 6,
+            "doc_id": "middleware#chunk-005",
+            "source_id": "middleware",
+            "text_preview": "这会产生如下执行顺序：   请求：MiddlewareB → MiddlewareA → 路由   响应：路由 → MiddlewareA → MiddlewareB   这种栈式行为确保中间件按可预测且可控的顺序执行。 其他中间件¶ 你可以稍后在高级用户指南：高级中间件中阅读更多关于其他中间件的内容。 你将在下一节中了解如何使用中间件处理 CORS。"
+          },
+          {
+            "rank": 7,
+            "doc_id": "security_first_steps#chunk-000",
+            "source_id": "security_first_steps",
+            "text_preview": "安全 - 第一步¶  🌐 由 AI 与人类协作翻译 本翻译由人类引导的 AI 生成。🤝 可能存在误解原意或不够自然等问题。🤖 你可以通过帮助我们更好地引导 AI LLM来改进此翻译。 英文版本"
+          },
+          {
+            "rank": 8,
+            "doc_id": "response_model#chunk-014",
+            "source_id": "response_model",
+            "text_preview": "这样一来，我们既能从编辑器和 mypy 获得工具支持（这段代码在类型上是正确的），也能从 FastAPI 获得数据过滤。 这是如何做到的？我们来看看。🤓 类型注解与工具链¶ 先看看编辑器、mypy 和其他工具会如何看待它。 BaseUser 有基础字段。然后 UserIn 继承自 BaseUser 并新增了 password 字段，因此它包含了两个模型的全部"
+          }
+        ]
+      },
+      "cross_encoder_top5": {
+        "recall": 0.5,
+        "mrr": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "doc_id": "response_model#chunk-012",
+            "source_id": "response_model",
+            "text_preview": "我们希望 FastAPI 继续使用响应模型来过滤数据。这样即使函数返回了更多数据，响应也只会包含响应模型中声明的字段。 在上一个例子中，因为类不同，我们不得不使用 response_model 参数。但这也意味着我们无法从编辑器和工具处获得对函数返回类型的检查支持。 不过在大多数需要这样做的场景里，我们只是希望模型像这个例子中那样过滤/移除一部分数据。 在这",
+            "reranker_score": -4.008188
+          },
+          {
+            "rank": 2,
+            "doc_id": "response_model#chunk-006",
+            "source_id": "response_model",
+            "text_preview": "response_model 的优先级¶ 如果你同时声明了返回类型和 response_model，response_model 会具有优先级并由 FastAPI 使用。 这样，即使你返回的类型与响应模型不同，你也可以为函数添加正确的类型注解，供编辑器和 mypy 等工具使用。同时你仍然可以让 FastAPI 使用 response_model 进行数据校验",
+            "reranker_score": -5.108016
+          },
+          {
+            "rank": 3,
+            "doc_id": "middleware#chunk-005",
+            "source_id": "middleware",
+            "text_preview": "这会产生如下执行顺序：   请求：MiddlewareB → MiddlewareA → 路由   响应：路由 → MiddlewareA → MiddlewareB   这种栈式行为确保中间件按可预测且可控的顺序执行。 其他中间件¶ 你可以稍后在高级用户指南：高级中间件中阅读更多关于其他中间件的内容。 你将在下一节中了解如何使用中间件处理 CORS。",
+            "reranker_score": -5.923668
+          },
+          {
+            "rank": 4,
+            "doc_id": "response_model#chunk-014",
+            "source_id": "response_model",
+            "text_preview": "这样一来，我们既能从编辑器和 mypy 获得工具支持（这段代码在类型上是正确的），也能从 FastAPI 获得数据过滤。 这是如何做到的？我们来看看。🤓 类型注解与工具链¶ 先看看编辑器、mypy 和其他工具会如何看待它。 BaseUser 有基础字段。然后 UserIn 继承自 BaseUser 并新增了 password 字段，因此它包含了两个模型的全部",
+            "reranker_score": -6.921754
+          },
+          {
+            "rank": 5,
+            "doc_id": "path_params#chunk-004",
+            "source_id": "path_params",
+            "text_preview": "同样，还有很多兼容工具，包括多种语言的代码生成工具。 Pydantic¶ 所有数据校验都由 Pydantic 在幕后完成，因此你能从中获得所有好处。而且你可以放心。 同样，str、float、bool 以及很多复合数据类型都可以使用类型声明。 接下来的章节会介绍其中的好几种。 顺序很重要¶ 有时，路径操作中的路径是写死的。 比如要使用 /users/me 获",
+            "reranker_score": -7.49016
+          }
+        ]
+      },
+      "latency_ms": {
+        "dense_top5": 20.4,
+        "dense_top10": 17.1,
+        "reranker": 164.2,
+        "dense_top10_plus_reranker": 181.3
+      }
+    }
+  ]
+}
