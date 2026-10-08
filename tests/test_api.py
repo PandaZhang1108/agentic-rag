@@ -1,24 +1,4 @@
-"""
-================================================================================
-tests/test_api.py —— 接口层测试
-================================================================================
-你原来只测了两个纯函数（recall_at_k / mrr_at_k）。那是好的开始，
-但接口层完全没测 —— 而 P0-1 那个"前端没发 X-API-Key，所有请求 401"的 bug，
-只要有下面第一个测试就绝不可能上线。
-
-这就是接口测试的价值：它守住的是【模块之间的约定】，
-而单元测试只守住模块内部。
-
-【怎么在没有数据库的情况下测】
-lifespan 里要连 Postgres，CI 里没有。解法是把 graph 换成一个假的：
-下面用 dependency-free 的方式直接替换 app.state.graph，
-绕过 lifespan。这叫 test double（测试替身）。
-
-跑法：
-    pip install -r requirements-dev.txt
-    pytest tests/test_api.py -v
-================================================================================
-"""
+"""HTTP and SSE contract tests using an in-process graph test double."""
 
 import asyncio
 import json
@@ -47,19 +27,7 @@ import httpx  # noqa: E402
 
 
 class FakeGraph:
-    """
-    假的图：不调模型，直接吐两个 token。
-
-    语法讲解 —— 异步生成器：
-        函数体里同时有 `async def` 和 `yield`，它就是异步生成器，
-        调用方用 `async for x in gen()` 消费。
-
-        这正是你之前困惑的第三种 yield：
-          - LangGraph 节点          → return
-          - lifespan 上下文管理器    → yield（一次，分隔启动/关闭）
-          - 流式产出（这里 / SSE）   → yield（多次，边算边吐）
-        三个 yield 语义完全不同，别混成一件事。
-    """
+    """Yield deterministic tokens without invoking external services."""
 
     async def astream(self, inputs, config=None, stream_mode=None):
         class Chunk:
@@ -137,15 +105,7 @@ class CountingGraph:
 
 @pytest.fixture
 async def client():
-    """
-    语法讲解 —— pytest fixture：
-        被 @pytest.fixture 装饰的函数，可以作为参数名注入到测试函数里。
-        测试函数写 `async def test_x(client):`，pytest 就会自动调用这个
-        fixture 并把结果传进去。yield 之后的代码是清理逻辑（又一种 yield 用法）。
-
-    这里用 ASGITransport 直接把请求打进 app 对象，不经过真实网络端口 ——
-    快、且不占端口，CI 里可以并行跑。
-    """
+    """Create an in-process HTTP client without starting external dependencies."""
     from main import app
 
     app.state.graph = FakeGraph()      # 替换掉真图，绕过数据库依赖
@@ -155,9 +115,7 @@ async def client():
         yield c
 
 
-# ==============================================================================
-# 鉴权（这组测试能挡住 P0-1）
-# ==============================================================================
+# 鉴权
 async def test_chat_without_api_key_returns_401(client):
     resp = await client.post("/chat", json={"message": "你好"})
     assert resp.status_code == 401

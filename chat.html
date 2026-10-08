@@ -173,9 +173,6 @@
 const API_URL = "http://localhost:8000/chat";
 
 // ------------------------------------------------------------------
-// 【修复 P0-1】后端加了 X-API-Key 鉴权，但这个页面之前没发这个头，
-// 结果是每一条消息都 401 —— 前端和后端已经对不上了。
-//
 // 这个调试台是纯静态页面，没有构建步骤，所以 key 只能放在这里，
 // 也就意味着【任何打开页面的人都能从源码里看到它】。
 // 这在"本机调试工具"这个定位下是可以接受的，但必须写清楚：
@@ -250,7 +247,7 @@ async function sendMessage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-API-Key": API_KEY,          // 【修复 P0-1】
+        "X-API-Key": API_KEY,
       },
       body: JSON.stringify(body),
     });
@@ -317,9 +314,7 @@ async function sendMessage() {
           bubble.textContent = fullText;
           logEl.scrollTop = logEl.scrollHeight;
         } else if (msg.type === "error") {
-          // 【修复 P0-1 的第二半】后端新增了 error 事件，
-          // 之前这里没有对应分支，出错时气泡会一直空着转光标，
-          // 用户完全不知道发生了什么。
+          // 流中错误作为可见消息追加，随后结束加载状态。
           fullText += (fullText ? "\n\n" : "") + "⚠ " + msg.value;
           bubble.textContent = fullText;
           bubble.classList.remove("streaming");

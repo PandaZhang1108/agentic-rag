@@ -1,19 +1,4 @@
-"""
-================================================================================
-tests/test_agent_logic.py —— 纯逻辑测试，不需要模型/数据库/网络
-================================================================================
-这里测的正是我们修的几个 bug 的核心逻辑。
-
-【为什么这几个函数值得单独测】
-因为它们是纯函数：给定输入必然得到相同输出，没有副作用。
-纯函数是"投入产出比最高"的测试对象 —— 不用 mock 任何东西，
-毫秒级跑完，而且它们恰恰是最容易出错的地方（bug 1、P0-3、P0-4 全在这）。
-
-把 LLM 调用和逻辑判断【分开】，让逻辑部分变成纯函数，
-本身就是一种设计能力。原来 grade_documents 把"调模型打分"和
-"决定走哪条边"混在一个函数里，就没法这么测。
-================================================================================
-"""
+"""Pure routing and message-processing tests without external services."""
 
 import pytest
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
@@ -27,16 +12,13 @@ from agent_graph import (
 )
 
 
-# ==============================================================================
-# bug 1：多轮对话下取到的必须是"最新"的问题
-# ==============================================================================
+# 多轮对话下应使用最新的用户问题。
 def test_latest_question_in_multi_turn():
     messages = [
         HumanMessage(content="第一轮问题"),
         AIMessage(content="第一轮回答"),
         HumanMessage(content="第二轮问题"),
     ]
-    # 如果这里退化成 messages[0].content，就会拿到"第一轮问题"——这就是原来的 bug
     assert _get_latest_question(messages) == "第二轮问题"
 
 
@@ -50,9 +32,7 @@ def test_latest_question_after_rewrite():
     assert _get_latest_question(messages) == "重写后的问题"
 
 
-# ==============================================================================
-# P0-3：必须收集本轮【所有】工具结果，不能只取最后一条
-# ==============================================================================
+# 收集本轮全部工具结果，而不是只取最后一条。
 def test_collect_context_gathers_parallel_tool_calls():
     """
     模型一次并行调两个工具时，消息序列长这样：
@@ -122,9 +102,7 @@ def test_router_prompt_separates_tool_calls_from_visible_answer():
     assert "Leave assistant content empty" in prompt
 
 
-# ==============================================================================
-# P0-4：重写次数必须有上限
-# ==============================================================================
+# 重写次数必须有上限。
 def test_route_relevant_goes_to_answer():
     assert route_after_grade({"grade": "yes", "rewrite_count": 0}) == "generate_answer"
 
@@ -169,12 +147,6 @@ def test_route_handles_missing_keys():
     ],
 )
 def test_route_on_tool_calls(last_message, expected):
-    """
-    语法讲解 —— @pytest.mark.parametrize：
-        用一组数据跑同一个测试函数，每组算一个独立用例。
-        比写两个几乎一样的函数好：加用例只要加一行数据，
-        而且失败时 pytest 会告诉你是哪一组数据挂了。
-    """
     assert route_on_tool_calls({"messages": [last_message]}) == expected
 
 def test_route_rewrites_before_limit():

@@ -1,22 +1,7 @@
-"""
-================================================================================
-core/evals.py —— 模块 8（评测）
-================================================================================
-这是我认为对你找工作最值钱的一个文件。
+"""Offline evaluation for retrieval, routing, latency, and reviewed answer quality.
 
-【为什么】
-"我做了个 RAG"在 2026 年是简历里最泛滥的一句话。
-"我用 recall@5 对比了四组 chunk_size，从 0.42 提到 0.71，代价是成本涨 40%"
-——这句话极少见，而且它一句话同时证明了三件事：
-你会量化、你懂取舍、你真的跑过数据。
-
-这个文件是骨架，`domain/evalset.jsonl` 是插件。
-换业务只换那个 jsonl 文件。
-
-用法：
-    python -m core.evals run --dataset domain/evalset.jsonl --tag baseline
-    python -m core.evals compare baseline tuned
-================================================================================
+Run with ``python -m core.evals run`` and compare saved runs with
+``python -m core.evals compare``.
 """
 
 from __future__ import annotations
@@ -43,20 +28,7 @@ ANSWER_DIMENSIONS = ("correctness", "completeness", "faithfulness", "relevance")
 # ==============================================================================
 @dataclass
 class EvalCase:
-    """
-    一条评测样本。
-
-    【每个字段为什么存在】
-      id             出问题时能定位到具体哪条
-      question       输入
-      relevant_ids   期望命中的文档 id —— 算 recall/MRR 用
-      reference      参考答案 —— 算端到端正确率用
-      expected_tools 期望调用的工具 —— 算工具选择准确率用（步骤级评测）
-      difficulty     【这一栏最有用】标注"这条为什么难"。
-                     跑完之后按 difficulty 分组看分数，你就知道
-                     系统的失败模式集中在哪类问题上 ——
-                     这比一个笼统的总分有用十倍。
-    """
+    """One evaluation case with retrieval, tool-selection, and answer expectations."""
 
     id: str
     question: str
@@ -82,15 +54,7 @@ class EvalCase:
 
     @staticmethod
     def load(path: str | Path) -> list[EvalCase]:
-        """
-        读 jsonl（一行一个 JSON 对象）。
-
-        【为什么用 jsonl 不用 json 数组】
-        1. 可以一行行流式读，几万条也不占内存
-        2. git diff 友好 —— 加一条样本只多一行，review 时一眼看清
-        3. 追加只要 append 一行，不用解析整个文件
-        评测集是会长期演进的资产，格式要选对。
-        """
+        """Load JSONL cases and validate identifiers and dataset splits."""
         cases = []
         with open(path, encoding="utf-8") as f:
             for line_no, line in enumerate(f, 1):
@@ -124,11 +88,7 @@ def mrr_at_k(retrieved: list[str], relevant: list[str], k: int) -> float:
     """
     第一个命中项排在第几位的倒数。排第 1 得 1.0，排第 3 得 1/3。
 
-    【recall 和 MRR 的区别，面试会问】
-      recall 只关心"找没找到"，不关心排在第几
-      MRR 只关心"最靠前的那个命中排第几"，不关心一共找到几个
-    所以两个要一起看：recall 高但 MRR 低 = 相关内容找到了但排在后面，
-    应先检查候选内容和排名，再实验比较重排、切片等方案，不能仅凭两个总分归因。
+    Recall 衡量相关文档的覆盖率，MRR 衡量首次命中的排名；两者需要结合分析。
     """
     relevant_set = set(relevant)
     for idx, doc_id in enumerate(retrieved[:k], start=1):
@@ -301,10 +261,7 @@ def _known_tokens(value: Any) -> int | None:
     return value
 
 
-# 类型别名：被测系统必须长这个样子。
-# 传进来一个问题，返回一个 dict，至少含 retrieved_ids / tools_called / answer。
-# 【这个抽象是复用的关键】—— 只要你的 agent 能包装成这个签名，
-# 这套评测代码就能直接用，不管它内部是 LangGraph 还是别的。
+# Evaluation adapters return retrieved ids, called tools, and the generated answer.
 AgentFn = Callable[[str], Awaitable[dict[str, Any]]]
 CaseAgentFn = Callable[[EvalCase], Awaitable[dict[str, Any]]]
 
@@ -318,18 +275,7 @@ async def run_eval(
     answer_evaluator: AnswerEvaluator | None = None,
     case_agent: CaseAgentFn | None = None,
 ) -> list[CaseResult]:
-    """
-    批量跑评测。
-
-    语法讲解 —— asyncio.Semaphore 控制并发：
-        不加限制地 gather 100 个请求，会瞬间打爆 API 的速率限制，
-        而且延迟数据会失真（互相排队）。
-        Semaphore(4) = 同时最多 4 个在跑。
-
-    语法讲解 —— asyncio.gather(*tasks)：
-        并发执行所有协程，按【传入顺序】返回结果（不是完成顺序）。
-        所以下面的 results 和 cases 是一一对应的。
-    """
+    """Run cases with bounded concurrency while preserving input order."""
     if k < 1 or concurrency < 1:
         raise ValueError("k 和 concurrency 必须大于 0")
     sem = asyncio.Semaphore(concurrency)
@@ -421,14 +367,7 @@ def summarize(results: list[CaseResult], k: int = 5) -> dict[str, Any]:
     latencies = sorted(r.latency_ms for r in ok)
 
     def pct(p: float) -> float:
-        """
-        百分位。p95 = 95% 的请求比这个快。
-
-        【为什么看 p95 不看平均值】
-        平均延迟会被少数快请求拉低，掩盖尾部体验。
-        用户感知到的"这系统好慢"，来自那 5% 的慢请求。
-        企业采购时问的也是 p95，不是平均。
-        """
+        """Return the observed latency percentile without interpolation."""
         if not latencies:
             return 0.0
         idx = min(int(len(latencies) * p), len(latencies) - 1)
@@ -481,7 +420,7 @@ def summarize(results: list[CaseResult], k: int = 5) -> dict[str, Any]:
         "answer_not_evaluated": sum(r.answer_status == "not_evaluated" for r in results),
         "answer_evaluation_failed": sum(r.answer_status == "error" for r in results),
         "answer_score_coverage": round(len(scored) / len(results), 4),
-        # 按难度分组的 recall —— 这一栏告诉你该往哪个方向优化
+        # Grouped recall helps isolate failure modes hidden by the aggregate score.
         "recall_by_difficulty": {
             d: round(statistics.mean(v), 4) for d, v in sorted(by_difficulty.items())
         },
@@ -491,14 +430,7 @@ def summarize(results: list[CaseResult], k: int = 5) -> dict[str, Any]:
 def save_run(tag: str, summary: dict, results: list[CaseResult], config: dict,
              *, cases: list[EvalCase] | None = None,
              dataset_path: str | Path | None = None, split: str = "all") -> Path:
-    """
-    每次跑完存一份带时间戳和配置的结果。
-
-    【config 一定要存】
-    半个月后你看到 recall 从 0.42 涨到 0.71，但想不起来当时改了什么，
-    这次实验就白做了。把 chunk_size / k / 模型名一起存进去，
-    结果才是可复现、可追溯的。这是实验记录的基本纪律。
-    """
+    """Persist results with the dataset snapshot and configuration for reproducibility."""
     if not tag or tag in {".", ".."} or Path(tag).name != tag or "\\" in tag:
         raise ValueError("实验名字只能是文件名，不能包含目录")
     RESULTS_DIR.mkdir(exist_ok=True)
@@ -632,14 +564,7 @@ def apply_scores_to_run(
 
 
 def compare(tag_a: str, tag_b: str) -> str:
-    """
-    对比两次运行，输出 markdown 表格 —— 直接贴进 README。
-
-    【回归检测：这个函数最重要的部分在最后】
-    总分涨了不代表没有变差的用例。"整体 recall 涨了 0.1，
-    但有 3 条原来能答对的现在答错了" —— 这种信息只有逐条对比才看得到，
-    而它往往比总分更重要（尤其是客户最在意的那几条）。
-    """
+    """Compare aggregate metrics and expose case-level regressions as Markdown."""
     a = json.loads((RESULTS_DIR / f"{tag_a}.json").read_text(encoding="utf-8"))
     b = json.loads((RESULTS_DIR / f"{tag_b}.json").read_text(encoding="utf-8"))
 
@@ -775,27 +700,3 @@ def _main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(_main())
-
-
-# ==============================================================================
-# domain/evalset.jsonl 长什么样（每行一个 JSON）
-# ==============================================================================
-# {"id":"q001","question":"FastAPI 默认文档在哪？","relevant_ids":["first_steps"],
-#  "reference":"Swagger UI 默认位于 /docs...","expected_tools":["retrieve_fastapi_docs"],
-#  "difficulty":"normal"}
-#
-# {"id":"q002","question":"今天美股怎么样？","relevant_ids":[],
-#  "expected_tools":["web_search"],"difficulty":"out_of_scope"}
-#   ↑ 这条测的是"该走联网而不是走本地检索"—— 负样本和正样本一样重要
-#
-# {"id":"q003","question":"幻觉和 reward hacking 有什么关系？",
-#  "relevant_ids":["hallucination#3","reward-hacking#5"],"difficulty":"multi_hop"}
-#   ↑ 需要跨两篇文档，最容易失败的一类
-#
-# 【建评测集的实操建议】
-#   - 20~30 条就能开始，别追求一步到位
-#   - 一定要有 out_of_scope 的负样本（测"知道自己不知道"）
-#   - 一定要有 multi_hop（这类最能暴露 chunk_size 设太小的问题）
-#   - 让业务方帮你标 30 条，价值远超你自己编 300 条
-#   - 每次线上遇到答错的问题，就补进评测集 —— 评测集会自己长大
-# ==============================================================================

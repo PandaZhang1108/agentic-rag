@@ -91,13 +91,7 @@ def clear_ledger() -> None:
 
 
 def extract_usage(response: Any) -> tuple[int | None, int | None]:
-    """
-    不同 provider 把 token 数放在不同地方，这里做兼容。
-
-    【这就是"屏蔽 provider 差异"的具体含义】——
-    脏活集中在一个函数里，上层代码不用关心你用的是哪家。
-    以后换模型发现取不到 token 数，只改这一个函数。
-    """
+    """Normalize token usage fields exposed by different model providers."""
 
     usage = getattr(response, "usage_metadata", None)
     if isinstance(usage, dict):
@@ -160,14 +154,7 @@ class ModelClient:
         self.fallback_name = fallback_name
 
     async def ainvoke(self, messages, *, label: str, model=None):
-        """
-        label 是这次调用的用途标签（比如 "grade" / "generate_answer"）。
-
-        【为什么 label 是必填的 keyword-only 参数】
-        因为记账时最有用的不是"总共花了多少"，而是
-        "哪个节点最烧钱"。没有 label，账本就是一堆匿名数字，
-        没法回答"我该优化哪一步"。
-        """
+        """Invoke a model and attribute latency and usage to the named workflow stage."""
         target = model or self.primary
         name = self.model_name if target is self.primary else self.fallback_name
 

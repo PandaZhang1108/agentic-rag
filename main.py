@@ -1,15 +1,4 @@
-"""
-================================================================================
-main.py —— 服务入口（重写版）
-================================================================================
-本文件修复的问题：
-    P1-5  Postgres 是单连接         → 换成 AsyncConnectionPool 连接池
-    P1-7  多 worker 会出问题        → 启动时检测并明确警告
-    P1-8  鉴权失败不走限流          → 把鉴权挪到限流之后
-    P1-9  /healthz 是假的           → 拆成 /healthz(存活) + /readyz(就绪，真查数据库)
-    P1-11 客户端断开后图还在跑      → SSE 循环里检测断连
-================================================================================
-"""
+"""FastAPI entry point for the Agentic RAG service."""
 
 from __future__ import annotations
 
@@ -148,28 +137,7 @@ async def logging_middleware(request: Request, call_next):
 
 
 def _check_api_key(x_api_key: str) -> None:
-    """
-    【原来的问题】
-        @app.post("/chat", dependencies=[Depends(verify_api_key)])
-        @limiter.limit(...)
-
-        FastAPI 的依赖项在【进入函数体之前】执行，而 slowapi 的限流是
-        包在函数体外面的装饰器。所以顺序是：
-            依赖项(鉴权) → 抛 401 → 限流器【根本没被执行】
-        结果：暴力猜 API key 完全不限速，想试多少次试多少次。
-
-    【现在的做法】
-        把鉴权从依赖项挪进函数体，放在限流之后。
-        这样每一次失败的尝试都会消耗限流配额。
-
-    secrets.compare_digest 而不是 == ：
-        == 比较字符串时会在第一个不同的字符处提前返回，
-        攻击者可以通过测量响应时间逐字节猜出密钥（时序攻击）。
-        compare_digest 无论如何都比完全部字节，耗时恒定。
-
-        另外它只接受 ASCII 字符串，传入含中文的 header 会抛 TypeError，
-        所以下面要包一层 try。
-    """
+    """Validate the shared API key with a constant-time comparison."""
     try:
         ok = secrets.compare_digest(x_api_key, settings.api_key)
     except TypeError:
@@ -273,31 +241,13 @@ def _sse(payload: dict) -> str:
 
 @app.get("/healthz")
 async def healthz():
-    """
-    Liveness（存活探针）：进程还活着吗？
-
-    【关键设计原则】这里【不能】检查数据库。
-    因为 liveness 失败的后果是【容器被杀掉重启】。
-    数据库临时抖动一下就把所有应用容器杀光重启，
-    只会让本来能自愈的故障变成雪崩。
-
-    这就是 liveness 和 readiness 必须分开的原因 ——
-    很多人把两者写成同一个接口，这是个经典错误。
-    """
+    """Liveness probe; dependency health is intentionally excluded."""
     return {"status": "ok"}
 
 
 @app.get("/readyz")
 async def readyz(request: Request):
-    """
-    Readiness（就绪探针）：现在能正常服务吗？
-
-    【原来的问题】只有一个 /healthz，无脑返回 ok。
-    数据库挂了它照样绿，负载均衡照样往里打流量。
-
-    readiness 失败的后果是【暂时不给这个实例发流量】，容器不会被杀。
-    所以这里应该真的去查依赖。
-    """
+    """Readiness probe that verifies the PostgreSQL dependency."""
     pool: AsyncConnectionPool = request.app.state.pool
     try:
         await asyncio.wait_for(_check_database(pool), timeout=3)

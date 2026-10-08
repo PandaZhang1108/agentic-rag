@@ -1,21 +1,4 @@
-"""
-================================================================================
-tests/test_smoke.py —— 依赖升级后第一个要跑的测试
-================================================================================
-这个文件就是我说的"绝对正确的材料"的现实版本。
-
-它不测业务逻辑，只做一件事：把这个项目用到的每一个框架 API 各碰一次。
-每次升级依赖后先跑它，几秒钟就能知道"有没有东西被改了、被改的是哪个"。
-
-这比守着一份永远会过时的教程有用得多 ——
-教程告诉你"去年是这么写的"，smoke test 告诉你"今天这么写还行不行"。
-
-跑法：
-    pytest tests/test_smoke.py -v
-
-【不需要】数据库、API key、网络。纯粹检查 import 和函数签名。
-================================================================================
-"""
+"""Dependency API smoke tests that require no database, network, or API keys."""
 
 import inspect
 
@@ -44,10 +27,7 @@ def test_toolnode_import_path():
 
 
 def test_checkpointer_accepts_pool():
-    """
-    AsyncPostgresSaver 必须支持传入连接池对象（而不是只支持 from_conn_string）。
-    这是 P1-5 修复方案的前提，所以要盯住。
-    """
+    """AsyncPostgresSaver must continue to accept a connection pool."""
     from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 
     sig = inspect.signature(AsyncPostgresSaver.__init__)
@@ -56,7 +36,7 @@ def test_checkpointer_accepts_pool():
 
 
 def test_trim_messages_signature():
-    """P1-12 依赖 trim_messages 的这几个参数，它们变了就要改 agent_graph._trim。"""
+    """Guard the trim_messages parameters used by agent_graph._trim."""
     from langchain_core.messages import trim_messages
 
     sig = inspect.signature(trim_messages)
