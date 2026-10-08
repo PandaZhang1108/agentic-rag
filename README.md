@@ -25,8 +25,12 @@ flowchart TD
     T --> M[Milvus 检索]
     T --> W[Tavily Web Search]
     T --> F[MCP Filesystem]
-    M --> RR[Cross-Encoder reranker]
-    RR --> R[grade_documents]
+    M --> C{启用 Cross-Encoder?}
+    C -->|否| O[Milvus 原始 Top-5]
+    C -->|是| RR[候选 Top-8 → Cross-Encoder → Top-5]
+    RR -->|成功| R[grade_documents]
+    RR -.->|失败或超时，回退| O
+    O --> R
     W --> R
     F --> A[generate_answer]
     R -->|相关| A
